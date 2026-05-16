@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "689181377871",
+    "project_id": "pathforge-roadmap",
+    "storage_bucket": "pathforge-roadmap.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:689181377871:android:1086b80af4f209ed58313a",
+        "android_client_info": {
+          "package_name": "com.example.pathforge"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHkJuCZDWzzcJqDWzI4oAnieZecE5WjHc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
