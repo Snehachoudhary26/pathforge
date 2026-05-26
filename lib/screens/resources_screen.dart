@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../core/theme.dart';
 
@@ -13,35 +14,34 @@ class _ResourcesScreenState extends State<ResourcesScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
-  final List<Map<String, dynamic>> programmingLanguages = [
-    {'title': 'Python Full Course', 'channel': 'CodeWithHarry', 'flag': '🇮🇳', 'level': 'Beginner', 'emoji': '🐍', 'color': Color(0xFF8B53EC), 'url': 'https://youtu.be/UrsmFxEIp5k', 'desc': 'Best beginner-friendly Python course in Hindi'},
-    {'title': 'Complete Java Course', 'channel': 'CodeWithHarry', 'flag': '🇮🇳', 'level': 'Beginner', 'emoji': '☕', 'color': Color(0xFF6B35CC), 'url': 'https://youtu.be/UmnCZ7-9yDY', 'desc': 'Complete Java from basics to advanced'},
-    {'title': 'JavaScript Full Playlist', 'channel': 'CodeWithHarry', 'flag': '🇮🇳', 'level': 'Beginner', 'emoji': '🌐', 'color': Color(0xFFAA75F0), 'url': 'https://youtube.com/playlist?list=PLGjplNEQ1it_oTvuLRNqXfz_v_0pq6unW', 'desc': 'Full JavaScript playlist for web development'},
-    {'title': 'Complete C++ Course', 'channel': 'CodeWithHarry', 'flag': '🇮🇳', 'level': 'Beginner', 'emoji': '⚡', 'color': Color(0xFF8B53EC), 'url': 'https://youtube.com/playlist?list=PLfqMhTWNBTe0b2nM6JHVCnAkhQRGiZMSJ', 'desc': 'Complete C++ from scratch'},
+  final List<Map<String, dynamic>> languages = [
+    {'title': 'Python Full Course', 'channel': 'CodeWithHarry', 'flag': '🇮🇳', 'level': 'Beginner', 'icon': Icons.code_rounded, 'color': AppTheme.primary, 'bg': AppTheme.purpleLight, 'url': 'https://youtu.be/UrsmFxEIp5k', 'desc': 'Best beginner Python course in Hindi'},
+    {'title': 'Complete Java Course', 'channel': 'CodeWithHarry', 'flag': '🇮🇳', 'level': 'Beginner', 'icon': Icons.coffee_rounded, 'color': AppTheme.orange, 'bg': AppTheme.orangeLight, 'url': 'https://youtu.be/UmnCZ7-9yDY', 'desc': 'Complete Java from basics to advanced'},
+    {'title': 'JavaScript Full Playlist', 'channel': 'CodeWithHarry', 'flag': '🇮🇳', 'level': 'Beginner', 'icon': Icons.javascript_rounded, 'color': AppTheme.amber, 'bg': AppTheme.amberLight, 'url': 'https://youtube.com/playlist?list=PLGjplNEQ1it_oTvuLRNqXfz_v_0pq6unW', 'desc': 'Full JavaScript playlist for web dev'},
+    {'title': 'Complete C++ Course', 'channel': 'CodeWithHarry', 'flag': '🇮🇳', 'level': 'Beginner', 'icon': Icons.memory_rounded, 'color': AppTheme.green, 'bg': AppTheme.greenLight, 'url': 'https://youtube.com/playlist?list=PLfqMhTWNBTe0b2nM6JHVCnAkhQRGiZMSJ', 'desc': 'Complete C++ from scratch'},
   ];
 
   final List<Map<String, dynamic>> dsa = [
-    {'title': 'Striver DSA Sheet', 'channel': 'take U forward', 'flag': '🇮🇳', 'level': 'Interview', 'emoji': '🎯', 'color': Color(0xFF8B53EC), 'url': 'https://youtube.com/playlist?list=PLgUwDviBIf0oF6QL8m22w1hIDC1vJ_BHz', 'desc': 'Best DSA sheet for coding interviews in C++'},
-    {'title': 'Kunal Kushwaha DSA', 'channel': 'Kunal Kushwaha', 'flag': '🇮🇳', 'level': 'Complete', 'emoji': '🏆', 'color': Color(0xFF6B35CC), 'url': 'https://youtube.com/playlist?list=PL9gnSGHSqcnr_DxHsP7AW9ftq0AtAyYqJ', 'desc': 'Complete DSA course in Java for placements'},
-    {'title': 'Apna College DSA', 'channel': 'Apna College', 'flag': '🇮🇳', 'level': 'Beginner', 'emoji': '📚', 'color': Color(0xFFAA75F0), 'url': 'https://youtube.com/@ApnaCollegeOfficial', 'desc': 'DSA in Java — great for beginners'},
+    {'title': 'Striver DSA Sheet', 'channel': 'take U forward', 'flag': '🇮🇳', 'level': 'Interview', 'icon': Icons.account_tree_rounded, 'color': AppTheme.primary, 'bg': AppTheme.purpleLight, 'url': 'https://youtube.com/playlist?list=PLgUwDviBIf0oF6QL8m22w1hIDC1vJ_BHz', 'desc': 'Best DSA sheet for coding interviews'},
+    {'title': 'Kunal Kushwaha DSA', 'channel': 'Kunal Kushwaha', 'flag': '🇮🇳', 'level': 'Complete', 'icon': Icons.school_rounded, 'color': AppTheme.orange, 'bg': AppTheme.orangeLight, 'url': 'https://youtube.com/playlist?list=PL9gnSGHSqcnr_DxHsP7AW9ftq0AtAyYqJ', 'desc': 'Complete DSA course in Java'},
+    {'title': 'Apna College DSA', 'channel': 'Apna College', 'flag': '🇮🇳', 'level': 'Beginner', 'icon': Icons.book_rounded, 'color': AppTheme.green, 'bg': AppTheme.greenLight, 'url': 'https://youtube.com/@ApnaCollegeOfficial', 'desc': 'DSA in Java — great for beginners'},
   ];
 
-  final List<Map<String, dynamic>> development = [
-    {'title': 'Full Data Science Course', 'channel': 'CampusX', 'flag': '🇮🇳', 'level': 'Complete', 'emoji': '📊', 'color': Color(0xFF8B53EC), 'url': 'https://youtu.be/gDZ6czwuQ18', 'desc': '100 Days of ML — best structured DS course'},
-    {'title': 'Machine Learning Course', 'channel': 'Krish Naik', 'flag': '🇮🇳', 'level': 'Intermediate', 'emoji': '🤖', 'color': Color(0xFF6B35CC), 'url': 'https://youtu.be/ie4oGI85SAE', 'desc': 'End-to-end ML course with projects'},
-    {'title': 'AI Engineering PyTorch', 'channel': 'Andrej Karpathy', 'flag': '🌍', 'level': 'Advanced', 'emoji': '🧠', 'color': Color(0xFFAA75F0), 'url': 'https://youtu.be/UqA7bxp7VBk', 'desc': 'Build GPT from scratch — gold standard AI'},
-    {'title': 'Full Stack Web Dev', 'channel': 'CodeWithHarry', 'flag': '🇮🇳', 'level': 'Complete', 'emoji': '💻', 'color': Color(0xFF8B53EC), 'url': 'https://youtube.com/playlist?list=PLu0W_9lII9agq5TrH9XLIKQvv0iaF2X3w', 'desc': 'Complete web development roadmap'},
-    {'title': 'Flutter + Firebase', 'channel': 'CodeWithHarry', 'flag': '🇮🇳', 'level': 'Intermediate', 'emoji': '📱', 'color': Color(0xFF6B35CC), 'url': 'https://youtu.be/iZ78G3BhDyc', 'desc': 'Build Android apps with Flutter & Firebase'},
-    {'title': 'Math for ML', 'channel': '3Blue1Brown', 'flag': '🌍', 'level': 'Foundation', 'emoji': '🔢', 'color': Color(0xFFAA75F0), 'url': 'https://www.youtube.com/@3blue1brown', 'desc': 'Linear algebra & calculus visually explained'},
+  final List<Map<String, dynamic>> dev = [
+    {'title': 'Full Data Science Course', 'channel': 'CampusX', 'flag': '🇮🇳', 'level': 'Complete', 'icon': Icons.bar_chart_rounded, 'color': AppTheme.primary, 'bg': AppTheme.purpleLight, 'url': 'https://youtu.be/gDZ6czwuQ18', 'desc': '100 Days of ML — best structured DS course'},
+    {'title': 'Machine Learning Course', 'channel': 'Krish Naik', 'flag': '🇮🇳', 'level': 'Intermediate', 'icon': Icons.psychology_rounded, 'color': AppTheme.orange, 'bg': AppTheme.orangeLight, 'url': 'https://youtu.be/ie4oGI85SAE', 'desc': 'End-to-end ML course with projects'},
+    {'title': 'AI Engineering PyTorch', 'channel': 'Andrej Karpathy', 'flag': '🌍', 'level': 'Advanced', 'icon': Icons.auto_awesome_rounded, 'color': AppTheme.green, 'bg': AppTheme.greenLight, 'url': 'https://youtu.be/UqA7bxp7VBk', 'desc': 'Build GPT from scratch'},
+    {'title': 'Full Stack Web Dev', 'channel': 'CodeWithHarry', 'flag': '🇮🇳', 'level': 'Complete', 'icon': Icons.web_rounded, 'color': AppTheme.primary, 'bg': AppTheme.purpleLight, 'url': 'https://youtube.com/playlist?list=PLu0W_9lII9agq5TrH9XLIKQvv0iaF2X3w', 'desc': 'Complete web development roadmap'},
+    {'title': 'Flutter + Firebase', 'channel': 'CodeWithHarry', 'flag': '🇮🇳', 'level': 'Intermediate', 'icon': Icons.phone_android_rounded, 'color': AppTheme.amber, 'bg': AppTheme.amberLight, 'url': 'https://youtu.be/iZ78G3BhDyc', 'desc': 'Build Android apps with Flutter'},
+    {'title': 'Math for ML', 'channel': '3Blue1Brown', 'flag': '🌍', 'level': 'Foundation', 'icon': Icons.calculate_rounded, 'color': AppTheme.orange, 'bg': AppTheme.orangeLight, 'url': 'https://www.youtube.com/@3blue1brown', 'desc': 'Linear algebra & calculus visually'},
   ];
 
   final List<Map<String, dynamic>> tools = [
-    {'title': 'React.js Full Course', 'channel': 'CodeWithHarry', 'flag': '🇮🇳', 'level': 'Intermediate', 'emoji': '⚛️', 'color': Color(0xFF8B53EC), 'url': 'https://youtu.be/RGKi6LSPDLU', 'desc': 'Complete React from scratch'},
-    {'title': 'MongoDB Course', 'channel': 'CodeWithHarry', 'flag': '🇮🇳', 'level': 'Beginner', 'emoji': '🍃', 'color': Color(0xFF6B35CC), 'url': 'https://youtu.be/M1dKYQ7GsTg', 'desc': 'MongoDB database full course'},
-    {'title': 'MySQL Course', 'channel': 'CodeWithHarry', 'flag': '🇮🇳', 'level': 'Beginner', 'emoji': '🗄️', 'color': Color(0xFFAA75F0), 'url': 'https://youtu.be/yE6tIle64tU', 'desc': 'MySQL from basics to advanced'},
-    {'title': 'Docker Course', 'channel': 'Various', 'flag': '🌍', 'level': 'Intermediate', 'emoji': '🐳', 'color': Color(0xFF8B53EC), 'url': 'https://youtu.be/WNUCAPKa44Y', 'desc': 'Docker containers and deployment'},
-    {'title': 'Django Course', 'channel': 'CodeWithHarry', 'flag': '🇮🇳', 'level': 'Intermediate', 'emoji': '🎸', 'color': Color(0xFF6B35CC), 'url': 'https://youtu.be/rIWJWy3_njo', 'desc': 'Django web framework full course'},
-    {'title': 'LLM Course', 'channel': 'Various', 'flag': '🌍', 'level': 'Advanced', 'emoji': '🤖', 'color': Color(0xFFAA75F0), 'url': 'https://youtu.be/K45s2PgywvI', 'desc': 'Large Language Models from scratch'},
+    {'title': 'React.js Full Course', 'channel': 'CodeWithHarry', 'flag': '🇮🇳', 'level': 'Intermediate', 'icon': Icons.hub_rounded, 'color': AppTheme.primary, 'bg': AppTheme.purpleLight, 'url': 'https://youtu.be/RGKi6LSPDLU', 'desc': 'Complete React from scratch'},
+    {'title': 'MongoDB Course', 'channel': 'CodeWithHarry', 'flag': '🇮🇳', 'level': 'Beginner', 'icon': Icons.storage_rounded, 'color': AppTheme.green, 'bg': AppTheme.greenLight, 'url': 'https://youtu.be/M1dKYQ7GsTg', 'desc': 'MongoDB database full course'},
+    {'title': 'MySQL Course', 'channel': 'CodeWithHarry', 'flag': '🇮🇳', 'level': 'Beginner', 'icon': Icons.table_chart_rounded, 'color': AppTheme.amber, 'bg': AppTheme.amberLight, 'url': 'https://youtu.be/yE6tIle64tU', 'desc': 'MySQL from basics to advanced'},
+    {'title': 'Docker Course', 'channel': 'Various', 'flag': '🌍', 'level': 'Intermediate', 'icon': Icons.view_in_ar_rounded, 'color': AppTheme.primary, 'bg': AppTheme.purpleLight, 'url': 'https://youtu.be/WNUCAPKa44Y', 'desc': 'Docker containers and deployment'},
+    {'title': 'LLM Course', 'channel': 'Various', 'flag': '🌍', 'level': 'Advanced', 'icon': Icons.smart_toy_rounded, 'color': AppTheme.orange, 'bg': AppTheme.orangeLight, 'url': 'https://youtu.be/K45s2PgywvI', 'desc': 'Large Language Models from scratch'},
   ];
 
   @override
@@ -51,98 +51,103 @@ class _ResourcesScreenState extends State<ResourcesScreen>
   }
 
   @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
+  void dispose() { _tabController.dispose(); super.dispose(); }
 
   Future<void> _launch(String url) async {
     final uri = Uri.parse(url);
     if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Could not open $url')),
-        );
-      }
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Could not open link')));
     }
   }
 
-  List<Map<String, dynamic>> get _currentList {
+  List<Map<String, dynamic>> get _list {
     switch (_tabController.index) {
-      case 0: return programmingLanguages;
+      case 0: return languages;
       case 1: return dsa;
-      case 2: return development;
+      case 2: return dev;
       case 3: return tools;
-      default: return programmingLanguages;
+      default: return languages;
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.background,
+      backgroundColor: AppTheme.cream,
       body: SafeArea(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+            // Header
+            Container(
+              color: AppTheme.navy,
+              padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Learning Resources',
-                    style: GoogleFonts.poppins(
-                      fontSize: 20, fontWeight: FontWeight.w700,
-                      color: AppTheme.textDark,
-                    ),
-                  ),
+                      style: GoogleFonts.plusJakartaSans(
+                          fontSize: 20, fontWeight: FontWeight.w800,
+                          color: Colors.white)),
+                  const SizedBox(height: 2),
                   Text('Top YouTube courses — Indian & Global',
-                    style: GoogleFonts.poppins(fontSize: 13, color: AppTheme.textMid),
-                  ),
+                      style: GoogleFonts.plusJakartaSans(
+                          fontSize: 12, color: Colors.white54)),
                   const SizedBox(height: 16),
+                  TabBar(
+                    controller: _tabController,
+                    isScrollable: true,
+                    labelColor: AppTheme.orange,
+                    unselectedLabelColor: Colors.white54,
+                    indicatorColor: AppTheme.orange,
+                    indicatorWeight: 3,
+                    indicatorSize: TabBarIndicatorSize.label,
+                    onTap: (_) => setState(() {}),
+                    labelStyle: GoogleFonts.plusJakartaSans(
+                        fontSize: 13, fontWeight: FontWeight.w700),
+                    unselectedLabelStyle: GoogleFonts.plusJakartaSans(
+                        fontSize: 13, fontWeight: FontWeight.w500),
+                    tabs: const [
+                      Tab(text: 'Languages'),
+                      Tab(text: 'DSA'),
+                      Tab(text: 'Dev & AI'),
+                      Tab(text: 'Tools'),
+                    ],
+                  ),
                 ],
               ),
             ),
-            TabBar(
-              controller: _tabController,
-              isScrollable: true,
-              labelColor: AppTheme.primary,
-              unselectedLabelColor: AppTheme.textLight,
-              indicatorColor: AppTheme.primary,
-              indicatorWeight: 2.5,
-              onTap: (_) => setState(() {}),
-              labelStyle: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.w600),
-              unselectedLabelStyle: GoogleFonts.poppins(fontSize: 12),
-              tabs: const [
-                Tab(text: '🧠 Languages'),
-                Tab(text: '⚡ DSA'),
-                Tab(text: '🚀 Dev'),
-                Tab(text: '🛠️ Tools'),
-              ],
-            ),
-            const Divider(height: 1),
+
             Expanded(
               child: ListView.builder(
-                padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
-                itemCount: _currentList.length,
+                padding: const EdgeInsets.fromLTRB(20, 14, 20, 20),
+                itemCount: _list.length,
                 itemBuilder: (context, i) {
-                  final r = _currentList[i];
-                  return _ResourceCard(resource: r, onTap: () => _launch(r['url']));
+                  final r = _list[i];
+                  return _ResourceCard(
+                    resource: r,
+                    onTap: () => _launch(r['url']),
+                  );
                 },
               ),
             ),
+
             Container(
               padding: const EdgeInsets.symmetric(vertical: 10),
               decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border(top: BorderSide(color: AppTheme.border)),
-              ),
+                  color: Colors.white,
+                  border: Border(top: BorderSide(color: AppTheme.border))),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  _NavItem(Icons.map_outlined, 'Roadmap', false, () => Navigator.of(context).pop()),
-                  _NavItem(Icons.play_circle_outline, 'Resources', true, () {}),
-                  _NavItem(Icons.person_outline, 'Profile', false, () => Navigator.of(context).pop()),
+                  _NavItem(Icons.home_outlined, Icons.home_rounded,
+                      'Home', false, () => context.go('/home')),
+                  _NavItem(Icons.map_outlined, Icons.map_rounded,
+                      'Roadmap', false, () => context.go('/home')),
+                  _NavItem(Icons.play_circle_outline, Icons.play_circle,
+                      'Resources', true, () {}),
+                  _NavItem(Icons.person_outline, Icons.person_rounded,
+                      'Profile', false, () => context.go('/profile')),
                 ],
               ),
             ),
@@ -160,83 +165,78 @@ class _ResourceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final color = resource['color'] as Color;
+    final bg = resource['bg'] as Color;
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
-        color: AppTheme.cardWhite,
-        borderRadius: BorderRadius.circular(12),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
         border: Border.all(color: AppTheme.border),
       ),
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(10, 10, 6, 10),
+        padding: const EdgeInsets.all(12),
         child: Row(
           children: [
             Container(
-              width: 44, height: 44,
+              width: 46, height: 46,
               decoration: BoxDecoration(
-                color: (resource['color'] as Color).withOpacity(0.1),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Center(
-                child: Text(resource['emoji'], style: const TextStyle(fontSize: 20)),
-              ),
+                  color: bg, borderRadius: BorderRadius.circular(13)),
+              child: Icon(resource['icon'] as IconData, color: color, size: 22),
             ),
-            const SizedBox(width: 10),
+            const SizedBox(width: 12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(resource['title'],
-                    style: GoogleFonts.poppins(
-                      fontSize: 12, fontWeight: FontWeight.w600,
-                      color: AppTheme.textDark,
-                    ),
-                    maxLines: 1, overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 2),
+                      style: GoogleFonts.plusJakartaSans(
+                          fontSize: 13, fontWeight: FontWeight.w700,
+                          color: AppTheme.textDark),
+                      maxLines: 1, overflow: TextOverflow.ellipsis),
+                  const SizedBox(height: 3),
                   Row(
                     children: [
                       Text('${resource['flag']} ${resource['channel']}',
-                        style: GoogleFonts.poppins(fontSize: 10, color: AppTheme.textMid),
-                      ),
-                      const SizedBox(width: 4),
+                          style: GoogleFonts.plusJakartaSans(
+                              fontSize: 11, color: AppTheme.textMid)),
+                      const SizedBox(width: 6),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 6, vertical: 2),
                         decoration: BoxDecoration(
-                          color: (resource['color'] as Color).withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(4),
+                          color: bg,
+                          borderRadius: BorderRadius.circular(5),
                         ),
                         child: Text(resource['level'],
-                          style: GoogleFonts.poppins(
-                            fontSize: 9, fontWeight: FontWeight.w500,
-                            color: resource['color'],
-                          ),
-                        ),
+                            style: GoogleFonts.plusJakartaSans(
+                                fontSize: 9, fontWeight: FontWeight.w700,
+                                color: color)),
                       ),
                     ],
                   ),
+                  const SizedBox(height: 2),
                   Text(resource['desc'],
-                    style: GoogleFonts.poppins(fontSize: 10, color: AppTheme.textLight),
-                    maxLines: 1, overflow: TextOverflow.ellipsis,
-                  ),
+                      style: GoogleFonts.plusJakartaSans(
+                          fontSize: 11, color: AppTheme.textLight),
+                      maxLines: 1, overflow: TextOverflow.ellipsis),
                 ],
               ),
             ),
-            const SizedBox(width: 6),
+            const SizedBox(width: 8),
             GestureDetector(
               onTap: onTap,
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 14, vertical: 8),
                 decoration: BoxDecoration(
-                  color: resource['color'],
-                  borderRadius: BorderRadius.circular(8),
+                  color: AppTheme.navy,
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text('Watch',
-                  style: GoogleFonts.poppins(
-                    fontSize: 11, fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                  ),
-                ),
+                    style: GoogleFonts.plusJakartaSans(
+                        fontSize: 12, fontWeight: FontWeight.w700,
+                        color: Colors.white)),
               ),
             ),
           ],
@@ -246,29 +246,25 @@ class _ResourceCard extends StatelessWidget {
   }
 }
 
-class _NavItem extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final bool active;
-  final VoidCallback onTap;
-  const _NavItem(this.icon, this.label, this.active, this.onTap);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, color: active ? AppTheme.primary : AppTheme.textLight, size: 22),
-          const SizedBox(height: 2),
-          Text(label, style: GoogleFonts.poppins(
-            fontSize: 10,
-            color: active ? AppTheme.primary : AppTheme.textLight,
-            fontWeight: active ? FontWeight.w600 : FontWeight.w400,
-          )),
-        ],
+Widget _NavItem(IconData icon, IconData activeIcon, String label,
+    bool active, VoidCallback onTap) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      decoration: BoxDecoration(
+        color: active ? AppTheme.orangeLight : Colors.transparent,
+        borderRadius: BorderRadius.circular(12),
       ),
-    );
-  }
+      child: Column(mainAxisSize: MainAxisSize.min, children: [
+        Icon(active ? activeIcon : icon,
+            color: active ? AppTheme.orange : AppTheme.textLight, size: 24),
+        const SizedBox(height: 3),
+        Text(label, style: GoogleFonts.plusJakartaSans(
+            fontSize: 10,
+            color: active ? AppTheme.orange : AppTheme.textLight,
+            fontWeight: active ? FontWeight.w700 : FontWeight.w500)),
+      ]),
+    ),
+  );
 }

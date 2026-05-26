@@ -30,19 +30,21 @@ dependencies:
   # UI & Animations
   animate_do: ^3.3.4
   flutter_animate: ^4.5.0
-  lottie: ^3.1.0
+  lottie: ^3.3.3
   shimmer: ^3.0.0
 
   # Utilities
   shared_preferences: ^2.2.2
   url_launcher: ^6.2.5
   flutter_svg: ^2.0.10+1
-  google_fonts: ^6.2.1
-  percent_indicator: ^4.2.3
+  google_fonts: ^8.1.0
+  percent_indicator: ^4.2.5
   iconsax: ^0.0.8
 
   # Icons
   cupertino_icons: ^1.0.6
+  confetti: ^0.8.0
+  google_sign_in: ^7.2.0
 
 dev_dependencies:
   flutter_test:
