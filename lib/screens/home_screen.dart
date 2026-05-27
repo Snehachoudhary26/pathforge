@@ -113,6 +113,178 @@ class _HomeScreenState extends State<HomeScreen> {
                             const SizedBox(height: 24),
                           ],
 
+                          // Quick action buttons row
+                          Row(children: [
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () => context.go('/share'),
+                                child: Container(
+                                  padding: const EdgeInsets.all(14),
+                                  decoration: BoxDecoration(
+                                    color: AppTheme.navy,
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.share_rounded,
+                                          color: Colors.white, size: 18),
+                                      const SizedBox(width: 8),
+                                      Text('Share progress',
+                                          style: GoogleFonts.plusJakartaSans(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w700,
+                                              color: Colors.white)),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () => track.isNotEmpty
+                                    ? context.go('/interview?track=\${Uri.encodeComponent(track)}&week=Week 1')
+                                    : context.go('/track'),
+                                child: Container(
+                                  padding: const EdgeInsets.all(14),
+                                  decoration: BoxDecoration(
+                                    color: AppTheme.purpleLight,
+                                    borderRadius: BorderRadius.circular(16),
+                                    border: Border.all(color: AppTheme.purpleBorder),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.quiz_rounded,
+                                          color: AppTheme.primary, size: 18),
+                                      const SizedBox(width: 8),
+                                      Text('Practice interview',
+                                          style: GoogleFonts.plusJakartaSans(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w700,
+                                              color: AppTheme.primary)),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ]),
+                          const SizedBox(height: 24),
+
+                          // Quick action buttons row
+                          Row(children: [
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () => context.go('/share'),
+                                child: Container(
+                                  padding: const EdgeInsets.all(14),
+                                  decoration: BoxDecoration(
+                                    color: AppTheme.navy,
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.share_rounded,
+                                          color: Colors.white, size: 18),
+                                      const SizedBox(width: 8),
+                                      Text('Share progress',
+                                          style: GoogleFonts.plusJakartaSans(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w700,
+                                              color: Colors.white)),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () => track.isNotEmpty
+                                    ? context.go('/interview?track=\${Uri.encodeComponent(track)}&week=Week 1')
+                                    : context.go('/track'),
+                                child: Container(
+                                  padding: const EdgeInsets.all(14),
+                                  decoration: BoxDecoration(
+                                    color: AppTheme.purpleLight,
+                                    borderRadius: BorderRadius.circular(16),
+                                    border: Border.all(color: AppTheme.purpleBorder),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.quiz_rounded,
+                                          color: AppTheme.primary, size: 18),
+                                      const SizedBox(width: 8),
+                                      Text('Practice interview',
+                                          style: GoogleFonts.plusJakartaSans(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w700,
+                                              color: AppTheme.primary)),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ]),
+                          const SizedBox(height: 24),
+
+                          // Resume Scanner CTA
+                          _sectionRow('Resume scanner', 'Try it',
+                              onTap: () => context.go('/resume')),
+                          const SizedBox(height: 10),
+                          GestureDetector(
+                            onTap: () => context.go('/resume'),
+                            child: Container(
+                              width: double.infinity,
+                              padding: const EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(18),
+                                border: Border.all(color: AppTheme.border),
+                              ),
+                              child: Row(children: [
+                                Container(
+                                  width: 48, height: 48,
+                                  decoration: BoxDecoration(
+                                    color: AppTheme.purpleLight,
+                                    borderRadius: BorderRadius.circular(14),
+                                  ),
+                                  child: Icon(Icons.document_scanner_rounded,
+                                      color: AppTheme.primary, size: 24),
+                                ),
+                                const SizedBox(width: 14),
+                                Expanded(child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('Scan your resume',
+                                        style: GoogleFonts.plusJakartaSans(
+                                            fontSize: 14, fontWeight: FontWeight.w800,
+                                            color: AppTheme.textDark)),
+                                    Text('Find skill gaps for your track',
+                                        style: GoogleFonts.plusJakartaSans(
+                                            fontSize: 12, color: AppTheme.textMid)),
+                                  ],
+                                )),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12, vertical: 6),
+                                  decoration: BoxDecoration(
+                                    color: AppTheme.primary,
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Text('New',
+                                      style: GoogleFonts.plusJakartaSans(
+                                          fontSize: 11, fontWeight: FontWeight.w700,
+                                          color: Colors.white)),
+                                ),
+                              ]),
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+
                           // Job Readiness Score
                           _sectionRow('Job readiness', 'View details',
                               onTap: () => context.go('/readiness')),

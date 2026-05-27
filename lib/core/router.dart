@@ -12,7 +12,13 @@ import '../screens/week_detail_screen.dart';
 import '../screens/resources_screen.dart';
 import '../screens/profile_screen.dart';
 import '../screens/job_readiness_screen.dart';
+import '../screens/resume_scanner_screen.dart';
+import '../screens/interview_screen.dart';
+import '../screens/share_progress_screen.dart';
 import '../screens/job_readiness_screen.dart';
+import '../screens/resume_scanner_screen.dart';
+import '../screens/interview_screen.dart';
+import '../screens/share_progress_screen.dart';
 
 Page<void> _slidePage(Widget child, GoRouterState state) {
   return CustomTransitionPage(
@@ -96,6 +102,18 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/resources',
       pageBuilder: (c, s) => _slidePage(const ResourcesScreen(), s),
+    ),
+    GoRoute(
+      path: '/interview',
+      pageBuilder: (c, s) {
+        final track = s.uri.queryParameters['track'] ?? 'Software Engineer';
+        final week = s.uri.queryParameters['week'] ?? 'Week 1';
+        return _slidePage(InterviewScreen(track: track, weekTitle: week), s);
+      },
+    ),
+    GoRoute(
+      path: '/resume',
+      pageBuilder: (c, s) => _slidePage(const ResumeScannerScreen(), s),
     ),
     GoRoute(
       path: '/readiness',

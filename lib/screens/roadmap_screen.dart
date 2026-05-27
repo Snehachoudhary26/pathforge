@@ -25,13 +25,16 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
   @override
   void initState() {
     super.initState();
-    _confettiController = ConfettiController(
-        duration: const Duration(seconds: 2));
+    _confettiController =
+        ConfettiController(duration: const Duration(seconds: 2));
     _loadRoadmap();
   }
 
   @override
-  void dispose() { _confettiController.dispose(); super.dispose(); }
+  void dispose() {
+    _confettiController.dispose();
+    super.dispose();
+  }
 
   Future<void> _loadRoadmap() async {
     try {
@@ -44,7 +47,8 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
           .collection('roadmaps')
           .where('uid', isEqualTo: uid)
           .where('track', isEqualTo: widget.track)
-          .limit(1).get();
+          .limit(1)
+          .get();
 
       if (snap.docs.isNotEmpty) {
         final doc = snap.docs.first;
@@ -54,7 +58,8 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
           weeks = rawWeeks.map((w) {
             final week = Map<String, dynamic>.from(w as Map);
             week['skills'] = (week['skills'] as List? ?? [])
-                .map((s) => s.toString()).toList();
+                .map((s) => s.toString())
+                .toList();
             return week;
           }).toList();
           isLoading = false;
@@ -63,12 +68,14 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
         final data = await FirestoreService.getRoadmapForTrack(
             uid: uid, track: widget.track);
         if (data != null && data['weeks'] != null) {
-          _docId = '${uid}_${widget.track.toLowerCase().replaceAll(RegExp(r'[^a-z0-9]'), '_')}';
+          _docId =
+              '${uid}_${widget.track.toLowerCase().replaceAll(RegExp(r'[^a-z0-9]'), '_')}';
           setState(() {
             weeks = (data['weeks'] as List).map((w) {
               final week = Map<String, dynamic>.from(w as Map);
               week['skills'] = (week['skills'] as List? ?? [])
-                  .map((s) => s.toString()).toList();
+                  .map((s) => s.toString())
+                  .toList();
               return week;
             }).toList();
             isLoading = false;
@@ -85,22 +92,16 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
   Future<void> _markWeekDone(int index) async {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid == null) return;
-
     setState(() => weeks[index]['status'] = 'done');
-
-    // Fire confetti
     _confettiController.play();
-
-    // Save to Firestore
     try {
       if (_docId != null) {
         await FirebaseFirestore.instance
-            .collection('roadmaps').doc(_docId)
+            .collection('roadmaps')
+            .doc(_docId)
             .update({'weeks': weeks});
       }
     } catch (_) {}
-
-    // Add XP
     try {
       final result = await FirestoreService.addXP(uid: uid, xpToAdd: 80);
       if (mounted) {
@@ -121,11 +122,20 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
     try {
       if (_docId != null) {
         await FirebaseFirestore.instance
-            .collection('roadmaps').doc(_docId)
+            .collection('roadmaps')
+            .doc(_docId)
             .update({'weeks': weeks});
       }
       await FirestoreService.removeXP(uid: uid, xpToRemove: 80);
     } catch (_) {}
+  }
+
+  void _goToInterview(int index) {
+    final week = weeks[index];
+    final title = week['title']?.toString() ?? 'Week ${index + 1}';
+    final t = Uri.encodeComponent(widget.track);
+    final w = Uri.encodeComponent(title);
+    context.go('/interview?track=$t&week=$w');
   }
 
   void _showToast(String message, bool isLevelUp) {
@@ -149,13 +159,13 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
           const SizedBox(width: 12),
           Expanded(child: Text(message,
               style: GoogleFonts.plusJakartaSans(
-                  fontWeight: FontWeight.w700, color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
                   fontSize: 13))),
         ]),
         backgroundColor: isLevelUp ? AppTheme.primary : AppTheme.navy,
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
         margin: const EdgeInsets.all(16),
         duration: Duration(seconds: isLevelUp ? 4 : 2),
       ),
@@ -198,7 +208,8 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
                         children: [
                           Text(widget.track,
                               style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 17, fontWeight: FontWeight.w800,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w800,
                                   color: Colors.white)),
                           Text('${weeks.length} weeks · AI generated',
                               style: GoogleFonts.plusJakartaSans(
@@ -214,7 +225,8 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
                         ),
                         child: Text('${(progress * 100).toInt()}% done',
                             style: GoogleFonts.plusJakartaSans(
-                                fontSize: 12, fontWeight: FontWeight.w700,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
                                 color: Colors.white)),
                       ),
                     ]),
@@ -227,7 +239,8 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
                         child: LinearProgressIndicator(
                           value: val,
                           backgroundColor: Colors.white12,
-                          valueColor: AlwaysStoppedAnimation(AppTheme.orange),
+                          valueColor:
+                              AlwaysStoppedAnimation(AppTheme.orange),
                           minHeight: 8,
                         ),
                       ),
@@ -245,7 +258,8 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
                           const SizedBox(width: 4),
                           Text('${doneCount * 80} XP earned',
                               style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 11, fontWeight: FontWeight.w700,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w700,
                                   color: AppTheme.amber)),
                         ]),
                       ],
@@ -263,15 +277,16 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
                               onGenerate: () => context.go(
                                   '/generating?track=${Uri.encodeComponent(widget.track)}'))
                           : ListView.builder(
-                              padding: const EdgeInsets.fromLTRB(
-                                  20, 16, 20, 20),
+                              padding:
+                                  const EdgeInsets.fromLTRB(20, 16, 20, 20),
                               itemCount: weeks.length,
                               itemBuilder: (context, i) {
                                 final week = weeks[i];
                                 final isDone = week['status'] == 'done';
                                 final isCurrent = !isDone &&
-                                    weeks.take(i).every(
-                                        (w) => w['status'] == 'done');
+                                    weeks
+                                        .take(i)
+                                        .every((w) => w['status'] == 'done');
                                 return _WeekCard(
                                   weekNum: week['weekNumber'] ?? (i + 1),
                                   title: week['title'] ?? 'Week ${i + 1}',
@@ -284,6 +299,7 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
                                   isLast: i == weeks.length - 1,
                                   onMarkDone: () => _markWeekDone(i),
                                   onUnmark: () => _unmarkWeekDone(i),
+                                  onInterview: () => _goToInterview(i),
                                 );
                               },
                             ),
@@ -294,7 +310,8 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    border: Border(top: BorderSide(color: AppTheme.border)),
+                    border:
+                        Border(top: BorderSide(color: AppTheme.border)),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -303,12 +320,14 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
                           'Home', false, () => context.go('/home')),
                       _NavItem(Icons.map_outlined, Icons.map_rounded,
                           'Roadmap', true, () {}),
-                      _NavItem(Icons.play_circle_outline, Icons.play_circle,
-                          'Resources', false,
+                      _NavItem(
+                          Icons.play_circle_outline,
+                          Icons.play_circle,
+                          'Resources',
+                          false,
                           () => context.go('/resources')),
                       _NavItem(Icons.person_outline, Icons.person_rounded,
-                          'Profile', false,
-                          () => context.go('/profile')),
+                          'Profile', false, () => context.go('/profile')),
                     ],
                   ),
                 ),
@@ -316,7 +335,7 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
             ),
           ),
 
-          // Confetti overlay — fires from top centre
+          // Confetti
           Align(
             alignment: Alignment.topCenter,
             child: ConfettiWidget(
@@ -328,11 +347,8 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
               gravity: 0.2,
               shouldLoop: false,
               colors: [
-                AppTheme.orange,
-                AppTheme.primary,
-                AppTheme.green,
-                AppTheme.amber,
-                Colors.white,
+                AppTheme.orange, AppTheme.primary,
+                AppTheme.green, AppTheme.amber, Colors.white,
               ],
             ),
           ),
@@ -346,7 +362,6 @@ class _ErrorView extends StatelessWidget {
   final String track;
   final VoidCallback onGenerate;
   const _ErrorView({required this.track, required this.onGenerate});
-
   @override
   Widget build(BuildContext context) => Center(
     child: Padding(
@@ -366,7 +381,8 @@ class _ErrorView extends StatelessWidget {
           const SizedBox(height: 20),
           Text('No roadmap yet',
               style: GoogleFonts.plusJakartaSans(
-                  fontSize: 20, fontWeight: FontWeight.w800,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
                   color: AppTheme.textDark)),
           const SizedBox(height: 8),
           Text('Generate your AI plan for $track',
@@ -393,14 +409,20 @@ class _WeekCard extends StatelessWidget {
   final List<String> skills;
   final dynamic hours;
   final bool isDone, isCurrent, isLast;
-  final VoidCallback onMarkDone, onUnmark;
+  final VoidCallback onMarkDone, onUnmark, onInterview;
 
   const _WeekCard({
-    required this.weekNum, required this.title,
-    required this.skills, required this.hours,
-    required this.why, required this.isDone,
-    required this.isCurrent, required this.isLast,
-    required this.onMarkDone, required this.onUnmark,
+    required this.weekNum,
+    required this.title,
+    required this.skills,
+    required this.hours,
+    required this.why,
+    required this.isDone,
+    required this.isCurrent,
+    required this.isLast,
+    required this.onMarkDone,
+    required this.onUnmark,
+    required this.onInterview,
   });
 
   @override
@@ -438,14 +460,16 @@ class _WeekCard extends StatelessWidget {
                           color: Colors.white, size: 16)
                       : Center(child: Text('$weekNum',
                           style: GoogleFonts.plusJakartaSans(
-                              fontSize: 10, fontWeight: FontWeight.w700,
+                              fontSize: 10,
+                              fontWeight: FontWeight.w700,
                               color: AppTheme.textMid))),
             ),
             if (!isLast)
               Expanded(child: Container(
                 width: 2,
                 color: isDone
-                    ? AppTheme.green.withOpacity(0.3) : AppTheme.border,
+                    ? AppTheme.green.withOpacity(0.3)
+                    : AppTheme.border,
               )),
           ]),
           const SizedBox(width: 12),
@@ -468,13 +492,13 @@ class _WeekCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(children: [
-                          Expanded(child: Text(
-                            'Week $weekNum — $title',
-                            style: GoogleFonts.plusJakartaSans(
-                                fontSize: 13, fontWeight: FontWeight.w800,
-                                color: isDone
-                                    ? AppTheme.textMid : AppTheme.textDark),
-                          )),
+                          Expanded(child: Text('Week $weekNum — $title',
+                              style: GoogleFonts.plusJakartaSans(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w800,
+                                  color: isDone
+                                      ? AppTheme.textMid
+                                      : AppTheme.textDark))),
                           if (isDone)
                             Container(
                               padding: const EdgeInsets.symmetric(
@@ -485,7 +509,8 @@ class _WeekCard extends StatelessWidget {
                               ),
                               child: Text('Done',
                                   style: GoogleFonts.plusJakartaSans(
-                                      fontSize: 10, fontWeight: FontWeight.w700,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w700,
                                       color: AppTheme.green)),
                             )
                           else if (isCurrent)
@@ -498,7 +523,8 @@ class _WeekCard extends StatelessWidget {
                               ),
                               child: Text('Now',
                                   style: GoogleFonts.plusJakartaSans(
-                                      fontSize: 10, fontWeight: FontWeight.w700,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w700,
                                       color: Colors.white)),
                             ),
                         ]),
@@ -520,7 +546,8 @@ class _WeekCard extends StatelessWidget {
                             ),
                             child: Text(s,
                                 style: GoogleFonts.plusJakartaSans(
-                                    fontSize: 11, fontWeight: FontWeight.w600,
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w600,
                                     color: isCurrent
                                         ? AppTheme.orange
                                         : isDone
@@ -530,7 +557,6 @@ class _WeekCard extends StatelessWidget {
                         ),
                         const SizedBox(height: 8),
 
-                        // Hours + XP
                         Row(children: [
                           Icon(Icons.access_time_rounded,
                               size: 13, color: AppTheme.textLight),
@@ -545,7 +571,8 @@ class _WeekCard extends StatelessWidget {
                             const SizedBox(width: 3),
                             Text('+80 XP earned',
                                 style: GoogleFonts.plusJakartaSans(
-                                    fontSize: 11, fontWeight: FontWeight.w600,
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w600,
                                     color: AppTheme.amber)),
                           ],
                         ]),
@@ -560,7 +587,8 @@ class _WeekCard extends StatelessWidget {
                               const SizedBox(width: 4),
                               Expanded(child: Text(why,
                                   style: GoogleFonts.plusJakartaSans(
-                                      fontSize: 11, color: AppTheme.textMid,
+                                      fontSize: 11,
+                                      color: AppTheme.textMid,
                                       height: 1.4))),
                             ],
                           ),
@@ -570,69 +598,103 @@ class _WeekCard extends StatelessWidget {
                     ),
                   ),
 
-                  // Action button
-                  GestureDetector(
-                    onTap: isDone ? onUnmark : onMarkDone,
-                    child: Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      decoration: BoxDecoration(
-                        color: isDone
-                            ? AppTheme.greenLight
-                            : isCurrent
-                                ? AppTheme.orange
-                                : AppTheme.border.withOpacity(0.4),
-                        borderRadius: const BorderRadius.only(
-                          bottomLeft: Radius.circular(16),
-                          bottomRight: Radius.circular(16),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            isDone
-                                ? Icons.undo_rounded
-                                : Icons.check_circle_outline_rounded,
-                            size: 16,
+                  // Action buttons row
+                  Row(children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: isDone ? onUnmark : onMarkDone,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          decoration: BoxDecoration(
                             color: isDone
-                                ? AppTheme.green
+                                ? AppTheme.greenLight
                                 : isCurrent
-                                    ? Colors.white : AppTheme.textMid,
+                                    ? AppTheme.orange
+                                    : AppTheme.border.withOpacity(0.4),
+                            borderRadius: const BorderRadius.only(
+                              bottomLeft: Radius.circular(16),
+                            ),
                           ),
-                          const SizedBox(width: 8),
-                          Text(
-                            isDone
-                                ? 'Mark as incomplete'
-                                : 'Mark week as complete',
-                            style: GoogleFonts.plusJakartaSans(
-                                fontSize: 13, fontWeight: FontWeight.w700,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                isDone
+                                    ? Icons.undo_rounded
+                                    : Icons.check_circle_outline_rounded,
+                                size: 15,
                                 color: isDone
                                     ? AppTheme.green
                                     : isCurrent
-                                        ? Colors.white : AppTheme.textMid),
-                          ),
-                          if (!isDone) ...[
-                            const SizedBox(width: 8),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 2),
-                              decoration: BoxDecoration(
-                                color: Colors.white24,
-                                borderRadius: BorderRadius.circular(8),
+                                        ? Colors.white
+                                        : AppTheme.textMid,
                               ),
-                              child: Text('+80 XP',
-                                  style: GoogleFonts.plusJakartaSans(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w800,
-                                      color: isCurrent
-                                          ? Colors.white : AppTheme.textMid)),
-                            ),
-                          ],
-                        ],
+                              const SizedBox(width: 6),
+                              Text(
+                                isDone ? 'Undo' : 'Mark done',
+                                style: GoogleFonts.plusJakartaSans(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                    color: isDone
+                                        ? AppTheme.green
+                                        : isCurrent
+                                            ? Colors.white
+                                            : AppTheme.textMid),
+                              ),
+                              if (!isDone) ...[
+                                const SizedBox(width: 6),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 6, vertical: 1),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white24,
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  child: Text('+80 XP',
+                                      style: GoogleFonts.plusJakartaSans(
+                                          fontSize: 9,
+                                          fontWeight: FontWeight.w800,
+                                          color: isCurrent
+                                              ? Colors.white
+                                              : AppTheme.textMid)),
+                                ),
+                              ],
+                            ],
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+
+                    // Interview practice button
+                    GestureDetector(
+                      onTap: onInterview,
+                      child: Container(
+                        width: 110,
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        decoration: BoxDecoration(
+                          color: AppTheme.purpleLight,
+                          borderRadius: const BorderRadius.only(
+                            bottomRight: Radius.circular(16),
+                          ),
+                          border: Border(
+                              left: BorderSide(color: AppTheme.border)),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.quiz_rounded,
+                                size: 14, color: AppTheme.primary),
+                            const SizedBox(width: 5),
+                            Text('Practice',
+                                style: GoogleFonts.plusJakartaSans(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                    color: AppTheme.primary)),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ]),
                 ],
               ),
             ),
@@ -658,10 +720,12 @@ Widget _NavItem(IconData icon, IconData activeIcon, String label,
               color: active ? AppTheme.orange : AppTheme.textLight,
               size: 24),
           const SizedBox(height: 3),
-          Text(label, style: GoogleFonts.plusJakartaSans(
-              fontSize: 10,
-              color: active ? AppTheme.orange : AppTheme.textLight,
-              fontWeight: active ? FontWeight.w700 : FontWeight.w500)),
+          Text(label,
+              style: GoogleFonts.plusJakartaSans(
+                  fontSize: 10,
+                  color: active ? AppTheme.orange : AppTheme.textLight,
+                  fontWeight:
+                      active ? FontWeight.w700 : FontWeight.w500)),
         ]),
       ),
     );

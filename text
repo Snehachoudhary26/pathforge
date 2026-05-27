@@ -1,2 +1,3 @@
  kill $(lsof -t -i:3001) 2>/dev/null; kill $(lsof -t -i:3002) 2>/dev/null
 flutter run -d chrome --web-port 3002
+flutter run -d chrome
