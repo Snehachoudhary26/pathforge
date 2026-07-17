@@ -16,6 +16,7 @@ class _AuthScreenState extends State<AuthScreen> {
   bool isLogin = true;
   bool isLoading = false;
   bool isGoogleLoading = false;
+  bool _showPassword = false;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _nameController = TextEditingController();
@@ -255,14 +256,50 @@ class _AuthScreenState extends State<AuthScreen> {
                         autofillHints: const [AutofillHints.email],
                       ),
                       const SizedBox(height: 12),
-                      _Field(
+                      // Password field with show/hide toggle
+                      TextField(
                         controller: _passwordController,
-                        hint: 'Password (min 6 characters)',
-                        icon: Icons.lock_outline_rounded,
-                        obscure: true,
+                        obscureText: !_showPassword,
+                        autocorrect: false,
+                        enableSuggestions: false,
                         autofillHints: isLogin
                             ? const [AutofillHints.password]
                             : const [AutofillHints.newPassword],
+                        style: GoogleFonts.plusJakartaSans(
+                            fontSize: 14, color: AppTheme.textDark),
+                        decoration: InputDecoration(
+                          hintText: 'Password (min 6 characters)',
+                          hintStyle: GoogleFonts.plusJakartaSans(
+                              fontSize: 13, color: AppTheme.textLight),
+                          prefixIcon: Icon(Icons.lock_outline_rounded,
+                              color: AppTheme.textLight, size: 20),
+                          suffixIcon: GestureDetector(
+                            onTap: () => setState(
+                                () => _showPassword = !_showPassword),
+                            child: Icon(
+                              _showPassword
+                                  ? Icons.visibility_off_rounded
+                                  : Icons.visibility_rounded,
+                              color: AppTheme.textLight, size: 20,
+                            ),
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(14),
+                              borderSide:
+                                  BorderSide(color: AppTheme.border)),
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(14),
+                              borderSide:
+                                  BorderSide(color: AppTheme.border)),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(14),
+                              borderSide: BorderSide(
+                                  color: AppTheme.orange, width: 2)),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 14),
+                        ),
                       ),
                       const SizedBox(height: 24),
 

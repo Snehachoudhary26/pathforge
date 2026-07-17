@@ -13,12 +13,11 @@ import '../screens/resources_screen.dart';
 import '../screens/profile_screen.dart';
 import '../screens/job_readiness_screen.dart';
 import '../screens/resume_scanner_screen.dart';
+import '../screens/resume_rewriter_screen.dart';
 import '../screens/interview_screen.dart';
 import '../screens/share_progress_screen.dart';
-import '../screens/job_readiness_screen.dart';
-import '../screens/resume_scanner_screen.dart';
-import '../screens/interview_screen.dart';
-import '../screens/share_progress_screen.dart';
+import '../screens/job_market_screen.dart';
+import '../screens/ai_mentor_screen.dart';
 
 Page<void> _slidePage(Widget child, GoRouterState state) {
   return CustomTransitionPage(
@@ -108,7 +107,8 @@ final appRouter = GoRouter(
       pageBuilder: (c, s) {
         final track = s.uri.queryParameters['track'] ?? 'Software Engineer';
         final week = s.uri.queryParameters['week'] ?? 'Week 1';
-        return _slidePage(InterviewScreen(track: track, weekTitle: week), s);
+        return _slidePage(
+            InterviewScreen(track: track, weekTitle: week), s);
       },
     ),
     GoRoute(
@@ -116,8 +116,24 @@ final appRouter = GoRouter(
       pageBuilder: (c, s) => _slidePage(const ResumeScannerScreen(), s),
     ),
     GoRoute(
+      path: '/rewriter',
+      pageBuilder: (c, s) => _slidePage(const ResumeRewriterScreen(), s),
+    ),
+    GoRoute(
       path: '/readiness',
       pageBuilder: (c, s) => _slidePage(const JobReadinessScreen(), s),
+    ),
+    GoRoute(
+      path: '/share',
+      pageBuilder: (c, s) => _slidePage(const ShareProgressScreen(), s),
+    ),
+    GoRoute(
+      path: '/market',
+      pageBuilder: (c, s) => _slidePage(const JobMarketScreen(), s),
+    ),
+    GoRoute(
+      path: '/mentor',
+      pageBuilder: (c, s) => _slidePage(const AiMentorScreen(), s),
     ),
     GoRoute(
       path: '/profile',

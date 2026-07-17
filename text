@@ -1,3 +1,9 @@
  kill $(lsof -t -i:3001) 2>/dev/null; kill $(lsof -t -i:3002) 2>/dev/null
 flutter run -d chrome --web-port 3002
 flutter run -d chrome
+
+
+toriiijournal@gmail.com :(also) AQ.Ab8RN6JulNm8B4Ai6aU26cAMN02JOrkJHgQVHuuGcGfhHxrCQA
+
+
+ https://console.groq.com/keys :  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

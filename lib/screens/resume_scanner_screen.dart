@@ -128,9 +128,9 @@ class _ResumeScannerScreenState extends State<ResumeScannerScreen> {
   }
 
   Future<void> _analyseWithGemini(String resumeText) async {
-    const apiKey = 'AIzaSyDW_aqQiooSHQwaZ-8qpDgwDV1epuM3Rtw';
+    const apiKey = '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';
     const url =
-        'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
+        'https://api.groq.com/openai/v1/chat/completions';
     final track = _userTrack.isNotEmpty ? _userTrack : 'Software Engineer';
 
     final prompt = '''

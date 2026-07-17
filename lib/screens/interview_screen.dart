@@ -41,9 +41,9 @@ class _InterviewScreenState extends State<InterviewScreen> {
   }
 
   Future<void> _generateQuestions() async {
-    const apiKey = 'AIzaSyDW_aqQiooSHQwaZ-8qpDgwDV1epuM3Rtw';
+    const apiKey = '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';
     const url =
-        'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
+        'https://api.groq.com/openai/v1/chat/completions';
 
     final prompt = '''
 Generate 5 interview questions for a "${widget.track}" role, 
@@ -106,9 +106,9 @@ No markdown. Just JSON.''';
     if (_answerController.text.trim().isEmpty) return;
     setState(() { _isSubmitting = true; });
 
-    const apiKey = 'AIzaSyDW_aqQiooSHQwaZ-8qpDgwDV1epuM3Rtw';
+    const apiKey = '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';
     const url =
-        'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
+        'https://api.groq.com/openai/v1/chat/completions';
 
     final q = _questions[_currentQ];
     final prompt = '''
