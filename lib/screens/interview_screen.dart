@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../core/config.dart';
 import '../core/theme.dart';
 
 class InterviewScreen extends StatefulWidget {
@@ -41,9 +42,9 @@ class _InterviewScreenState extends State<InterviewScreen> {
   }
 
   Future<void> _generateQuestions() async {
-    const apiKey = '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';
+    const apiKey = AppConfig.groqApiKey;
     const url =
-        'https://api.groq.com/openai/v1/chat/completions';
+        AppConfig.groqUrl;
 
     final prompt = '''
 Generate 5 interview questions for a "${widget.track}" role, 
@@ -106,9 +107,9 @@ No markdown. Just JSON.''';
     if (_answerController.text.trim().isEmpty) return;
     setState(() { _isSubmitting = true; });
 
-    const apiKey = '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';
+    const apiKey = AppConfig.groqApiKey;
     const url =
-        'https://api.groq.com/openai/v1/chat/completions';
+        AppConfig.groqUrl;
 
     final q = _questions[_currentQ];
     final prompt = '''

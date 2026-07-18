@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../core/config.dart';
 import '../core/theme.dart';
 
 class ResumeScannerScreen extends StatefulWidget {
@@ -128,9 +129,9 @@ class _ResumeScannerScreenState extends State<ResumeScannerScreen> {
   }
 
   Future<void> _analyseWithGemini(String resumeText) async {
-    const apiKey = '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';
+    const apiKey = AppConfig.groqApiKey;
     const url =
-        'https://api.groq.com/openai/v1/chat/completions';
+        AppConfig.groqUrl;
     final track = _userTrack.isNotEmpty ? _userTrack : 'Software Engineer';
 
     final prompt = '''

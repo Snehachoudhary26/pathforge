@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../core/config.dart';
 import '../core/theme.dart';
 
 class AiMentorScreen extends StatefulWidget {
@@ -122,9 +123,9 @@ class _AiMentorScreenState extends State<AiMentorScreen> {
   }
 
   Future<void> _getAIResponse(String userMessage) async {
-    const apiKey = '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';
-    const groqUrl = 'https://api.groq.com/openai/v1/chat/completions';
-    const model = 'llama-3.1-8b-instant';
+    const apiKey = AppConfig.groqApiKey;
+    const groqUrl = AppConfig.groqUrl;
+    const model = AppConfig.groqModel;
 
     final name = _userContext['name'] ?? 'Student';
     final track = _userContext['track'] ?? 'Software Engineer';

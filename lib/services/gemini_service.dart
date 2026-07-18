@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../core/config.dart';
 
 class GeminiService {
   static const String _apiKey =
-      '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';
+      AppConfig.groqApiKey;
   static const String _url =
-      'https://api.groq.com/openai/v1/chat/completions';
-  static const String _model = 'llama-3.1-8b-instant';
+      AppConfig.groqUrl;
+  static const String _model = AppConfig.groqModel;
 
   static Future<String?> _callGroq(String prompt,
       {double temperature = 0.7, int maxTokens = 1000}) async {

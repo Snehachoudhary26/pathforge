@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../core/config.dart';
 import '../core/theme.dart';
 
 class ResumeRewriterScreen extends StatefulWidget {
@@ -83,8 +84,8 @@ class _ResumeRewriterScreenState extends State<ResumeRewriterScreen> {
     setState(() { _step = 2; _agentStep = 0; });
     _cycleAgentSteps();
 
-    const apiKey = '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';
-    const url = 'https://api.groq.com/openai/v1/chat/completions';
+    const apiKey = AppConfig.groqApiKey;
+    const url = AppConfig.groqUrl;
 
     final prompt = '''
 You are an expert resume rewriting agent for Indian engineering students.

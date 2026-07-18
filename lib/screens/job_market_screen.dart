@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../core/config.dart';
 import '../core/theme.dart';
 
 class JobMarketScreen extends StatefulWidget {
@@ -77,9 +78,9 @@ class _JobMarketScreenState extends State<JobMarketScreen> {
     setState(() { _isAnalysing = true; _agentStep = 0; });
     _cycleSteps();
 
-    const apiKey = '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';
+    const apiKey = AppConfig.groqApiKey;
     const url =
-        'https://api.groq.com/openai/v1/chat/completions';
+        AppConfig.groqUrl;
 
     final prompt = '''
 You are a job market analysis AI agent for Indian engineering students in 2025.
