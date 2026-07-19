@@ -812,7 +812,13 @@ class _NoQuestCard extends StatelessWidget {
           decoration: BoxDecoration(
               color: AppTheme.primary,
               borderRadius: BorderRadius.circular(14)),
-          child: const Icon(Icons.auto_awesome, color: Colors.white, size: 26),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(14),
+            child: Image.asset('assets/images/STARTING-END.jpeg',
+                width: 52, height: 52, fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) =>
+                    const Icon(Icons.auto_awesome, color: Colors.white, size: 26)),
+          ),
         ),
         const SizedBox(width: 14),
         Expanded(child: Column(

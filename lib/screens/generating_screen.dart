@@ -120,17 +120,15 @@ class _GeneratingScreenState extends State<GeneratingScreen>
                     shape: BoxShape.circle,
                   ),
                   child: Center(
-                    child: Lottie.network(
-                      'https://assets10.lottiefiles.com/packages/lf20_jcikwtux.json',
-                      width: 120, height: 120,
-                      errorBuilder: (_, __, ___) => Container(
-                        width: 90, height: 90,
-                        decoration: BoxDecoration(
-                          color: AppTheme.orange,
-                          borderRadius: BorderRadius.circular(26),
-                        ),
-                        child: const Icon(Icons.auto_awesome_rounded,
-                            color: Colors.white, size: 48),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image.asset(
+                        'assets/images/Roadmap.jpeg',
+                        width: 120, height: 120,
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) => Icon(
+                          Icons.auto_awesome_rounded,
+                          color: AppTheme.orange, size: 48),
                       ),
                     ),
                   ),

@@ -335,8 +335,14 @@ Real data only. No markdown. Just JSON.''';
               decoration: BoxDecoration(
                   color: AppTheme.greenLight,
                   borderRadius: BorderRadius.circular(28)),
-              child: Icon(Icons.trending_up_rounded,
-                  color: AppTheme.green, size: 50),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(28),
+                child: Image.asset('assets/images/GroupProgress.jpeg',
+                    width: 100, height: 100, fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) =>
+                        Icon(Icons.trending_up_rounded,
+                            color: AppTheme.green, size: 50)),
+              ),
             ),
           ),
           const SizedBox(height: 24),

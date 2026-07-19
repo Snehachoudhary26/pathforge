@@ -16,16 +16,42 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final Map<String, String> answers = {};
 
   final List<Map<String, dynamic>> questions = [
-    {'question': 'What is your engineering branch?', 'icon': Icons.school_rounded, 'key': 'branch',
-      'options': ['Computer Science', 'Information Technology', 'Electronics', 'Mechanical', 'Other']},
-    {'question': 'Which year are you in?', 'icon': Icons.calendar_today_rounded, 'key': 'year',
-      'options': ['1st Year', '2nd Year', '3rd Year', '4th Year', 'Graduated']},
-    {'question': 'What is your coding experience?', 'icon': Icons.laptop_mac_rounded, 'key': 'experience',
-      'options': ['Complete Beginner', 'Know basics', 'Intermediate', 'Advanced']},
-    {'question': 'How many hours can you study per week?', 'icon': Icons.access_time_rounded, 'key': 'hours',
-      'options': ['2-4 hours', '5-8 hours', '8-12 hours', '12+ hours']},
-    {'question': 'What is your main goal?', 'icon': Icons.flag_rounded, 'key': 'goal',
-      'options': ['Get a job', 'Crack FAANG', 'Build startup', 'Research & PhD']},
+    {
+      'question': 'What is your engineering branch?',
+      'icon': Icons.school_rounded,
+      'key': 'branch',
+      'image': 'assets/images/STARTING-END.jpeg',
+      'options': ['Computer Science', 'Information Technology',
+          'Electronics', 'Mechanical', 'Other']
+    },
+    {
+      'question': 'Which year are you in?',
+      'icon': Icons.calendar_today_rounded,
+      'key': 'year',
+      'image': 'assets/images/Roadmap.jpeg',
+      'options': ['1st Year', '2nd Year', '3rd Year', '4th Year', 'Graduated']
+    },
+    {
+      'question': 'What is your coding experience?',
+      'icon': Icons.laptop_mac_rounded,
+      'key': 'experience',
+      'image': 'assets/images/LearningProgress.jpeg',
+      'options': ['Complete Beginner', 'Know basics', 'Intermediate', 'Advanced']
+    },
+    {
+      'question': 'How many hours can you study per week?',
+      'icon': Icons.access_time_rounded,
+      'key': 'hours',
+      'image': 'assets/images/GroupProgress.jpeg',
+      'options': ['2-4 hours', '5-8 hours', '8-12 hours', '12+ hours']
+    },
+    {
+      'question': 'What is your main goal?',
+      'icon': Icons.flag_rounded,
+      'key': 'goal',
+      'image': 'assets/images/AGENT.jpeg',
+      'options': ['Get a job', 'Crack FAANG', 'Build startup', 'Research & PhD']
+    },
   ];
 
   void selectAnswer(String answer) async {
@@ -38,7 +64,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       final uid = FirebaseAuth.instance.currentUser?.uid;
       if (uid != null) {
         try {
-          await FirebaseFirestore.instance.collection('users').doc(uid)
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(uid)
               .set(answers, SetOptions(merge: true));
         } catch (_) {}
       }
@@ -56,46 +84,36 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // Navy top bar
+            // Progress bar
             Container(
               color: AppTheme.navy,
               padding: const EdgeInsets.fromLTRB(20, 16, 20, 20),
               child: Column(
                 children: [
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      if (currentStep > 0)
-                        GestureDetector(
-                          onTap: () => setState(() => currentStep--),
-                          child: Container(
-                            width: 36, height: 36,
-                            decoration: BoxDecoration(
-                              color: Colors.white10,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: const Icon(Icons.arrow_back_ios_new_rounded,
-                                color: Colors.white, size: 16),
-                          ),
-                        )
-                      else
-                        const SizedBox(width: 36),
-                      const Spacer(),
                       Text('${currentStep + 1} of ${questions.length}',
                           style: GoogleFonts.plusJakartaSans(
-                              fontSize: 13, fontWeight: FontWeight.w600,
-                              color: Colors.white60)),
-                      const Spacer(),
-                      const SizedBox(width: 36),
+                              fontSize: 12, color: Colors.white54)),
+                      Text('PathForge Setup',
+                          style: GoogleFonts.plusJakartaSans(
+                              fontSize: 12, fontWeight: FontWeight.w700,
+                              color: AppTheme.orange)),
                     ],
                   ),
-                  const SizedBox(height: 14),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(4),
-                    child: LinearProgressIndicator(
-                      value: progress,
-                      backgroundColor: Colors.white12,
-                      valueColor: AlwaysStoppedAnimation(AppTheme.orange),
-                      minHeight: 6,
+                  const SizedBox(height: 10),
+                  TweenAnimationBuilder<double>(
+                    tween: Tween(begin: 0, end: progress),
+                    duration: const Duration(milliseconds: 400),
+                    builder: (_, val, __) => ClipRRect(
+                      borderRadius: BorderRadius.circular(4),
+                      child: LinearProgressIndicator(
+                        value: val,
+                        backgroundColor: Colors.white12,
+                        valueColor: AlwaysStoppedAnimation(AppTheme.orange),
+                        minHeight: 6,
+                      ),
                     ),
                   ),
                 ],
@@ -103,77 +121,108 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
 
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(24, 32, 24, 24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 56, height: 56,
-                      decoration: BoxDecoration(
-                        color: AppTheme.orangeLight,
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: AppTheme.orangeBorder),
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(20),
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 300),
+                  child: Column(
+                    key: ValueKey(currentStep),
+                    children: [
+                      // Small blended image
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Image.asset(
+                          q['image'],
+                          height: 180,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, __, ___) => Container(
+                            height: 180,
+                            decoration: BoxDecoration(
+                              color: AppTheme.purpleLight,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Icon(q['icon'] as IconData,
+                                color: AppTheme.primary, size: 60),
+                          ),
+                        ),
                       ),
-                      child: Icon(q['icon'] as IconData,
-                          color: AppTheme.orange, size: 28),
-                    ),
-                    const SizedBox(height: 20),
-                    Text(q['question'],
+
+                      const SizedBox(height: 24),
+
+                      // Question
+                      Text(
+                        q['question'],
                         style: GoogleFonts.plusJakartaSans(
-                            fontSize: 22, fontWeight: FontWeight.w800,
-                            color: AppTheme.textDark, height: 1.3)),
-                    const SizedBox(height: 6),
-                    Text('Choose one option below',
+                            fontSize: 20, fontWeight: FontWeight.w800,
+                            color: AppTheme.textDark, height: 1.3),
+                        textAlign: TextAlign.center,
+                      ),
+
+                      const SizedBox(height: 8),
+
+                      Text(
+                        'Choose one to continue',
                         style: GoogleFonts.plusJakartaSans(
-                            fontSize: 13, color: AppTheme.textLight)),
-                    const SizedBox(height: 28),
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: (q['options'] as List).length,
-                        itemBuilder: (context, i) {
-                          final option = q['options'][i] as String;
-                          final isSelected = answers[q['key']] == option;
-                          return GestureDetector(
-                            onTap: () => selectAnswer(option),
-                            child: AnimatedContainer(
-                              duration: const Duration(milliseconds: 200),
-                              margin: const EdgeInsets.only(bottom: 10),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 16),
-                              decoration: BoxDecoration(
-                                color: isSelected ? AppTheme.navy : Colors.white,
-                                borderRadius: BorderRadius.circular(16),
-                                border: Border.all(
-                                  color: isSelected ? AppTheme.navy : AppTheme.border,
-                                  width: isSelected ? 2 : 1.5,
-                                ),
-                              ),
-                              child: Row(
-                                children: [
-                                  Expanded(child: Text(option,
-                                      style: GoogleFonts.plusJakartaSans(
-                                          fontSize: 15, fontWeight: FontWeight.w600,
-                                          color: isSelected
-                                              ? Colors.white : AppTheme.textDark))),
-                                  if (isSelected)
-                                    Container(
-                                      width: 22, height: 22,
-                                      decoration: BoxDecoration(
-                                        color: AppTheme.orange,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: const Icon(Icons.check_rounded,
-                                          color: Colors.white, size: 13),
-                                    ),
-                                ],
+                            fontSize: 13, color: AppTheme.textMid),
+                      ),
+
+                      const SizedBox(height: 24),
+
+                      // Options
+                      ...(q['options'] as List<String>).map((option) =>
+                        GestureDetector(
+                          onTap: () => selectAnswer(option),
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 200),
+                            width: double.infinity,
+                            margin: const EdgeInsets.only(bottom: 12),
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: answers[q['key']] == option
+                                  ? AppTheme.navy
+                                  : Colors.white,
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(
+                                color: answers[q['key']] == option
+                                    ? AppTheme.navy
+                                    : AppTheme.border,
+                                width: 1.5,
                               ),
                             ),
-                          );
-                        },
+                            child: Row(children: [
+                              Container(
+                                width: 36, height: 36,
+                                decoration: BoxDecoration(
+                                  color: answers[q['key']] == option
+                                      ? AppTheme.orange.withOpacity(0.2)
+                                      : AppTheme.purpleLight,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Icon(
+                                  answers[q['key']] == option
+                                      ? Icons.check_rounded
+                                      : q['icon'] as IconData,
+                                  color: answers[q['key']] == option
+                                      ? AppTheme.orange
+                                      : AppTheme.primary,
+                                  size: 18,
+                                ),
+                              ),
+                              const SizedBox(width: 14),
+                              Text(option,
+                                  style: GoogleFonts.plusJakartaSans(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                      color: answers[q['key']] == option
+                                          ? Colors.white
+                                          : AppTheme.textDark)),
+                            ]),
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

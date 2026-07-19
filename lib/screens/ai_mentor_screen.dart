@@ -264,8 +264,14 @@ class _AiMentorScreenState extends State<AiMentorScreen> {
                   color: AppTheme.green,
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Icon(Icons.psychology_rounded,
-                    color: Colors.white, size: 22),
+                child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.asset('assets/images/AGENT.jpeg',
+                    width: 40, height: 40, fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) =>
+                        const Icon(Icons.psychology_rounded,
+                            color: Colors.white, size: 22)),
+              ),
               ),
               const SizedBox(width: 10),
               Expanded(child: Column(
