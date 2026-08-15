@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:confetti/confetti.dart';
-import 'dart:math';
 import '../core/theme.dart';
 import '../services/firestore_service.dart';
 
@@ -40,7 +39,10 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
     try {
       final uid = FirebaseAuth.instance.currentUser?.uid;
       if (uid == null) {
-        setState(() { isLoading = false; error = 'Not logged in'; });
+        setState(() {
+          isLoading = false;
+          error = 'Not logged in';
+        });
         return;
       }
       final snap = await FirebaseFirestore.instance
@@ -81,11 +83,17 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
             isLoading = false;
           });
         } else {
-          setState(() { isLoading = false; error = 'No roadmap found.'; });
+          setState(() {
+            isLoading = false;
+            error = 'No roadmap found.';
+          });
         }
       }
     } catch (e) {
-      setState(() { isLoading = false; error = 'Error: $e'; });
+      setState(() {
+        isLoading = false;
+        error = 'Error: $e';
+      });
     }
   }
 
@@ -130,293 +138,270 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
     } catch (_) {}
   }
 
-  void _goToInterview(int index) {
-    final week = weeks[index];
-    final title = week['title']?.toString() ?? 'Week ${index + 1}';
-    final t = Uri.encodeComponent(widget.track);
-    final w = Uri.encodeComponent(title);
-    context.go('/interview?track=$t&week=$w');
-  }
-
-  void _showToast(String message, bool isLevelUp) {
+  void _showToast(String msg, bool celebration) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Row(children: [
-          Container(
-            width: 32, height: 32,
-            decoration: BoxDecoration(
-              color: isLevelUp
-                  ? AppTheme.amber.withOpacity(0.3)
-                  : Colors.white24,
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              isLevelUp ? Icons.emoji_events_rounded : Icons.star_rounded,
-              color: isLevelUp ? AppTheme.amber : Colors.white,
-              size: 18,
-            ),
+        content: Text(
+          msg,
+          style: GoogleFonts.plusJakartaSans(
+            fontWeight: FontWeight.w700,
+            color: Colors.white,
           ),
-          const SizedBox(width: 12),
-          Expanded(child: Text(message,
-              style: GoogleFonts.plusJakartaSans(
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
-                  fontSize: 13))),
-        ]),
-        backgroundColor: isLevelUp ? AppTheme.primary : AppTheme.navy,
+        ),
+        backgroundColor:
+            celebration ? const Color(0xFFFF5722) : const Color(0xFF00B894),
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
         margin: const EdgeInsets.all(16),
-        duration: Duration(seconds: isLevelUp ? 4 : 2),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final doneCount = weeks.where((w) => w['status'] == 'done').length;
-    final progress = weeks.isEmpty ? 0.0 : doneCount / weeks.length;
+    final doneWeeks = weeks.where((w) => w['status'] == 'done').length;
+    final totalWeeks = weeks.isEmpty ? 8 : weeks.length;
+    final progress = totalWeeks > 0 ? doneWeeks / totalWeeks : 0.0;
 
     return Scaffold(
-      backgroundColor: AppTheme.cream,
-      body: Stack(
-        children: [
-          SafeArea(
-            child: Column(
-              children: [
-                // Navy header
-                Container(
-                  color: AppTheme.navy,
-                  padding: const EdgeInsets.fromLTRB(20, 16, 20, 20),
-                  child: Column(children: [
-                    Row(children: [
-                      GestureDetector(
-                        onTap: () => context.go('/home'),
-                        child: Container(
-                          width: 36, height: 36,
-                          decoration: BoxDecoration(
-                            color: Colors.white10,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: const Icon(Icons.arrow_back_ios_new_rounded,
-                              color: Colors.white, size: 16),
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(widget.track,
-                              style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w800,
-                                  color: Colors.white)),
-                          Text('${weeks.length} weeks · AI generated',
-                              style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 11, color: Colors.white54)),
-                        ],
-                      )),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 6),
-                        decoration: BoxDecoration(
-                          color: AppTheme.orange,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Text('${(progress * 100).toInt()}% done',
-                            style: GoogleFonts.plusJakartaSans(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white)),
-                      ),
-                    ]),
-                    const SizedBox(height: 14),
-                    TweenAnimationBuilder<double>(
-                      tween: Tween(begin: 0, end: progress),
-                      duration: const Duration(milliseconds: 600),
-                      builder: (_, val, __) => ClipRRect(
-                        borderRadius: BorderRadius.circular(4),
-                        child: LinearProgressIndicator(
-                          value: val,
-                          backgroundColor: Colors.white12,
-                          valueColor:
-                              AlwaysStoppedAnimation(AppTheme.orange),
-                          minHeight: 8,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('$doneCount of ${weeks.length} weeks done',
-                            style: GoogleFonts.plusJakartaSans(
-                                fontSize: 11, color: Colors.white54)),
-                        Row(children: [
-                          Icon(Icons.star_rounded,
-                              color: AppTheme.amber, size: 13),
-                          const SizedBox(width: 4),
-                          Text('${doneCount * 80} XP earned',
-                              style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w700,
-                                  color: AppTheme.amber)),
-                        ]),
-                      ],
-                    ),
-                  ]),
-                ),
-
-                Expanded(
-                  child: isLoading
-                      ? Center(child: CircularProgressIndicator(
-                          color: AppTheme.orange))
-                      : error != null
-                          ? _ErrorView(
-                              track: widget.track,
-                              onGenerate: () => context.go(
-                                  '/generating?track=${Uri.encodeComponent(widget.track)}'))
-                          : ListView.builder(
-                              padding:
-                                  const EdgeInsets.fromLTRB(20, 16, 20, 20),
-                              itemCount: weeks.length,
-                              itemBuilder: (context, i) {
-                                final week = weeks[i];
-                                final isDone = week['status'] == 'done';
-                                final isCurrent = !isDone &&
-                                    weeks
-                                        .take(i)
-                                        .every((w) => w['status'] == 'done');
-                                return _WeekCard(
-                                  weekNum: week['weekNumber'] ?? (i + 1),
-                                  title: week['title'] ?? 'Week ${i + 1}',
-                                  skills: (week['skills'] as List)
-                                      .cast<String>(),
-                                  hours: week['estimatedHours'] ?? 8,
-                                  why: week['why'] ?? '',
-                                  isDone: isDone,
-                                  isCurrent: isCurrent,
-                                  isLast: i == weeks.length - 1,
-                                  onMarkDone: () => _markWeekDone(i),
-                                  onUnmark: () => _unmarkWeekDone(i),
-                                  onInterview: () => _goToInterview(i),
-                                );
-                              },
-                            ),
-                ),
-
-                // Bottom nav
-                Container(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border:
-                        Border(top: BorderSide(color: AppTheme.border)),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+      backgroundColor: const Color(0xFF111322),
+      body: SafeArea(
+        top: false,
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 540),
+            child: Container(
+              color: const Color(0xFFF8F9FE),
+              child: Stack(
+                children: [
+                  Column(
                     children: [
-                      _NavItem(Icons.home_outlined, Icons.home_rounded,
-                          'Home', false, () => context.go('/home')),
-                      _NavItem(Icons.map_outlined, Icons.map_rounded,
-                          'Roadmap', true, () {}),
-                      _NavItem(
-                          Icons.play_circle_outline,
-                          Icons.play_circle,
-                          'Resources',
-                          false,
-                          () => context.go('/resources')),
-                      _NavItem(Icons.person_outline, Icons.person_rounded,
-                          'Profile', false, () => context.go('/profile')),
+                      // Top Obsidian Header
+                      Container(
+                        width: double.infinity,
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Color(0xFF111322),
+                              Color(0xFF1B1D36),
+                            ],
+                          ),
+                        ),
+                        padding: EdgeInsets.fromLTRB(
+                          20,
+                          MediaQuery.of(context).padding.top + 16,
+                          20,
+                          22,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                GestureDetector(
+                                  onTap: () => context.go('/home'),
+                                  child: Container(
+                                    width: 36,
+                                    height: 36,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withOpacity(0.08),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: const Icon(
+                                      Icons.arrow_back_ios_new_rounded,
+                                      color: Colors.white,
+                                      size: 16,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        widget.track,
+                                        style: GoogleFonts.plusJakartaSans(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w800,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      Text(
+                                        '$totalWeeks Weeks · AI Generated',
+                                        style: GoogleFonts.plusJakartaSans(
+                                          fontSize: 12.5,
+                                          color: const Color(0xFFB3B0D6),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () => context.go('/track'),
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 5),
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFFFF5722)
+                                          .withOpacity(0.15),
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(
+                                        color: const Color(0xFFFF5722)
+                                            .withOpacity(0.3),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      'Switch Track',
+                                      style: GoogleFonts.plusJakartaSans(
+                                        fontSize: 11.5,
+                                        fontWeight: FontWeight.w700,
+                                        color: const Color(0xFFFF8A65),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 16),
+                            Row(
+                              mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  '$doneWeeks of $totalWeeks completed',
+                                  style: GoogleFonts.plusJakartaSans(
+                                    fontSize: 12.5,
+                                    fontWeight: FontWeight.w600,
+                                    color: const Color(0xFFD4C9FF),
+                                  ),
+                                ),
+                                Text(
+                                  '${(progress * 100).toInt()}%',
+                                  style: GoogleFonts.plusJakartaSans(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w800,
+                                    color: const Color(0xFFFF5722),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(6),
+                              child: LinearProgressIndicator(
+                                value: progress,
+                                backgroundColor: Colors.white12,
+                                valueColor: const AlwaysStoppedAnimation(
+                                  Color(0xFFFF5722),
+                                ),
+                                minHeight: 6,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      // Weeks Timeline Stream
+                      Expanded(
+                        child: isLoading
+                            ? const Center(
+                                child: CircularProgressIndicator(
+                                  color: Color(0xFFFF5722),
+                                ),
+                              )
+                            : error != null
+                                ? Center(
+                                    child: Text(
+                                      error!,
+                                      style: GoogleFonts.plusJakartaSans(
+                                        color: const Color(0xFF6B6890),
+                                      ),
+                                    ),
+                                  )
+                                : ListView.builder(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        16, 16, 16, 20),
+                                    itemCount: weeks.length,
+                                    itemBuilder: (ctx, i) {
+                                      final w = weeks[i];
+                                      final isDone = w['status'] == 'done';
+                                      final isCurrent =
+                                          i == doneWeeks && !isDone;
+                                      return _TimelineWeekCard(
+                                        index: i,
+                                        week: w,
+                                        isDone: isDone,
+                                        isCurrent: isCurrent,
+                                        isLast: i == weeks.length - 1,
+                                        onMarkDone: () => _markWeekDone(i),
+                                        onUnmark: () => _unmarkWeekDone(i),
+                                        onInterview: () => context.go(
+                                          '/interview?track=${Uri.encodeComponent(widget.track)}&week=${Uri.encodeComponent(w['title'] ?? 'Week ${i + 1}')}',
+                                        ),
+                                      );
+                                    },
+                                  ),
+                      ),
+
+                      // Bottom Navigation Bar (Strictly 4 icons)
+                      _BottomNav(
+                        currentIndex: 1,
+                        onHome: () => context.go('/home'),
+                        onRoadmap: () => context.go(
+                            '/roadmap?track=${Uri.encodeComponent(widget.track)}'),
+                        onResources: () => context.go('/resources'),
+                        onProfile: () => context.go('/profile'),
+                      ),
                     ],
                   ),
-                ),
-              ],
-            ),
-          ),
 
-          // Confetti
-          Align(
-            alignment: Alignment.topCenter,
-            child: ConfettiWidget(
-              confettiController: _confettiController,
-              blastDirection: pi / 2,
-              blastDirectionality: BlastDirectionality.explosive,
-              emissionFrequency: 0.05,
-              numberOfParticles: 30,
-              gravity: 0.2,
-              shouldLoop: false,
-              colors: [
-                AppTheme.orange, AppTheme.primary,
-                AppTheme.green, AppTheme.amber, Colors.white,
-              ],
+                  // Confetti Celebration
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: ConfettiWidget(
+                      confettiController: _confettiController,
+                      blastDirectionality:
+                          BlastDirectionality.explosive,
+                      shouldLoop: false,
+                      colors: const [
+                        Color(0xFFFF5722),
+                        Color(0xFF7C5CBF),
+                        Color(0xFF00B894),
+                        Color(0xFFFFB800),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-        ],
+        ),
       ),
     );
   }
 }
 
-class _ErrorView extends StatelessWidget {
-  final String track;
-  final VoidCallback onGenerate;
-  const _ErrorView({required this.track, required this.onGenerate});
-  @override
-  Widget build(BuildContext context) => Center(
-    child: Padding(
-      padding: const EdgeInsets.all(32),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            width: 80, height: 80,
-            decoration: BoxDecoration(
-              color: AppTheme.orangeLight,
-              borderRadius: BorderRadius.circular(24),
-            ),
-            child: Icon(Icons.map_outlined,
-                color: AppTheme.orange, size: 40),
-          ),
-          const SizedBox(height: 20),
-          Text('No roadmap yet',
-              style: GoogleFonts.plusJakartaSans(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w800,
-                  color: AppTheme.textDark)),
-          const SizedBox(height: 8),
-          Text('Generate your AI plan for $track',
-              style: GoogleFonts.plusJakartaSans(
-                  fontSize: 13, color: AppTheme.textMid),
-              textAlign: TextAlign.center),
-          const SizedBox(height: 24),
-          ElevatedButton.icon(
-            onPressed: onGenerate,
-            icon: const Icon(Icons.auto_awesome_rounded, size: 18),
-            label: Text('Generate Roadmap',
-                style: GoogleFonts.plusJakartaSans(
-                    fontWeight: FontWeight.w700)),
-          ),
-        ],
-      ),
-    ),
-  );
-}
+// ── Timeline Card Component ───────────────────────────────────────
 
-class _WeekCard extends StatelessWidget {
-  final dynamic weekNum;
-  final String title, why;
-  final List<String> skills;
-  final dynamic hours;
-  final bool isDone, isCurrent, isLast;
-  final VoidCallback onMarkDone, onUnmark, onInterview;
+class _TimelineWeekCard extends StatelessWidget {
+  final int index;
+  final Map<String, dynamic> week;
+  final bool isDone;
+  final bool isCurrent;
+  final bool isLast;
+  final VoidCallback onMarkDone;
+  final VoidCallback onUnmark;
+  final VoidCallback onInterview;
 
-  const _WeekCard({
-    required this.weekNum,
-    required this.title,
-    required this.skills,
-    required this.hours,
-    required this.why,
+  const _TimelineWeekCard({
+    required this.index,
+    required this.week,
     required this.isDone,
     required this.isCurrent,
     required this.isLast,
@@ -427,305 +412,388 @@ class _WeekCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color cardBg = Colors.white;
-    Color borderColor = AppTheme.border;
-    if (isDone) {
-      cardBg = const Color(0xFFF8FDF8);
-      borderColor = AppTheme.greenBorder;
-    }
-    if (isCurrent) {
-      cardBg = AppTheme.orangeLight;
-      borderColor = AppTheme.orange;
-    }
+    final title = week['title'] ?? 'Week ${index + 1}';
+    final hours = week['hours'] ?? '10';
+    final skills = week['skills'] as List? ?? [];
+    final why = week['why'] ?? '';
 
-    return IntrinsicHeight(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Timeline
-          Column(children: [
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Vertical Timeline Spine & Badge
+        Column(
+          children: [
             Container(
-              width: 30, height: 30,
+              width: 36,
+              height: 36,
               decoration: BoxDecoration(
-                color: isDone
-                    ? AppTheme.green
-                    : isCurrent ? AppTheme.orange : AppTheme.border,
                 shape: BoxShape.circle,
+                color: isDone
+                    ? const Color(0xFF00B894)
+                    : isCurrent
+                        ? const Color(0xFFFF5722)
+                        : Colors.white,
+                border: Border.all(
+                  color: isDone
+                      ? const Color(0xFF00B894)
+                      : isCurrent
+                          ? const Color(0xFFFF5722)
+                          : const Color(0xFFE2E4F0),
+                  width: 2,
+                ),
+                boxShadow: [
+                  if (isCurrent)
+                    BoxShadow(
+                      color: const Color(0xFFFF5722).withOpacity(0.35),
+                      blurRadius: 10,
+                      offset: const Offset(0, 3),
+                    ),
+                ],
               ),
-              child: isDone
-                  ? const Icon(Icons.check_rounded,
-                      color: Colors.white, size: 15)
-                  : isCurrent
-                      ? const Icon(Icons.play_arrow_rounded,
-                          color: Colors.white, size: 16)
-                      : Center(child: Text('$weekNum',
-                          style: GoogleFonts.plusJakartaSans(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w700,
-                              color: AppTheme.textMid))),
+              child: Center(
+                child: isDone
+                    ? const Icon(Icons.check_rounded,
+                        color: Colors.white, size: 20)
+                    : Text(
+                        isCurrent ? 'NOW' : '${index + 1}',
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: isCurrent ? 9.5 : 12.5,
+                          fontWeight: FontWeight.w800,
+                          color: isCurrent
+                              ? Colors.white
+                              : const Color(0xFF6B6890),
+                        ),
+                      ),
+              ),
             ),
             if (!isLast)
-              Expanded(child: Container(
-                width: 2,
+              Container(
+                width: 2.5,
+                height: 120,
                 color: isDone
-                    ? AppTheme.green.withOpacity(0.3)
-                    : AppTheme.border,
-              )),
-          ]),
-          const SizedBox(width: 12),
-
-          // Card
-          Expanded(
-            child: Container(
-              margin: const EdgeInsets.only(bottom: 12),
-              decoration: BoxDecoration(
-                color: cardBg,
-                borderRadius: BorderRadius.circular(18),
-                border: Border.all(color: borderColor, width: 1.5),
+                    ? const Color(0xFF00B894)
+                    : const Color(0xFFE2E4F0),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(14, 14, 14, 0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(children: [
-                          Expanded(child: Text('Week $weekNum — $title',
-                              style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w800,
-                                  color: isDone
-                                      ? AppTheme.textMid
-                                      : AppTheme.textDark))),
-                          if (isDone)
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 3),
-                              decoration: BoxDecoration(
-                                color: AppTheme.greenLight,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Text('Done',
-                                  style: GoogleFonts.plusJakartaSans(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w700,
-                                      color: AppTheme.green)),
-                            )
-                          else if (isCurrent)
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 3),
-                              decoration: BoxDecoration(
-                                color: AppTheme.orange,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Text('Now',
-                                  style: GoogleFonts.plusJakartaSans(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.white)),
-                            ),
-                        ]),
-                        const SizedBox(height: 8),
+          ],
+        ),
+        const SizedBox(width: 14),
 
-                        // Skills
-                        Wrap(
-                          spacing: 6, runSpacing: 4,
-                          children: skills.map((s) => Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 3),
-                            decoration: BoxDecoration(
+        // Main Card
+        Expanded(
+          child: Container(
+            margin: const EdgeInsets.only(bottom: 16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(18),
+              border: Border.all(
+                color: isCurrent
+                    ? const Color(0xFFFF5722)
+                    : const Color(0xFFE2E4F0),
+                width: isCurrent ? 1.8 : 1.1,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: isCurrent
+                      ? const Color(0xFFFF5722).withOpacity(0.08)
+                      : Colors.black.withOpacity(0.02),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(14),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment:
+                            MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'WEEK ${index + 1}',
+                            style: GoogleFonts.plusJakartaSans(
+                              fontSize: 10.5,
+                              fontWeight: FontWeight.w800,
                               color: isCurrent
-                                  ? AppTheme.orange.withOpacity(0.12)
+                                  ? const Color(0xFFFF5722)
                                   : isDone
-                                      ? AppTheme.greenLight
-                                      : AppTheme.purpleLight,
-                              borderRadius: BorderRadius.circular(6),
+                                      ? const Color(0xFF00B894)
+                                      : const Color(0xFF7C5CBF),
                             ),
-                            child: Text(s,
-                                style: GoogleFonts.plusJakartaSans(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w600,
-                                    color: isCurrent
-                                        ? AppTheme.orange
-                                        : isDone
-                                            ? AppTheme.green
-                                            : AppTheme.primary)),
-                          )).toList(),
-                        ),
-                        const SizedBox(height: 8),
-
-                        Row(children: [
-                          Icon(Icons.access_time_rounded,
-                              size: 13, color: AppTheme.textLight),
-                          const SizedBox(width: 4),
-                          Text('$hours hrs',
-                              style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 11, color: AppTheme.textLight)),
-                          if (isDone) ...[
-                            const SizedBox(width: 12),
-                            Icon(Icons.star_rounded,
-                                size: 13, color: AppTheme.amber),
-                            const SizedBox(width: 3),
-                            Text('+80 XP earned',
-                                style: GoogleFonts.plusJakartaSans(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppTheme.amber)),
-                          ],
-                        ]),
-
-                        if (why.isNotEmpty) ...[
-                          const SizedBox(height: 6),
+                          ),
                           Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Icon(Icons.lightbulb_outline_rounded,
-                                  size: 13, color: AppTheme.textMid),
+                              const Icon(Icons.access_time_rounded,
+                                  size: 13, color: Color(0xFF9B99B5)),
                               const SizedBox(width: 4),
-                              Expanded(child: Text(why,
-                                  style: GoogleFonts.plusJakartaSans(
-                                      fontSize: 11,
-                                      color: AppTheme.textMid,
-                                      height: 1.4))),
+                              Text(
+                                '$hours hrs',
+                                style: GoogleFonts.plusJakartaSans(
+                                  fontSize: 11,
+                                  color: const Color(0xFF9B99B5),
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
                             ],
                           ),
                         ],
-                        const SizedBox(height: 12),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        title,
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 14.5,
+                          fontWeight: FontWeight.w700,
+                          color: const Color(0xFF1A1A2E),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+
+                      // Skills Chips
+                      Wrap(
+                        spacing: 5,
+                        runSpacing: 5,
+                        children: skills.map((s) {
+                          return Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 3),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFF5F6FA),
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                  color: const Color(0xFFE2E4F0)),
+                            ),
+                            child: Text(
+                              s.toString(),
+                              style: GoogleFonts.plusJakartaSans(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                                color: const Color(0xFF4D3B82),
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+
+                      if (why.isNotEmpty) ...[
+                        const SizedBox(height: 8),
+                        Text(
+                          why,
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 11.5,
+                            color: const Color(0xFF6B6890),
+                            height: 1.35,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ],
+                    ],
+                  ),
+                ),
+
+                // Card Action Buttons
+                Container(
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      top: BorderSide(color: Color(0xFFF0F1F7)),
                     ),
                   ),
+                  child: Row(
+                    children: [
+                      // Mark Done / Undo Button
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: isDone ? onUnmark : onMarkDone,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 11),
+                            decoration: BoxDecoration(
+                              color: isDone
+                                  ? const Color(0xFFE8F8F0)
+                                  : isCurrent
+                                      ? const Color(0xFFFF5722)
+                                      : Colors.transparent,
+                              borderRadius: const BorderRadius.only(
+                                bottomLeft: Radius.circular(16),
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  isDone
+                                      ? Icons.undo_rounded
+                                      : Icons.check_circle_outline_rounded,
+                                  size: 15,
+                                  color: isDone
+                                      ? const Color(0xFF00875A)
+                                      : isCurrent
+                                          ? Colors.white
+                                          : const Color(0xFF1A1A2E),
+                                ),
+                                const SizedBox(width: 6),
+                                Text(
+                                  isDone ? 'Undo' : 'Mark done',
+                                  style: GoogleFonts.plusJakartaSans(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                    color: isDone
+                                        ? const Color(0xFF00875A)
+                                        : isCurrent
+                                            ? Colors.white
+                                            : const Color(0xFF1A1A2E),
+                                  ),
+                                ),
+                                if (!isDone) ...[
+                                  const SizedBox(width: 6),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 5, vertical: 1.5),
+                                    decoration: BoxDecoration(
+                                      color: isCurrent
+                                          ? Colors.white24
+                                          : const Color(0xFFFF5722)
+                                              .withOpacity(0.12),
+                                      borderRadius:
+                                          BorderRadius.circular(6),
+                                    ),
+                                    child: Text(
+                                      '+80 XP',
+                                      style: GoogleFonts.plusJakartaSans(
+                                        fontSize: 9.5,
+                                        fontWeight: FontWeight.w800,
+                                        color: isCurrent
+                                            ? Colors.white
+                                            : const Color(0xFFFF5722),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
 
-                  // Action buttons row
-                  Row(children: [
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: isDone ? onUnmark : onMarkDone,
+                      // Practice Button
+                      GestureDetector(
+                        onTap: onInterview,
                         child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          decoration: BoxDecoration(
-                            color: isDone
-                                ? AppTheme.greenLight
-                                : isCurrent
-                                    ? AppTheme.orange
-                                    : AppTheme.border.withOpacity(0.4),
-                            borderRadius: const BorderRadius.only(
-                              bottomLeft: Radius.circular(16),
+                          width: 100,
+                          padding: const EdgeInsets.symmetric(vertical: 11),
+                          decoration: const BoxDecoration(
+                            color: Color(0xFFF5F3FF),
+                            border: Border(
+                              left: BorderSide(color: Color(0xFFF0F1F7)),
+                            ),
+                            borderRadius: BorderRadius.only(
+                              bottomRight: Radius.circular(16),
                             ),
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(
-                                isDone
-                                    ? Icons.undo_rounded
-                                    : Icons.check_circle_outline_rounded,
-                                size: 15,
-                                color: isDone
-                                    ? AppTheme.green
-                                    : isCurrent
-                                        ? Colors.white
-                                        : AppTheme.textMid,
-                              ),
-                              const SizedBox(width: 6),
+                              const Icon(Icons.quiz_rounded,
+                                  size: 14, color: Color(0xFF7C5CBF)),
+                              const SizedBox(width: 5),
                               Text(
-                                isDone ? 'Undo' : 'Mark done',
+                                'Practice',
                                 style: GoogleFonts.plusJakartaSans(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w700,
-                                    color: isDone
-                                        ? AppTheme.green
-                                        : isCurrent
-                                            ? Colors.white
-                                            : AppTheme.textMid),
-                              ),
-                              if (!isDone) ...[
-                                const SizedBox(width: 6),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 6, vertical: 1),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white24,
-                                    borderRadius: BorderRadius.circular(6),
-                                  ),
-                                  child: Text('+80 XP',
-                                      style: GoogleFonts.plusJakartaSans(
-                                          fontSize: 9,
-                                          fontWeight: FontWeight.w800,
-                                          color: isCurrent
-                                              ? Colors.white
-                                              : AppTheme.textMid)),
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w700,
+                                  color: const Color(0xFF7C5CBF),
                                 ),
-                              ],
+                              ),
                             ],
                           ),
                         ),
                       ),
-                    ),
-
-                    // Interview practice button
-                    GestureDetector(
-                      onTap: onInterview,
-                      child: Container(
-                        width: 110,
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        decoration: BoxDecoration(
-                          color: AppTheme.purpleLight,
-                          borderRadius: const BorderRadius.only(
-                            bottomRight: Radius.circular(16),
-                          ),
-                          border: Border(
-                              left: BorderSide(color: AppTheme.border)),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.quiz_rounded,
-                                size: 14, color: AppTheme.primary),
-                            const SizedBox(width: 5),
-                            Text('Practice',
-                                style: GoogleFonts.plusJakartaSans(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w700,
-                                    color: AppTheme.primary)),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ]),
-                ],
-              ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
+        ),
+      ],
+    );
+  }
+}
+
+class _BottomNav extends StatelessWidget {
+  final int currentIndex;
+  final VoidCallback onHome, onRoadmap, onResources, onProfile;
+  const _BottomNav({
+    required this.currentIndex,
+    required this.onHome,
+    required this.onRoadmap,
+    required this.onResources,
+    required this.onProfile,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        border: Border(top: BorderSide(color: Color(0xFFE2E4F0))),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          _NavItem(Icons.home_outlined, Icons.home_rounded, 'Home',
+              currentIndex == 0, onHome),
+          _NavItem(Icons.map_outlined, Icons.map_rounded, 'Roadmap',
+              currentIndex == 1, onRoadmap),
+          _NavItem(Icons.play_circle_outline, Icons.play_circle, 'Resources',
+              currentIndex == 2, onResources),
+          _NavItem(Icons.person_outline, Icons.person_rounded, 'Profile',
+              currentIndex == 3, onProfile),
         ],
       ),
     );
   }
 }
 
-Widget _NavItem(IconData icon, IconData activeIcon, String label,
-    bool active, VoidCallback onTap) =>
+Widget _NavItem(
+  IconData icon,
+  IconData activeIcon,
+  String label,
+  bool active,
+  VoidCallback onTap,
+) =>
     GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
         decoration: BoxDecoration(
-          color: active ? AppTheme.orangeLight : Colors.transparent,
+          color: active ? const Color(0xFFFFF3EE) : Colors.transparent,
           borderRadius: BorderRadius.circular(12),
         ),
-        child: Column(mainAxisSize: MainAxisSize.min, children: [
-          Icon(active ? activeIcon : icon,
-              color: active ? AppTheme.orange : AppTheme.textLight,
-              size: 24),
-          const SizedBox(height: 3),
-          Text(label,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              active ? activeIcon : icon,
+              color: active ? const Color(0xFFFF5722) : const Color(0xFF9B99B5),
+              size: 22,
+            ),
+            const SizedBox(height: 2),
+            Text(
+              label,
               style: GoogleFonts.plusJakartaSans(
-                  fontSize: 10,
-                  color: active ? AppTheme.orange : AppTheme.textLight,
-                  fontWeight:
-                      active ? FontWeight.w700 : FontWeight.w500)),
-        ]),
+                fontSize: 10,
+                color:
+                    active ? const Color(0xFFFF5722) : const Color(0xFF9B99B5),
+                fontWeight: active ? FontWeight.w700 : FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
       ),
     );
