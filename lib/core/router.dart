@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import '../screens/splash_screen.dart';
 import '../screens/auth_screen.dart';
 import '../screens/home_screen.dart';
@@ -111,30 +110,61 @@ final appRouter = GoRouter(
             InterviewScreen(track: track, weekTitle: week), s);
       },
     ),
+    // Resume Scanner (supports both /resume and /resume-scanner)
     GoRoute(
       path: '/resume',
       pageBuilder: (c, s) => _slidePage(const ResumeScannerScreen(), s),
     ),
     GoRoute(
+      path: '/resume-scanner',
+      pageBuilder: (c, s) => _slidePage(const ResumeScannerScreen(), s),
+    ),
+    // Resume Rewriter (supports both /rewriter and /resume-rewriter)
+    GoRoute(
       path: '/rewriter',
       pageBuilder: (c, s) => _slidePage(const ResumeRewriterScreen(), s),
     ),
+    GoRoute(
+      path: '/resume-rewriter',
+      pageBuilder: (c, s) => _slidePage(const ResumeRewriterScreen(), s),
+    ),
+    // Job Readiness (supports both /readiness and /job-readiness)
     GoRoute(
       path: '/readiness',
       pageBuilder: (c, s) => _slidePage(const JobReadinessScreen(), s),
     ),
     GoRoute(
+      path: '/job-readiness',
+      pageBuilder: (c, s) => _slidePage(const JobReadinessScreen(), s),
+    ),
+    // Share Progress
+    GoRoute(
       path: '/share',
       pageBuilder: (c, s) => _slidePage(const ShareProgressScreen(), s),
     ),
+    GoRoute(
+      path: '/share-progress',
+      pageBuilder: (c, s) => _slidePage(const ShareProgressScreen(), s),
+    ),
+    // Job Market Analyser
     GoRoute(
       path: '/market',
       pageBuilder: (c, s) => _slidePage(const JobMarketScreen(), s),
     ),
     GoRoute(
+      path: '/job-market',
+      pageBuilder: (c, s) => _slidePage(const JobMarketScreen(), s),
+    ),
+    // AI Mentor (supports both /mentor and /ai-mentor)
+    GoRoute(
       path: '/mentor',
       pageBuilder: (c, s) => _slidePage(const AiMentorScreen(), s),
     ),
+    GoRoute(
+      path: '/ai-mentor',
+      pageBuilder: (c, s) => _slidePage(const AiMentorScreen(), s),
+    ),
+    // Profile
     GoRoute(
       path: '/profile',
       pageBuilder: (c, s) => _slidePage(const ProfileScreen(), s),
