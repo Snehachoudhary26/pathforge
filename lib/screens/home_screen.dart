@@ -3,9 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import '../core/config.dart';
 import '../core/theme.dart';
 import '../services/firestore_service.dart';
 import '../services/gemini_service.dart';
@@ -28,13 +25,24 @@ class _HomeScreenState extends State<HomeScreen> {
   List<bool> weekActivity = List.filled(7, false);
   List<Map<String, dynamic>> topUsers = [];
   String aiInsight = '';
-  bool aiLoading = true;
   bool isLoading = true;
+
+  // Floating FORGE AI Assistant State
+  bool isChatOpen = false;
+  final TextEditingController _quickChatInput = TextEditingController();
+  final List<Map<String, String>> _quickChatMessages = [];
+  bool _isForgeTyping = false;
 
   @override
   void initState() {
     super.initState();
     _loadEverything();
+  }
+
+  @override
+  void dispose() {
+    _quickChatInput.dispose();
+    super.dispose();
   }
 
   Future<void> _loadEverything() async {
@@ -96,10 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
       experience: uData['experience'] ?? 'Beginner',
     );
     if (mounted) {
-      setState(() {
-        aiInsight = insight;
-        aiLoading = false;
-      });
+      setState(() => aiInsight = insight);
     }
   }
 
@@ -118,20 +123,46 @@ class _HomeScreenState extends State<HomeScreen> {
     return (current / range).clamp(0.0, 1.0);
   }
 
-  void _openQuickAssistantSheet(String track, int doneCount, int totalWeeks) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (_) => _QuickAssistantSheet(
-        userName: userName,
-        track: track,
-        doneWeeks: doneCount,
-        totalWeeks: totalWeeks,
-        xp: xp,
-        streak: streak,
-      ),
-    );
+  void _sendForgeMessage(String query, String track, int doneCount) async {
+    final q = query.trim();
+    if (q.isEmpty) return;
+
+    _quickChatInput.clear();
+    setState(() {
+      _quickChatMessages.add({'role': 'user', 'text': q});
+      _isForgeTyping = true;
+    });
+
+    await Future.delayed(const Duration(milliseconds: 550));
+
+    String reply;
+    final lower = q.toLowerCase();
+    if (lower.contains('priority') || lower.contains('next') || lower.contains('first')) {
+      reply =
+          '🎯 Your #1 focus right now is Week ${doneCount + 1} of $track. Complete this week\'s coding exercises to earn +80 XP and unlock your next milestone!';
+    } else if (lower.contains('job') || lower.contains('readiness') || lower.contains('score')) {
+      reply =
+          '⚡ To reach 85%+ Job Readiness: 1) Finish 3 weekly milestones, 2) Run your resume through the Resume Scanner, and 3) Complete a Practice Interview!';
+    } else if (lower.contains('project') || lower.contains('portfolio')) {
+      reply =
+          '💡 For $track, build a "Full-Stack Metrics & Dashboard App" with real authentication and live charts. Recruiters love live deployed GitHub links!';
+    } else if (lower.contains('challenge') || lower.contains('5-minute')) {
+      reply =
+          '🔥 5-Min Challenge: Implement binary search on a sorted integer array and return index or -1 in O(log n) time!';
+    } else if (lower.contains('salary') || lower.contains('lpa') || lower.contains('package')) {
+      reply =
+          '💼 $track entry-level packages in India range from ₹7.5 LPA to ₹18 LPA, with top product MNCs offering ₹24–32 LPA.';
+    } else {
+      reply =
+          'Great question! Based on your $track roadmap ($doneCount weeks completed), keep pushing forward. Tap "Open Full AI Mentor →" below for detailed technical mentorship!';
+    }
+
+    if (mounted) {
+      setState(() {
+        _isForgeTyping = false;
+        _quickChatMessages.add({'role': 'assistant', 'text': reply});
+      });
+    }
   }
 
   @override
@@ -176,7 +207,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      // Top Obsidian Header
+                                      // Top Header
                                       Container(
                                         width: double.infinity,
                                         decoration: const BoxDecoration(
@@ -271,7 +302,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                 FontWeight.w700,
                                                             color: const Color(
                                                                 0xFFFF8A65),
-                                                          ),
                                                         ),
                                                       ),
                                                       const SizedBox(width: 8),
@@ -288,15 +318,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               Color(0xFF7C5CBF),
                                                             ],
                                                           ),
-                                                          boxShadow: [
-                                                            BoxShadow(
-                                                              color: const Color(
-                                                                      0xFFFF5722)
-                                                                  .withOpacity(
-                                                                      0.3),
-                                                              blurRadius: 8,
-                                                            ),
-                                                          ],
                                                         ),
                                                         child: Center(
                                                           child: Text(
@@ -409,7 +430,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ),
                                       ),
 
-                                      // Quick Actions
+                                      // Actions
                                       Padding(
                                         padding: const EdgeInsets.fromLTRB(
                                             16, 12, 16, 6),
@@ -440,7 +461,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ),
                                       ),
 
-                                      // Active Quest Card
+                                      // Active Quest
                                       Padding(
                                         padding: const EdgeInsets.fromLTRB(
                                             16, 10, 16, 6),
@@ -465,16 +486,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 color: const Color(0xFF1B1D36),
                                                 borderRadius:
                                                     BorderRadius.circular(20),
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color:
-                                                        const Color(0xFF1B1D36)
-                                                            .withOpacity(0.12),
-                                                    blurRadius: 10,
-                                                    offset:
-                                                        const Offset(0, 4),
-                                                  ),
-                                                ],
                                               ),
                                               child: Column(
                                                 children: [
@@ -641,153 +652,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ),
                                       ),
 
-                                      // Roadmap Scroller
-                                      Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            16, 12, 16, 6),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  'Your roadmap',
-                                                  style: GoogleFonts
-                                                      .plusJakartaSans(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w700,
-                                                    color:
-                                                        const Color(0xFF1A1A2E),
-                                                  ),
-                                                ),
-                                                GestureDetector(
-                                                  onTap: () => context.go(
-                                                      '/roadmap?track=${Uri.encodeComponent(track)}'),
-                                                  child: Text(
-                                                    'Full view',
-                                                    style: GoogleFonts
-                                                        .plusJakartaSans(
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      color: const Color(
-                                                          0xFF7C5CBF),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            const SizedBox(height: 8),
-                                            SizedBox(
-                                              height: 95,
-                                              child: ListView.builder(
-                                                scrollDirection:
-                                                    Axis.horizontal,
-                                                itemCount: weeks.isNotEmpty
-                                                    ? weeks.length
-                                                    : 8,
-                                                itemBuilder: (ctx, i) {
-                                                  final w = i < weeks.length
-                                                      ? weeks[i]
-                                                      : {
-                                                          'week': i + 1,
-                                                          'title':
-                                                              'Week ${i + 1}',
-                                                          'status': i == 0
-                                                              ? 'now'
-                                                              : 'locked'
-                                                        };
-                                                  final isCurrent =
-                                                      i == doneCount;
-                                                  return Container(
-                                                    width: 88,
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            right: 8),
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            10),
-                                                    decoration: BoxDecoration(
-                                                      color: isCurrent
-                                                          ? const Color(
-                                                              0xFFFF5722)
-                                                          : Colors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              16),
-                                                      border: Border.all(
-                                                        color: isCurrent
-                                                            ? const Color(
-                                                                0xFFFF5722)
-                                                            : const Color(
-                                                                0xFFE2E4F0),
-                                                      ),
-                                                    ),
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                          isCurrent
-                                                              ? 'NOW'
-                                                              : 'WK ${i + 1}',
-                                                          style: GoogleFonts
-                                                              .plusJakartaSans(
-                                                            fontSize: 10,
-                                                            fontWeight:
-                                                                FontWeight.w800,
-                                                            color: isCurrent
-                                                                ? Colors.white
-                                                                : const Color(
-                                                                    0xFF9B99B5),
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          w['title'] ?? 'Topic',
-                                                          maxLines: 2,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          style: GoogleFonts
-                                                              .plusJakartaSans(
-                                                            fontSize: 10.5,
-                                                            fontWeight:
-                                                                FontWeight.w700,
-                                                            color: isCurrent
-                                                                ? Colors.white
-                                                                : const Color(
-                                                                    0xFF1A1A2E),
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          '${w['hours'] ?? '10'} hrs',
-                                                          style: GoogleFonts
-                                                              .plusJakartaSans(
-                                                            fontSize: 9.5,
-                                                            color: isCurrent
-                                                                ? Colors.white70
-                                                                : const Color(
-                                                                    0xFF9B99B5),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  );
-                                                },
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-
-                                      // AI Features Hub
+                                      // Features Hub
                                       Padding(
                                         padding: const EdgeInsets.fromLTRB(
                                             16, 12, 16, 6),
@@ -953,53 +818,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ),
                                       ),
 
-                                      Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            16, 12, 16, 24),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  'Explore tracks',
-                                                  style: GoogleFonts
-                                                      .plusJakartaSans(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w700,
-                                                    color:
-                                                        const Color(0xFF1A1A2E),
-                                                  ),
-                                                ),
-                                                GestureDetector(
-                                                  onTap: () =>
-                                                      context.go('/track'),
-                                                  child: Text(
-                                                    'See all',
-                                                    style: GoogleFonts
-                                                        .plusJakartaSans(
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      color: const Color(
-                                                          0xFF7C5CBF),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            const SizedBox(height: 8),
-                                            _TracksScroll(
-                                              onTrackTap: () =>
-                                                  context.go('/track'),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                                      const SizedBox(height: 80),
                                     ],
                                   ),
                                 ),
@@ -1017,51 +836,443 @@ class _HomeScreenState extends State<HomeScreen> {
                           ],
                         ),
 
-                        // Floating AI Quick-Assistant Robot Button (Right above bottom nav)
+                        // Floating FORGE AI Compact Card (Reference Image 4)
+                        if (isChatOpen)
+                          Positioned(
+                            right: 16,
+                            bottom: 130,
+                            left: 16,
+                            child: Center(
+                              child: ConstrainedBox(
+                                constraints: const BoxConstraints(
+                                  maxWidth: 400,
+                                  maxHeight: 460,
+                                ),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFF9FBFA),
+                                    borderRadius: BorderRadius.circular(24),
+                                    border: Border.all(
+                                      color: const Color(0xFF00B894)
+                                          .withOpacity(0.3),
+                                      width: 1.5,
+                                    ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.18),
+                                        blurRadius: 25,
+                                        offset: const Offset(0, 8),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      // FORGE AI Teal Header
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 16, vertical: 12),
+                                        decoration: const BoxDecoration(
+                                          color: Color(0xFF00B894),
+                                          borderRadius: BorderRadius.vertical(
+                                              top: Radius.circular(22)),
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              width: 34,
+                                              height: 34,
+                                              decoration: const BoxDecoration(
+                                                color: Colors.white24,
+                                                shape: BoxShape.circle,
+                                              ),
+                                              child: ClipOval(
+                                                child: Image.asset(
+                                                  'assets/images/robot-for-chatbot.png',
+                                                  fit: BoxFit.cover,
+                                                  errorBuilder: (_, __, ___) =>
+                                                      const Icon(
+                                                    Icons.smart_toy_rounded,
+                                                    color: Colors.white,
+                                                    size: 18,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(width: 10),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                      'FORGE AI',
+                                                      style: GoogleFonts
+                                                          .plusJakartaSans(
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.w800,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(width: 6),
+                                                    Container(
+                                                      width: 6,
+                                                      height: 6,
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                        color:
+                                                            Color(0xFF55EFC4),
+                                                        shape: BoxShape.circle,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Text(
+                                                  'PathForge Assistant · Online',
+                                                  style: GoogleFonts
+                                                      .plusJakartaSans(
+                                                    fontSize: 11,
+                                                    color: Colors.white70,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            const Spacer(),
+                                            GestureDetector(
+                                              onTap: () => setState(
+                                                  () => isChatOpen = false),
+                                              child: Container(
+                                                padding:
+                                                    const EdgeInsets.all(4),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white24,
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                ),
+                                                child: const Icon(
+                                                  Icons.close_rounded,
+                                                  color: Colors.white,
+                                                  size: 18,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+
+                                      // Chat & Questions Scroll Area
+                                      Flexible(
+                                        child: SingleChildScrollView(
+                                          padding: const EdgeInsets.all(14),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              // Initial Welcome Bubble
+                                              Container(
+                                                padding:
+                                                    const EdgeInsets.all(12),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  borderRadius:
+                                                      BorderRadius.circular(16),
+                                                  border: Border.all(
+                                                    color: const Color(
+                                                        0xFFE2E4F0),
+                                                  ),
+                                                ),
+                                                child: Text(
+                                                  'Hi! I\'m FORGE 🤖 — your PathForge career assistant. Ask me anything about your $track roadmap, interview prep, or skills!',
+                                                  style: GoogleFonts
+                                                      .plusJakartaSans(
+                                                    fontSize: 13,
+                                                    color: const Color(
+                                                        0xFF1A1A2E),
+                                                    height: 1.4,
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(height: 10),
+
+                                              // Predefined Question Pills (Reference Style)
+                                              ...[
+                                                '🎯 What is my #1 priority this week?',
+                                                '⚡ How do I boost my Job Readiness Score?',
+                                                '💡 Recommend a portfolio project',
+                                                '🔥 Give me a 5-minute coding challenge',
+                                                '💼 What salary can I expect for my track?',
+                                              ].map((prompt) {
+                                                return GestureDetector(
+                                                  onTap: () =>
+                                                      _sendForgeMessage(
+                                                          prompt,
+                                                          track,
+                                                          doneCount),
+                                                  child: Container(
+                                                    width: double.infinity,
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            bottom: 6),
+                                                    padding:
+                                                        const EdgeInsets
+                                                            .symmetric(
+                                                      horizontal: 12,
+                                                      vertical: 7.5,
+                                                    ),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20),
+                                                      border: Border.all(
+                                                        color: const Color(
+                                                            0xFF00B894),
+                                                        width: 1.1,
+                                                      ),
+                                                    ),
+                                                    child: Text(
+                                                      prompt,
+                                                      style: GoogleFonts
+                                                          .plusJakartaSans(
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        color: const Color(
+                                                            0xFF00875A),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                );
+                                              }),
+
+                                              // Conversation History
+                                              ..._quickChatMessages.map((m) {
+                                                final isUser =
+                                                    m['role'] == 'user';
+                                                return Container(
+                                                  margin:
+                                                      const EdgeInsets.only(
+                                                          top: 8),
+                                                  alignment: isUser
+                                                      ? Alignment.centerRight
+                                                      : Alignment.centerLeft,
+                                                  child: Container(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            11),
+                                                    decoration: BoxDecoration(
+                                                      color: isUser
+                                                          ? const Color(
+                                                              0xFF1B1D36)
+                                                          : const Color(
+                                                              0xFFE8F8F0),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              14),
+                                                      border: isUser
+                                                          ? null
+                                                          : Border.all(
+                                                              color:
+                                                                  const Color(
+                                                                      0xFFB7E8CE)),
+                                                    ),
+                                                    child: Text(
+                                                      m['text'] ?? '',
+                                                      style: GoogleFonts
+                                                          .plusJakartaSans(
+                                                        fontSize: 12.5,
+                                                        color: isUser
+                                                            ? Colors.white
+                                                            : const Color(
+                                                                0xFF1A1A2E),
+                                                        height: 1.4,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                );
+                                              }),
+
+                                              if (_isForgeTyping) ...[
+                                                const SizedBox(height: 8),
+                                                const SizedBox(
+                                                  width: 16,
+                                                  height: 16,
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    color: Color(0xFF00B894),
+                                                    strokeWidth: 2,
+                                                  ),
+                                                ),
+                                              ],
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+
+                                      // Input Bar & Full Chat Link
+                                      Container(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            12, 6, 12, 10),
+                                        decoration: const BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.vertical(
+                                              bottom: Radius.circular(22)),
+                                          border: Border(
+                                            top: BorderSide(
+                                                color: Color(0xFFE2E4F0)),
+                                          ),
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Expanded(
+                                                  child: TextField(
+                                                    controller:
+                                                        _quickChatInput,
+                                                    style: GoogleFonts
+                                                        .plusJakartaSans(
+                                                      fontSize: 13,
+                                                      color: const Color(
+                                                          0xFF1A1A2E),
+                                                    ),
+                                                    decoration:
+                                                        InputDecoration(
+                                                      hintText:
+                                                          'Ask FORGE anything...',
+                                                      hintStyle: GoogleFonts
+                                                          .plusJakartaSans(
+                                                        fontSize: 12,
+                                                        color: const Color(
+                                                            0xFF9B99B5),
+                                                      ),
+                                                      isDense: true,
+                                                      filled: true,
+                                                      fillColor: const Color(
+                                                          0xFFF5F6FA),
+                                                      border:
+                                                          OutlineInputBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(20),
+                                                        borderSide:
+                                                            BorderSide.none,
+                                                      ),
+                                                      contentPadding:
+                                                          const EdgeInsets
+                                                              .symmetric(
+                                                        horizontal: 14,
+                                                        vertical: 8,
+                                                      ),
+                                                    ),
+                                                    onSubmitted: (val) =>
+                                                        _sendForgeMessage(
+                                                            val,
+                                                            track,
+                                                            doneCount),
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 8),
+                                                GestureDetector(
+                                                  onTap: () =>
+                                                      _sendForgeMessage(
+                                                          _quickChatInput.text,
+                                                          track,
+                                                          doneCount),
+                                                  child: Container(
+                                                    width: 36,
+                                                    height: 36,
+                                                    decoration:
+                                                        const BoxDecoration(
+                                                      color:
+                                                          Color(0xFF00B894),
+                                                      shape: BoxShape.circle,
+                                                    ),
+                                                    child: const Icon(
+                                                      Icons.arrow_upward_rounded,
+                                                      color: Colors.white,
+                                                      size: 18,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(height: 6),
+                                            GestureDetector(
+                                              onTap: () {
+                                                setState(() =>
+                                                    isChatOpen = false);
+                                                context.go('/mentor');
+                                              },
+                                              child: Text(
+                                                'Open Full AI Mentor Screen →',
+                                                style: GoogleFonts
+                                                    .plusJakartaSans(
+                                                  fontSize: 11,
+                                                  fontWeight: FontWeight.w700,
+                                                  color:
+                                                      const Color(0xFF00875A),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+
+                        // Floating Robot Trigger Button (Toggles between Robot and Close 'X')
                         Positioned(
                           right: 18,
-                          bottom: 68,
+                          bottom: 66,
                           child: GestureDetector(
-                            onTap: () => _openQuickAssistantSheet(
-                                track, doneCount, totalWeeks),
+                            onTap: () =>
+                                setState(() => isChatOpen = !isChatOpen),
                             child: Container(
-                              width: 56,
-                              height: 56,
+                              width: 54,
+                              height: 54,
                               decoration: BoxDecoration(
+                                color: isChatOpen
+                                    ? const Color(0xFF00B894)
+                                    : const Color(0xFFFF5722),
                                 shape: BoxShape.circle,
-                                gradient: const LinearGradient(
-                                  colors: [
-                                    Color(0xFFFF5722),
-                                    Color(0xFF7C5CBF),
-                                  ],
-                                ),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: const Color(0xFFFF5722)
+                                    color: (isChatOpen
+                                            ? const Color(0xFF00B894)
+                                            : const Color(0xFFFF5722))
                                         .withOpacity(0.4),
-                                    blurRadius: 14,
+                                    blurRadius: 12,
                                     offset: const Offset(0, 4),
                                   ),
                                 ],
                               ),
-                              padding: const EdgeInsets.all(2.5),
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Color(0xFF1B1D36),
-                                ),
-                                child: ClipOval(
-                                  child: Image.asset(
-                                    'assets/images/robot-for-chatbot.png',
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (_, __, ___) =>
-                                        const Icon(
-                                      Icons.smart_toy_rounded,
-                                      color: Color(0xFFFF5722),
-                                      size: 28,
-                                    ),
-                                  ),
-                                ),
+                              child: Center(
+                                child: isChatOpen
+                                    ? const Icon(Icons.close_rounded,
+                                        color: Colors.white, size: 26)
+                                    : ClipOval(
+                                        child: SizedBox(
+                                          width: 34,
+                                          height: 34,
+                                          child: Image.asset(
+                                            'assets/images/robot-for-chatbot.png',
+                                            fit: BoxFit.cover,
+                                            errorBuilder: (_, __, ___) =>
+                                                const Icon(
+                                              Icons.smart_toy_rounded,
+                                              color: Colors.white,
+                                              size: 24,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
                               ),
                             ),
                           ),
@@ -1071,281 +1282,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-// ── Quick Assistant Modal Bottom Sheet ──────────────────────────────
-
-class _QuickAssistantSheet extends StatefulWidget {
-  final String userName;
-  final String track;
-  final int doneWeeks;
-  final int totalWeeks;
-  final int xp;
-  final int streak;
-
-  const _QuickAssistantSheet({
-    required this.userName,
-    required this.track,
-    required this.doneWeeks,
-    required this.totalWeeks,
-    required this.xp,
-    required this.streak,
-  });
-
-  @override
-  State<_QuickAssistantSheet> createState() => _QuickAssistantSheetState();
-}
-
-class _QuickAssistantSheetState extends State<_QuickAssistantSheet> {
-  String? selectedQuestion;
-  String? aiAnswer;
-  bool isThinking = false;
-
-  final questions = [
-    '🎯 What is my #1 priority this week?',
-    '⚡ How do I boost my Job Readiness Score?',
-    '💡 Recommend a portfolio project',
-    '🔥 Give me a 5-minute coding challenge',
-  ];
-
-  void _ask(String q) async {
-    setState(() {
-      selectedQuestion = q;
-      isThinking = true;
-      aiAnswer = null;
-    });
-
-    await Future.delayed(const Duration(milliseconds: 600));
-
-    String reply;
-    if (q.contains('priority')) {
-      reply =
-          'Focus on completing Week ${widget.doneWeeks + 1} of ${widget.track}. Allocate 60 mins today to build the core mini-project and earn +80 XP!';
-    } else if (q.contains('Job Readiness')) {
-      reply =
-          'Your score increases fastest by: 1) Marking week roadmap goals done (+15 pts), 2) Scanning your updated resume in Resume Scanner, and 3) Completing 1 AI Mock Interview!';
-    } else if (q.contains('portfolio project')) {
-      reply =
-          'Build a "${widget.track} Real-Time Analytics Dashboard" with live charts, search filters, and deploy it to GitHub. This proves real-world skills to recruiters!';
-    } else {
-      reply =
-          'Today\'s Challenge: Write a function to check if two strings are anagrams in O(n) time using a hash map. Test with "listen" & "silent"!';
-    }
-
-    if (mounted) {
-      setState(() {
-        isThinking = false;
-        aiAnswer = reply;
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Center(
-            child: Container(
-              width: 40,
-              height: 4,
-              decoration: BoxDecoration(
-                color: const Color(0xFFE2E4F0),
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-          ),
-          const SizedBox(height: 14),
-          Row(
-            children: [
-              Container(
-                width: 36,
-                height: 36,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: const Color(0xFF7C5CBF).withOpacity(0.12),
-                ),
-                child: ClipOval(
-                  child: Image.asset(
-                    'assets/images/robot-for-chatbot.png',
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => const Icon(
-                      Icons.smart_toy_rounded,
-                      color: Color(0xFF7C5CBF),
-                      size: 20,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 10),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'AI Quick Assistant',
-                    style: GoogleFonts.plusJakartaSans(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w800,
-                      color: const Color(0xFF1A1A2E),
-                    ),
-                  ),
-                  Text(
-                    'Instant insights for ${widget.track}',
-                    style: GoogleFonts.plusJakartaSans(
-                      fontSize: 11.5,
-                      color: const Color(0xFF6B6890),
-                    ),
-                  ),
-                ],
-              ),
-              const Spacer(),
-              GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: const Icon(Icons.close_rounded,
-                    color: Color(0xFF9B99B5), size: 20),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-
-          // 4 Predefined Questions
-          ...questions.map((q) {
-            final isSelected = selectedQuestion == q;
-            return GestureDetector(
-              onTap: () => _ask(q),
-              child: Container(
-                margin: const EdgeInsets.only(bottom: 8),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-                decoration: BoxDecoration(
-                  color: isSelected
-                      ? const Color(0xFFFFF3EE)
-                      : const Color(0xFFF8F9FE),
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(
-                    color: isSelected
-                        ? const Color(0xFFFF5722)
-                        : const Color(0xFFE2E4F0),
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        q,
-                        style: GoogleFonts.plusJakartaSans(
-                          fontSize: 13,
-                          fontWeight:
-                              isSelected ? FontWeight.w700 : FontWeight.w600,
-                          color: isSelected
-                              ? const Color(0xFFFF5722)
-                              : const Color(0xFF1A1A2E),
-                        ),
-                      ),
-                    ),
-                    Icon(
-                      Icons.arrow_forward_ios_rounded,
-                      size: 13,
-                      color: isSelected
-                          ? const Color(0xFFFF5722)
-                          : const Color(0xFF9B99B5),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          }),
-
-          // AI Answer Display Card
-          if (isThinking || aiAnswer != null) ...[
-            const SizedBox(height: 12),
-            Container(
-              padding: const EdgeInsets.all(14),
-              decoration: BoxDecoration(
-                color: const Color(0xFF1B1D36),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      const Icon(Icons.auto_awesome,
-                          color: Color(0xFFFF8A65), size: 16),
-                      const SizedBox(width: 6),
-                      Text(
-                        'AI Mentor Reply:',
-                        style: GoogleFonts.plusJakartaSans(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w700,
-                          color: const Color(0xFFFF8A65),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  if (isThinking)
-                    const Row(
-                      children: [
-                        SizedBox(
-                          width: 16,
-                          height: 16,
-                          child: CircularProgressIndicator(
-                            color: Color(0xFFFF5722),
-                            strokeWidth: 2,
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        Text(
-                          'Synthesizing personalized advice...',
-                          style: TextStyle(color: Colors.white70, fontSize: 12),
-                        ),
-                      ],
-                    )
-                  else
-                    Text(
-                      aiAnswer!,
-                      style: GoogleFonts.plusJakartaSans(
-                        fontSize: 13,
-                        color: Colors.white,
-                        height: 1.45,
-                      ),
-                    ),
-                  const SizedBox(height: 12),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                      context.go('/mentor');
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          'Open Full Chat →',
-                          style: GoogleFonts.plusJakartaSans(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w700,
-                            color: const Color(0xFFFF5722),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ],
       ),
     );
   }
@@ -1799,97 +1735,6 @@ class _StreakCard extends StatelessWidget {
             }),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _TracksScroll extends StatelessWidget {
-  final VoidCallback onTrackTap;
-  const _TracksScroll({required this.onTrackTap});
-
-  @override
-  Widget build(BuildContext context) {
-    final tracks = [
-      {
-        'icon': Icons.bar_chart_rounded,
-        'name': 'Data Science',
-        'dur': '16 wks',
-        'color': const Color(0xFF7C5CBF)
-      },
-      {
-        'icon': Icons.psychology_rounded,
-        'name': 'AI Engineer',
-        'dur': '24 wks',
-        'color': const Color(0xFFFF5722)
-      },
-      {
-        'icon': Icons.code_rounded,
-        'name': 'Full Stack',
-        'dur': '24 wks',
-        'color': const Color(0xFF00B894)
-      },
-      {
-        'icon': Icons.phone_android_rounded,
-        'name': 'Mobile Dev',
-        'dur': '20 wks',
-        'color': const Color(0xFF1565C0)
-      },
-      {
-        'icon': Icons.security_rounded,
-        'name': 'Cybersec',
-        'dur': '20 wks',
-        'color': const Color(0xFFC62828)
-      },
-    ];
-    return SizedBox(
-      height: 90,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: tracks.length,
-        itemBuilder: (context, i) {
-          final t = tracks[i];
-          final color = t['color'] as Color;
-          return GestureDetector(
-            onTap: onTrackTap,
-            child: Container(
-              width: 90,
-              margin: const EdgeInsets.only(right: 8),
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: const Color(0xFFE2E4F0)),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(t['icon'] as IconData, color: color, size: 20),
-                  const SizedBox(height: 5),
-                  Text(
-                    t['name'] as String,
-                    textAlign: TextAlign.center,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.plusJakartaSans(
-                      fontSize: 10,
-                      fontWeight: FontWeight.w700,
-                      color: const Color(0xFF1A1A2E),
-                    ),
-                  ),
-                  Text(
-                    t['dur'] as String,
-                    style: GoogleFonts.plusJakartaSans(
-                      fontSize: 9,
-                      fontWeight: FontWeight.w600,
-                      color: color,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
       ),
     );
   }

@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../core/theme.dart';
 import '../services/auth_service.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -132,13 +131,6 @@ class _AuthScreenState extends State<AuthScreen> {
                 shape: BoxShape.circle,
                 color: colors[i],
                 border: Border.all(color: Colors.white, width: 1.5),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 3,
-                    offset: const Offset(0, 1),
-                  ),
-                ],
               ),
               child: Center(
                 child: Text(
@@ -187,61 +179,33 @@ class _AuthScreenState extends State<AuthScreen> {
                         20,
                         MediaQuery.of(context).padding.top + 28,
                         20,
-                        32,
+                        28,
                       ),
                       child: Column(
                         children: [
-                          Container(
-                            width: 90,
-                            height: 90,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              gradient: const LinearGradient(
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                                colors: [
-                                  Color(0xFF7C5CBF),
-                                  Color(0xFFFF5722),
-                                ],
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: const Color(0xFF7C5CBF).withOpacity(0.4),
-                                  blurRadius: 20,
-                                  spreadRadius: 2,
-                                  offset: const Offset(0, 6),
-                                ),
-                              ],
-                            ),
-                            padding: const EdgeInsets.all(3.5),
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.white,
-                              ),
-                              padding: const EdgeInsets.all(10),
-                              child: ClipOval(
-                                child: Image.asset(
-                                  'assets/images/logo.png',
-                                  fit: BoxFit.contain,
-                                  errorBuilder: (_, __, ___) => Image.asset(
-                                    'assets/logo.png',
-                                    fit: BoxFit.contain,
-                                    errorBuilder: (_, __, ___) => const Icon(
-                                      Icons.trending_up_rounded,
-                                      size: 42,
-                                      color: Color(0xFF7C5CBF),
-                                    ),
-                                  ),
+                          // Single clean logo directly
+                          SizedBox(
+                            width: 85,
+                            height: 85,
+                            child: Image.asset(
+                              'assets/images/logo.png',
+                              fit: BoxFit.contain,
+                              errorBuilder: (_, __, ___) => Image.asset(
+                                'assets/logo.png',
+                                fit: BoxFit.contain,
+                                errorBuilder: (_, __, ___) => const Icon(
+                                  Icons.trending_up_rounded,
+                                  size: 45,
+                                  color: Color(0xFFFF5722),
                                 ),
                               ),
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: 14),
                           Text(
                             'PathForge',
                             style: GoogleFonts.plusJakartaSans(
-                              fontSize: 30,
+                              fontSize: 28,
                               fontWeight: FontWeight.w800,
                               color: Colors.white,
                               letterSpacing: -0.5,
@@ -251,7 +215,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           Text(
                             'Your AI career roadmap',
                             style: GoogleFonts.plusJakartaSans(
-                              fontSize: 14,
+                              fontSize: 13.5,
                               fontWeight: FontWeight.w500,
                               color: const Color(0xFFB3B0D6),
                             ),
@@ -335,8 +299,6 @@ class _AuthScreenState extends State<AuthScreen> {
                                     color: Color(0xFFE2E4F0),
                                     width: 1.2,
                                   ),
-                                  elevation: 1,
-                                  shadowColor: Colors.black.withOpacity(0.04),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(16),
                                   ),
@@ -527,7 +489,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color(0xFFFF5722),
                                   foregroundColor: Colors.white,
-                                  elevation: 4,
+                                  elevation: 3,
                                   shadowColor:
                                       const Color(0xFFFF5722).withOpacity(0.35),
                                   shape: RoundedRectangleBorder(
