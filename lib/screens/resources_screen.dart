@@ -15,33 +15,147 @@ class _ResourcesScreenState extends State<ResourcesScreen>
   late TabController _tabController;
 
   final List<Map<String, dynamic>> languages = [
-    {'title': 'Python Full Course', 'channel': 'CodeWithHarry', 'flag': '🇮🇳', 'level': 'Beginner', 'icon': Icons.code_rounded, 'color': AppTheme.primary, 'bg': AppTheme.purpleLight, 'url': 'https://youtu.be/UrsmFxEIp5k', 'desc': 'Best beginner Python course in Hindi'},
-    {'title': 'Complete Java Course', 'channel': 'CodeWithHarry', 'flag': '🇮🇳', 'level': 'Beginner', 'icon': Icons.coffee_rounded, 'color': AppTheme.orange, 'bg': AppTheme.orangeLight, 'url': 'https://youtu.be/UmnCZ7-9yDY', 'desc': 'Complete Java from basics to advanced'},
-    {'title': 'JavaScript Full Playlist', 'channel': 'CodeWithHarry', 'flag': '🇮🇳', 'level': 'Beginner', 'icon': Icons.javascript_rounded, 'color': AppTheme.amber, 'bg': AppTheme.amberLight, 'url': 'https://youtube.com/playlist?list=PLGjplNEQ1it_oTvuLRNqXfz_v_0pq6unW', 'desc': 'Full JavaScript playlist for web dev'},
-    {'title': 'Complete C++ Course', 'channel': 'CodeWithHarry', 'flag': '🇮🇳', 'level': 'Beginner', 'icon': Icons.memory_rounded, 'color': AppTheme.green, 'bg': AppTheme.greenLight, 'url': 'https://youtube.com/playlist?list=PLfqMhTWNBTe0b2nM6JHVCnAkhQRGiZMSJ', 'desc': 'Complete C++ from scratch'},
+    {
+      'title': 'Python Full Course',
+      'channel': 'CodeWithHarry',
+      'flag': '🇮🇳',
+      'level': 'Beginner',
+      'desc': 'Best beginner Python course in Hindi',
+      'icon': Icons.code_rounded,
+      'color': const Color(0xFF7C5CBF),
+      'bg': const Color(0xFFF5F3FF),
+      'url': 'https://www.youtube.com/playlist?list=PLu0W_9lII9agwh1XjRt242xIpHhPT2P46',
+    },
+    {
+      'title': 'Complete Java Course',
+      'channel': 'CodeWithHarry',
+      'flag': '🇮🇳',
+      'level': 'Beginner',
+      'desc': 'Complete Java from basics to advanced',
+      'icon': Icons.coffee_rounded,
+      'color': const Color(0xFFFF5722),
+      'bg': const Color(0xFFFFF3EE),
+      'url': 'https://www.youtube.com/playlist?list=PLu0W_9lII9agS67Uits0UnJyrYiXhDS6q',
+    },
+    {
+      'title': 'JavaScript Full Playlist',
+      'channel': 'Chai aur Code',
+      'flag': '🇮🇳',
+      'level': 'Beginner',
+      'desc': 'Deep dive JavaScript in Hindi',
+      'icon': Icons.javascript_rounded,
+      'color': const Color(0xFFFFB800),
+      'bg': const Color(0xFFFFF8E7),
+      'url': 'https://www.youtube.com/playlist?list=PLu71SKxNbfoBuX3f4EOACle2yCtRC5Q37',
+    },
+    {
+      'title': 'Complete C++ Course',
+      'channel': 'Love Babbar',
+      'flag': '🇮🇳',
+      'level': 'Beginner',
+      'desc': 'Complete C++ from scratch',
+      'icon': Icons.data_object_rounded,
+      'color': const Color(0xFF00B894),
+      'bg': const Color(0xFFE8F8F0),
+      'url': 'https://www.youtube.com/playlist?list=PLDzeHZWIZsTryvtXdMr6rPh4IDexB5NIA',
+    },
   ];
 
   final List<Map<String, dynamic>> dsa = [
-    {'title': 'Striver DSA Sheet', 'channel': 'take U forward', 'flag': '🇮🇳', 'level': 'Interview', 'icon': Icons.account_tree_rounded, 'color': AppTheme.primary, 'bg': AppTheme.purpleLight, 'url': 'https://youtube.com/playlist?list=PLgUwDviBIf0oF6QL8m22w1hIDC1vJ_BHz', 'desc': 'Best DSA sheet for coding interviews'},
-    {'title': 'Kunal Kushwaha DSA', 'channel': 'Kunal Kushwaha', 'flag': '🇮🇳', 'level': 'Complete', 'icon': Icons.school_rounded, 'color': AppTheme.orange, 'bg': AppTheme.orangeLight, 'url': 'https://youtube.com/playlist?list=PL9gnSGHSqcnr_DxHsP7AW9ftq0AtAyYqJ', 'desc': 'Complete DSA course in Java'},
-    {'title': 'Apna College DSA', 'channel': 'Apna College', 'flag': '🇮🇳', 'level': 'Beginner', 'icon': Icons.book_rounded, 'color': AppTheme.green, 'bg': AppTheme.greenLight, 'url': 'https://youtube.com/@ApnaCollegeOfficial', 'desc': 'DSA in Java — great for beginners'},
+    {
+      'title': 'DSA Supreme Batch',
+      'channel': 'Love Babbar',
+      'flag': '🇮🇳',
+      'level': 'All Levels',
+      'desc': 'Most comprehensive DSA course in Hindi',
+      'icon': Icons.account_tree_rounded,
+      'color': const Color(0xFFFF5722),
+      'bg': const Color(0xFFFFF3EE),
+      'url': 'https://www.youtube.com/playlist?list=PLDzeHZWIZsTqeqvHqXnThv_0n_P_V2E3x',
+    },
+    {
+      'title': 'Take U Forward A2Z Sheet',
+      'channel': 'Striver',
+      'flag': '🇮🇳',
+      'level': 'FAANG Prep',
+      'desc': 'The gold standard DSA sheet for placements',
+      'icon': Icons.military_tech_rounded,
+      'color': const Color(0xFF7C5CBF),
+      'bg': const Color(0xFFF5F3FF),
+      'url': 'https://takeuforward.org/strivers-a2z-dsa-course/strivers-a2z-dsa-course-sheet-2/',
+    },
+    {
+      'title': 'NeetCode 150',
+      'channel': 'NeetCode',
+      'flag': '🌍',
+      'level': 'Interview Prep',
+      'desc': 'Best curated 150 LeetCode problems with solutions',
+      'icon': Icons.star_rounded,
+      'color': const Color(0xFF00B894),
+      'bg': const Color(0xFFE8F8F0),
+      'url': 'https://neetcode.io/practice',
+    },
   ];
 
   final List<Map<String, dynamic>> dev = [
-    {'title': 'Full Data Science Course', 'channel': 'CampusX', 'flag': '🇮🇳', 'level': 'Complete', 'icon': Icons.bar_chart_rounded, 'color': AppTheme.primary, 'bg': AppTheme.purpleLight, 'url': 'https://youtu.be/gDZ6czwuQ18', 'desc': '100 Days of ML — best structured DS course'},
-    {'title': 'Machine Learning Course', 'channel': 'Krish Naik', 'flag': '🇮🇳', 'level': 'Intermediate', 'icon': Icons.psychology_rounded, 'color': AppTheme.orange, 'bg': AppTheme.orangeLight, 'url': 'https://youtu.be/ie4oGI85SAE', 'desc': 'End-to-end ML course with projects'},
-    {'title': 'AI Engineering PyTorch', 'channel': 'Andrej Karpathy', 'flag': '🌍', 'level': 'Advanced', 'icon': Icons.auto_awesome_rounded, 'color': AppTheme.green, 'bg': AppTheme.greenLight, 'url': 'https://youtu.be/UqA7bxp7VBk', 'desc': 'Build GPT from scratch'},
-    {'title': 'Full Stack Web Dev', 'channel': 'CodeWithHarry', 'flag': '🇮🇳', 'level': 'Complete', 'icon': Icons.web_rounded, 'color': AppTheme.primary, 'bg': AppTheme.purpleLight, 'url': 'https://youtube.com/playlist?list=PLu0W_9lII9agq5TrH9XLIKQvv0iaF2X3w', 'desc': 'Complete web development roadmap'},
-    {'title': 'Flutter + Firebase', 'channel': 'CodeWithHarry', 'flag': '🇮🇳', 'level': 'Intermediate', 'icon': Icons.phone_android_rounded, 'color': AppTheme.amber, 'bg': AppTheme.amberLight, 'url': 'https://youtu.be/iZ78G3BhDyc', 'desc': 'Build Android apps with Flutter'},
-    {'title': 'Math for ML', 'channel': '3Blue1Brown', 'flag': '🌍', 'level': 'Foundation', 'icon': Icons.calculate_rounded, 'color': AppTheme.orange, 'bg': AppTheme.orangeLight, 'url': 'https://www.youtube.com/@3blue1brown', 'desc': 'Linear algebra & calculus visually'},
+    {
+      'title': 'React.js Complete Course',
+      'channel': 'Chai aur Code',
+      'flag': '🇮🇳',
+      'level': 'Intermediate',
+      'desc': 'Complete React with modern hooks and projects',
+      'icon': Icons.web_rounded,
+      'color': const Color(0xFF1565C0),
+      'bg': const Color(0xFFE3F2FD),
+      'url': 'https://www.youtube.com/playlist?list=PLu71SKxNbfoDqgPchmvIsL4hTnJIrtige',
+    },
+    {
+      'title': 'Backend Development (Node + Express)',
+      'channel': 'Piyush Garg',
+      'flag': '🇮🇳',
+      'level': 'Intermediate',
+      'desc': 'Production ready backend engineering in Hindi',
+      'icon': Icons.dns_rounded,
+      'color': const Color(0xFF2E7D32),
+      'bg': const Color(0xFFE8F5E9),
+      'url': 'https://www.youtube.com/playlist?list=PLinedj3B30sDby4Al-i13hQJGQoRQDfPo',
+    },
+    {
+      'title': 'Flutter 3.0 Complete Guide',
+      'channel': 'Rivaan Ranawat',
+      'flag': '🇮🇳',
+      'level': 'All Levels',
+      'desc': 'Build cross-platform mobile apps',
+      'icon': Icons.phone_android_rounded,
+      'color': const Color(0xFF7C5CBF),
+      'bg': const Color(0xFFF5F3FF),
+      'url': 'https://www.youtube.com/playlist?list=PL-Wtw_i62eZ_1iJzZqUf9LqPzNfH4g4tT',
+    },
   ];
 
   final List<Map<String, dynamic>> tools = [
-    {'title': 'React.js Full Course', 'channel': 'CodeWithHarry', 'flag': '🇮🇳', 'level': 'Intermediate', 'icon': Icons.hub_rounded, 'color': AppTheme.primary, 'bg': AppTheme.purpleLight, 'url': 'https://youtu.be/RGKi6LSPDLU', 'desc': 'Complete React from scratch'},
-    {'title': 'MongoDB Course', 'channel': 'CodeWithHarry', 'flag': '🇮🇳', 'level': 'Beginner', 'icon': Icons.storage_rounded, 'color': AppTheme.green, 'bg': AppTheme.greenLight, 'url': 'https://youtu.be/M1dKYQ7GsTg', 'desc': 'MongoDB database full course'},
-    {'title': 'MySQL Course', 'channel': 'CodeWithHarry', 'flag': '🇮🇳', 'level': 'Beginner', 'icon': Icons.table_chart_rounded, 'color': AppTheme.amber, 'bg': AppTheme.amberLight, 'url': 'https://youtu.be/yE6tIle64tU', 'desc': 'MySQL from basics to advanced'},
-    {'title': 'Docker Course', 'channel': 'Various', 'flag': '🌍', 'level': 'Intermediate', 'icon': Icons.view_in_ar_rounded, 'color': AppTheme.primary, 'bg': AppTheme.purpleLight, 'url': 'https://youtu.be/WNUCAPKa44Y', 'desc': 'Docker containers and deployment'},
-    {'title': 'LLM Course', 'channel': 'Various', 'flag': '🌍', 'level': 'Advanced', 'icon': Icons.smart_toy_rounded, 'color': AppTheme.orange, 'bg': AppTheme.orangeLight, 'url': 'https://youtu.be/K45s2PgywvI', 'desc': 'Large Language Models from scratch'},
+    {
+      'title': 'Git & GitHub Crash Course',
+      'channel': 'Kunal Kushwaha',
+      'flag': '🇮🇳',
+      'level': 'Beginner',
+      'desc': 'Version control mastery and open source',
+      'icon': Icons.merge_type_rounded,
+      'color': const Color(0xFFFF5722),
+      'bg': const Color(0xFFFFF3EE),
+      'url': 'https://www.youtube.com/watch?v=apGV9Kg7ics',
+    },
+    {
+      'title': 'Docker for Beginners',
+      'channel': 'TechWorld with Nana',
+      'flag': '🌍',
+      'level': 'Intermediate',
+      'desc': 'Containerization concepts explained easily',
+      'icon': Icons.layers_rounded,
+      'color': const Color(0xFF1565C0),
+      'bg': const Color(0xFFE3F2FD),
+      'url': 'https://www.youtube.com/watch?v=3c-iBn73dDE',
+    },
   ];
 
   @override
@@ -51,107 +165,145 @@ class _ResourcesScreenState extends State<ResourcesScreen>
   }
 
   @override
-  void dispose() { _tabController.dispose(); super.dispose(); }
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   Future<void> _launch(String url) async {
     final uri = Uri.parse(url);
     if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Could not open link')));
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Could not open link')),
+        );
+      }
     }
   }
 
   List<Map<String, dynamic>> get _list {
     switch (_tabController.index) {
-      case 0: return languages;
-      case 1: return dsa;
-      case 2: return dev;
-      case 3: return tools;
-      default: return languages;
+      case 0:
+        return languages;
+      case 1:
+        return dsa;
+      case 2:
+        return dev;
+      case 3:
+        return tools;
+      default:
+        return languages;
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.cream,
+      backgroundColor: const Color(0xFF111322),
       body: SafeArea(
-        child: Column(
-          children: [
-            // Header
-            Container(
-              color: AppTheme.navy,
-              padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+        top: false,
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 540),
+            child: Container(
+              color: const Color(0xFFF8F9FE),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Learning Resources',
-                      style: GoogleFonts.plusJakartaSans(
-                          fontSize: 20, fontWeight: FontWeight.w800,
-                          color: Colors.white)),
-                  const SizedBox(height: 2),
-                  Text('Top YouTube courses — Indian & Global',
-                      style: GoogleFonts.plusJakartaSans(
-                          fontSize: 12, color: Colors.white54)),
-                  const SizedBox(height: 16),
-                  TabBar(
-                    controller: _tabController,
-                    isScrollable: true,
-                    labelColor: AppTheme.orange,
-                    unselectedLabelColor: Colors.white54,
-                    indicatorColor: AppTheme.orange,
-                    indicatorWeight: 3,
-                    indicatorSize: TabBarIndicatorSize.label,
-                    onTap: (_) => setState(() {}),
-                    labelStyle: GoogleFonts.plusJakartaSans(
-                        fontSize: 13, fontWeight: FontWeight.w700),
-                    unselectedLabelStyle: GoogleFonts.plusJakartaSans(
-                        fontSize: 13, fontWeight: FontWeight.w500),
-                    tabs: const [
-                      Tab(text: 'Languages'),
-                      Tab(text: 'DSA'),
-                      Tab(text: 'Dev & AI'),
-                      Tab(text: 'Tools'),
-                    ],
+                  // Top Obsidian Header
+                  Container(
+                    width: double.infinity,
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Color(0xFF111322),
+                          Color(0xFF1B1D36),
+                        ],
+                      ),
+                    ),
+                    padding: EdgeInsets.fromLTRB(
+                      20,
+                      MediaQuery.of(context).padding.top + 16,
+                      20,
+                      0,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Learning Resources',
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w800,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          'Top YouTube courses — Indian & Global',
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 12.5,
+                            color: const Color(0xFFB3B0D6),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        TabBar(
+                          controller: _tabController,
+                          isScrollable: true,
+                          labelColor: const Color(0xFFFF5722),
+                          unselectedLabelColor: const Color(0xFFB3B0D6),
+                          indicatorColor: const Color(0xFFFF5722),
+                          indicatorWeight: 3,
+                          indicatorSize: TabBarIndicatorSize.label,
+                          dividerColor: Colors.transparent,
+                          onTap: (_) => setState(() {}),
+                          labelStyle: GoogleFonts.plusJakartaSans(
+                            fontSize: 13.5,
+                            fontWeight: FontWeight.w700,
+                          ),
+                          unselectedLabelStyle: GoogleFonts.plusJakartaSans(
+                            fontSize: 13.5,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          tabs: const [
+                            Tab(text: 'Languages'),
+                            Tab(text: 'DSA'),
+                            Tab(text: 'Dev & AI'),
+                            Tab(text: 'Tools'),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  // Resources List
+                  Expanded(
+                    child: ListView.builder(
+                      padding: const EdgeInsets.fromLTRB(16, 14, 16, 16),
+                      itemCount: _list.length,
+                      itemBuilder: (context, i) {
+                        final r = _list[i];
+                        return _ResourceCard(
+                          resource: r,
+                          onTap: () => _launch(r['url']),
+                        );
+                      },
+                    ),
+                  ),
+
+                  // Bottom Navigation Bar (Strictly 4 icons)
+                  _BottomNav(
+                    currentIndex: 2,
+                    onHome: () => context.go('/home'),
+                    onRoadmap: () => context.go('/home'),
+                    onResources: () => context.go('/resources'),
+                    onProfile: () => context.go('/profile'),
                   ),
                 ],
               ),
             ),
-
-            Expanded(
-              child: ListView.builder(
-                padding: const EdgeInsets.fromLTRB(20, 14, 20, 20),
-                itemCount: _list.length,
-                itemBuilder: (context, i) {
-                  final r = _list[i];
-                  return _ResourceCard(
-                    resource: r,
-                    onTap: () => _launch(r['url']),
-                  );
-                },
-              ),
-            ),
-
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border(top: BorderSide(color: AppTheme.border))),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  _NavItem(Icons.home_outlined, Icons.home_rounded,
-                      'Home', false, () => context.go('/home')),
-                  _NavItem(Icons.map_outlined, Icons.map_rounded,
-                      'Roadmap', false, () => context.go('/home')),
-                  _NavItem(Icons.play_circle_outline, Icons.play_circle,
-                      'Resources', true, () {}),
-                  _NavItem(Icons.person_outline, Icons.person_rounded,
-                      'Profile', false, () => context.go('/profile')),
-                ],
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -171,17 +323,27 @@ class _ResourceCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppTheme.border),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: const Color(0xFFE2E4F0)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.02),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Row(
           children: [
             Container(
-              width: 46, height: 46,
+              width: 44,
+              height: 44,
               decoration: BoxDecoration(
-                  color: bg, borderRadius: BorderRadius.circular(13)),
+                color: bg,
+                borderRadius: BorderRadius.circular(14),
+              ),
               child: Icon(resource['icon'] as IconData, color: color, size: 22),
             ),
             const SizedBox(width: 12),
@@ -189,37 +351,55 @@ class _ResourceCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(resource['title'],
-                      style: GoogleFonts.plusJakartaSans(
-                          fontSize: 13, fontWeight: FontWeight.w700,
-                          color: AppTheme.textDark),
-                      maxLines: 1, overflow: TextOverflow.ellipsis),
+                  Text(
+                    resource['title'],
+                    style: GoogleFonts.plusJakartaSans(
+                      fontSize: 13.5,
+                      fontWeight: FontWeight.w700,
+                      color: const Color(0xFF1A1A2E),
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                   const SizedBox(height: 3),
                   Row(
                     children: [
-                      Text('${resource['flag']} ${resource['channel']}',
-                          style: GoogleFonts.plusJakartaSans(
-                              fontSize: 11, color: AppTheme.textMid)),
+                      Text(
+                        '${resource['flag']} ${resource['channel']}',
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 11.5,
+                          color: const Color(0xFF6B6890),
+                        ),
+                      ),
                       const SizedBox(width: 6),
                       Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 6, vertical: 2),
                         decoration: BoxDecoration(
                           color: bg,
-                          borderRadius: BorderRadius.circular(5),
+                          borderRadius: BorderRadius.circular(6),
                         ),
-                        child: Text(resource['level'],
-                            style: GoogleFonts.plusJakartaSans(
-                                fontSize: 9, fontWeight: FontWeight.w700,
-                                color: color)),
+                        child: Text(
+                          resource['level'],
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 9.5,
+                            fontWeight: FontWeight.w700,
+                            color: color,
+                          ),
+                        ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 2),
-                  Text(resource['desc'],
-                      style: GoogleFonts.plusJakartaSans(
-                          fontSize: 11, color: AppTheme.textLight),
-                      maxLines: 1, overflow: TextOverflow.ellipsis),
+                  Text(
+                    resource['desc'],
+                    style: GoogleFonts.plusJakartaSans(
+                      fontSize: 11.5,
+                      color: const Color(0xFF9B99B5),
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ],
               ),
             ),
@@ -227,16 +407,27 @@ class _ResourceCard extends StatelessWidget {
             GestureDetector(
               onTap: onTap,
               child: Container(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 14, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                 decoration: BoxDecoration(
-                  color: AppTheme.navy,
-                  borderRadius: BorderRadius.circular(10),
+                  color: const Color(0xFFFF5722),
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFFFF5722).withOpacity(0.3),
+                      blurRadius: 6,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
                 ),
-                child: Text('Watch',
-                    style: GoogleFonts.plusJakartaSans(
-                        fontSize: 12, fontWeight: FontWeight.w700,
-                        color: Colors.white)),
+                child: Text(
+                  'Watch',
+                  style: GoogleFonts.plusJakartaSans(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
+                ),
               ),
             ),
           ],
@@ -246,25 +437,76 @@ class _ResourceCard extends StatelessWidget {
   }
 }
 
-Widget _NavItem(IconData icon, IconData activeIcon, String label,
-    bool active, VoidCallback onTap) {
-  return GestureDetector(
-    onTap: onTap,
-    child: Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-      decoration: BoxDecoration(
-        color: active ? AppTheme.orangeLight : Colors.transparent,
-        borderRadius: BorderRadius.circular(12),
+class _BottomNav extends StatelessWidget {
+  final int currentIndex;
+  final VoidCallback onHome, onRoadmap, onResources, onProfile;
+  const _BottomNav({
+    required this.currentIndex,
+    required this.onHome,
+    required this.onRoadmap,
+    required this.onResources,
+    required this.onProfile,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        border: Border(top: BorderSide(color: Color(0xFFE2E4F0))),
       ),
-      child: Column(mainAxisSize: MainAxisSize.min, children: [
-        Icon(active ? activeIcon : icon,
-            color: active ? AppTheme.orange : AppTheme.textLight, size: 24),
-        const SizedBox(height: 3),
-        Text(label, style: GoogleFonts.plusJakartaSans(
-            fontSize: 10,
-            color: active ? AppTheme.orange : AppTheme.textLight,
-            fontWeight: active ? FontWeight.w700 : FontWeight.w500)),
-      ]),
-    ),
-  );
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          _NavItem(Icons.home_outlined, Icons.home_rounded, 'Home',
+              currentIndex == 0, onHome),
+          _NavItem(Icons.map_outlined, Icons.map_rounded, 'Roadmap',
+              currentIndex == 1, onRoadmap),
+          _NavItem(Icons.play_circle_outline, Icons.play_circle, 'Resources',
+              currentIndex == 2, onResources),
+          _NavItem(Icons.person_outline, Icons.person_rounded, 'Profile',
+              currentIndex == 3, onProfile),
+        ],
+      ),
+    );
+  }
 }
+
+Widget _NavItem(
+  IconData icon,
+  IconData activeIcon,
+  String label,
+  bool active,
+  VoidCallback onTap,
+) =>
+    GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
+        decoration: BoxDecoration(
+          color: active ? const Color(0xFFFFF3EE) : Colors.transparent,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              active ? activeIcon : icon,
+              color: active ? const Color(0xFFFF5722) : const Color(0xFF9B99B5),
+              size: 22,
+            ),
+            const SizedBox(height: 2),
+            Text(
+              label,
+              style: GoogleFonts.plusJakartaSans(
+                fontSize: 10,
+                color:
+                    active ? const Color(0xFFFF5722) : const Color(0xFF9B99B5),
+                fontWeight: active ? FontWeight.w700 : FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
