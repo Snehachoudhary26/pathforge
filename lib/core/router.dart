@@ -110,7 +110,6 @@ final appRouter = GoRouter(
             InterviewScreen(track: track, weekTitle: week), s);
       },
     ),
-    // Resume Scanner (supports both /resume and /resume-scanner)
     GoRoute(
       path: '/resume',
       pageBuilder: (c, s) => _slidePage(const ResumeScannerScreen(), s),
@@ -119,7 +118,6 @@ final appRouter = GoRouter(
       path: '/resume-scanner',
       pageBuilder: (c, s) => _slidePage(const ResumeScannerScreen(), s),
     ),
-    // Resume Rewriter (supports both /rewriter and /resume-rewriter)
     GoRoute(
       path: '/rewriter',
       pageBuilder: (c, s) => _slidePage(const ResumeRewriterScreen(), s),
@@ -128,7 +126,6 @@ final appRouter = GoRouter(
       path: '/resume-rewriter',
       pageBuilder: (c, s) => _slidePage(const ResumeRewriterScreen(), s),
     ),
-    // Job Readiness (supports both /readiness and /job-readiness)
     GoRoute(
       path: '/readiness',
       pageBuilder: (c, s) => _slidePage(const JobReadinessScreen(), s),
@@ -137,7 +134,6 @@ final appRouter = GoRouter(
       path: '/job-readiness',
       pageBuilder: (c, s) => _slidePage(const JobReadinessScreen(), s),
     ),
-    // Share Progress
     GoRoute(
       path: '/share',
       pageBuilder: (c, s) => _slidePage(const ShareProgressScreen(), s),
@@ -146,7 +142,6 @@ final appRouter = GoRouter(
       path: '/share-progress',
       pageBuilder: (c, s) => _slidePage(const ShareProgressScreen(), s),
     ),
-    // Job Market Analyser
     GoRoute(
       path: '/market',
       pageBuilder: (c, s) => _slidePage(const JobMarketScreen(), s),
@@ -155,7 +150,6 @@ final appRouter = GoRouter(
       path: '/job-market',
       pageBuilder: (c, s) => _slidePage(const JobMarketScreen(), s),
     ),
-    // AI Mentor (supports both /mentor and /ai-mentor)
     GoRoute(
       path: '/mentor',
       pageBuilder: (c, s) => _slidePage(const AiMentorScreen(), s),
@@ -164,7 +158,6 @@ final appRouter = GoRouter(
       path: '/ai-mentor',
       pageBuilder: (c, s) => _slidePage(const AiMentorScreen(), s),
     ),
-    // Profile
     GoRoute(
       path: '/profile',
       pageBuilder: (c, s) => _slidePage(const ProfileScreen(), s),

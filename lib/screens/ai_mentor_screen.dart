@@ -37,40 +37,45 @@ class _AiMentorScreenState extends State<AiMentorScreen> {
 
   Future<void> _loadContext() async {
     final uid = FirebaseAuth.instance.currentUser?.uid;
-    if (uid == null) { setState(() => _isLoading = false); return; }
+    if (uid == null) {
+      setState(() => _isLoading = false);
+      return;
+    }
 
     try {
-      final userDoc = await FirebaseFirestore.instance
-          .collection('users').doc(uid).get();
+      final userDoc =
+          await FirebaseFirestore.instance.collection('users').doc(uid).get();
       final roadmapSnap = await FirebaseFirestore.instance
           .collection('roadmaps')
           .where('uid', isEqualTo: uid)
-          .limit(1).get();
+          .limit(1)
+          .get();
 
       final userData = userDoc.data() ?? {};
-      final roadmap = roadmapSnap.docs.isNotEmpty
-          ? roadmapSnap.docs.first.data() : null;
+      final roadmap =
+          roadmapSnap.docs.isNotEmpty ? roadmapSnap.docs.first.data() : null;
       final weeks = roadmap?['weeks'] as List? ?? [];
-      final doneWeeks =
-          weeks.where((w) => w['status'] == 'done').length;
+      final doneWeeks = weeks.where((w) => w['status'] == 'done').length;
 
-      // Load chat history from Firestore
       final historyDoc = await FirebaseFirestore.instance
-          .collection('mentor_chats').doc(uid).get();
+          .collection('mentor_chats')
+          .doc(uid)
+          .get();
       final history = historyDoc.exists
           ? List<Map<String, dynamic>>.from(
               (historyDoc.data()?['messages'] ?? [])
-                  .map((m) => Map<String, dynamic>.from(m)))
+                  .map((m) => Map<String, dynamic>.from(m)),
+            )
           : [];
 
       setState(() {
         _userContext = {
           'name': userData['name'] ?? 'Student',
-          'track': roadmap?['track'] ?? '',
+          'track': roadmap?['track'] ?? 'Frontend Developer',
           'doneWeeks': doneWeeks,
-          'totalWeeks': weeks.length,
+          'totalWeeks': weeks.isEmpty ? 12 : weeks.length,
           'xp': userData['xp'] ?? 0,
-          'streak': userData['streak'] ?? 0,
+          'streak': userData['streak'] ?? 1,
           'level': userData['levelName'] ?? 'Code Newcomer',
           'goal': userData['goal'] ?? 'Get a job',
           'branch': userData['branch'] ?? 'Engineering',
@@ -81,10 +86,9 @@ class _AiMentorScreenState extends State<AiMentorScreen> {
         _isLoading = false;
       });
 
-      // Welcome message if first time
       if (_messages.isEmpty) {
         _addBotMessage(
-          'Hi ${_userContext['name']}! 👋 I\'m your AI mentor. I know everything about your PathForge journey — you\'re $doneWeeks/${weeks.length} weeks through ${_userContext['track']}, with ${_userContext['xp']} XP and a ${_userContext['streak']}-day streak.\n\nAsk me anything about your career, roadmap, or skills!',
+          'Hi ${_userContext['name']}! 👋 I\'m your AI mentor. I know everything about your PathForge journey — you\'re $doneWeeks/${_userContext['totalWeeks']} weeks through ${_userContext['track']}, with ${_userContext['xp']} XP and a ${_userContext['streak']}-day streak.\n\nAsk me anything about your career, roadmap, or skills!',
         );
       }
     } catch (_) {
@@ -132,19 +136,21 @@ class _AiMentorScreenState extends State<AiMentorScreen> {
     final doneWeeks = _userContext['doneWeeks'] ?? 0;
     final totalWeeks = _userContext['totalWeeks'] ?? 12;
     final xp = _userContext['xp'] ?? 0;
-    final streak = _userContext['streak'] ?? 0;
+    final streak = _userContext['streak'] ?? 1;
     final goal = _userContext['goal'] ?? 'Get a job';
     final branch = _userContext['branch'] ?? 'Engineering';
     final year = _userContext['year'] ?? '3rd Year';
 
-    final recentHistory = _messages.length > 6
-        ? _messages.sublist(_messages.length - 6)
-        : _messages;
+    final recentHistory =
+        _messages.length > 6 ? _messages.sublist(_messages.length - 6) : _messages;
     final historyText = recentHistory
-        .map((m) => (m['role'] == 'user' ? 'Student: ' : 'Mentor: ') + (m['text'] ?? ''))
+        .map((m) =>
+            (m['role'] == 'user' ? 'Student: ' : 'Mentor: ') +
+            (m['text'] ?? ''))
         .join('\n');
 
-    final prompt = 'You are an expert AI career mentor for Indian engineering students. '
+    final prompt =
+        'You are an expert AI career mentor for Indian engineering students. '
         'Student name: $name. '
         'Track: $track. '
         'Progress: $doneWeeks of $totalWeeks weeks done. '
@@ -168,7 +174,7 @@ class _AiMentorScreenState extends State<AiMentorScreen> {
           'messages': [
             {'role': 'user', 'content': prompt}
           ],
-          'temperature': 0.9,
+          'temperature': 0.85,
           'max_tokens': 250,
         }),
       ).timeout(const Duration(seconds: 15));
@@ -188,7 +194,7 @@ class _AiMentorScreenState extends State<AiMentorScreen> {
     }
   }
 
-    String _fallbackReply(String msg) {
+  String _fallbackReply(String msg) {
     final name = _userContext['name'] ?? 'Student';
     final track = _userContext['track'] ?? 'your track';
     final done = _userContext['doneWeeks'] ?? 0;
@@ -200,12 +206,13 @@ class _AiMentorScreenState extends State<AiMentorScreen> {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid == null) return;
     try {
-      // Keep last 20 messages only
       final toSave = _messages.length > 20
           ? _messages.sublist(_messages.length - 20)
           : _messages;
       await FirebaseFirestore.instance
-          .collection('mentor_chats').doc(uid).set({
+          .collection('mentor_chats')
+          .doc(uid)
+          .set({
         'messages': toSave,
         'updatedAt': DateTime.now().toIso8601String(),
       });
@@ -229,216 +236,359 @@ class _AiMentorScreenState extends State<AiMentorScreen> {
     if (uid == null) return;
     setState(() => _messages = []);
     await FirebaseFirestore.instance
-        .collection('mentor_chats').doc(uid).delete();
+        .collection('mentor_chats')
+        .doc(uid)
+        .delete();
     _addBotMessage(
-        'Chat cleared! Hi ${_userContext['name']}, I\'m ready for a fresh conversation. What would you like to talk about?');
+      'Chat cleared! Hi ${_userContext['name']}, I\'m ready for a fresh conversation. What would you like to talk about?',
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final track = _userContext['track'] ?? 'Frontend Developer';
+    final done = _userContext['doneWeeks'] ?? 0;
+    final total = _userContext['totalWeeks'] ?? 12;
+    final xp = _userContext['xp'] ?? 0;
+
     return Scaffold(
-      backgroundColor: AppTheme.cream,
+      backgroundColor: const Color(0xFF111322),
       body: SafeArea(
-        child: Column(children: [
-          // Header
-          Container(
-            color: AppTheme.navy,
-            padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
-            child: Row(children: [
-              GestureDetector(
-                onTap: () => context.go('/home'),
-                child: Container(
-                  width: 36, height: 36,
-                  decoration: BoxDecoration(
-                      color: Colors.white10,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: const Icon(Icons.arrow_back_ios_new_rounded,
-                      color: Colors.white, size: 16),
-                ),
-              ),
-              const SizedBox(width: 12),
-              // Mentor avatar
-              Container(
-                width: 40, height: 40,
-                decoration: BoxDecoration(
-                  color: AppTheme.green,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Image.asset('assets/images/AGENT.jpeg',
-                    width: 40, height: 40, fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) =>
-                        const Icon(Icons.psychology_rounded,
-                            color: Colors.white, size: 22)),
-              ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+        top: false,
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 540),
+            child: Container(
+              color: const Color(0xFFF8F9FE),
+              child: Column(
                 children: [
-                  Row(children: [
-                    Text('AI Mentor',
-                        style: GoogleFonts.plusJakartaSans(
-                            fontSize: 18, fontWeight: FontWeight.w800,
-                            color: Colors.white)),
-                    const SizedBox(width: 8),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 3),
-                      decoration: BoxDecoration(
-                        color: AppTheme.green.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(6),
-                        border: Border.all(
-                            color: AppTheme.green.withOpacity(0.5)),
+                  Container(
+                    width: double.infinity,
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Color(0xFF111322),
+                          Color(0xFF1B1D36),
+                        ],
                       ),
-                      child: Row(mainAxisSize: MainAxisSize.min, children: [
-                        Container(
-                          width: 6, height: 6,
-                          decoration: BoxDecoration(
-                              color: AppTheme.green,
-                              shape: BoxShape.circle),
-                        ),
-                        const SizedBox(width: 4),
-                        Text('Online',
-                            style: GoogleFonts.plusJakartaSans(
-                                fontSize: 9, fontWeight: FontWeight.w700,
-                                color: AppTheme.green)),
-                      ]),
                     ),
-                  ]),
-                  Text('Knows your full journey · Remembers chats',
-                      style: GoogleFonts.plusJakartaSans(
-                          fontSize: 10, color: Colors.white54)),
+                    padding: EdgeInsets.fromLTRB(
+                      16,
+                      MediaQuery.of(context).padding.top + 12,
+                      16,
+                      14,
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            GestureDetector(
+                              onTap: () => context.go('/home'),
+                              child: Container(
+                                width: 38,
+                                height: 38,
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.08),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: const Icon(
+                                  Icons.arrow_back_ios_new_rounded,
+                                  color: Colors.white,
+                                  size: 16,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Container(
+                              width: 38,
+                              height: 38,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                gradient: const LinearGradient(
+                                  colors: [
+                                    Color(0xFF7C5CBF),
+                                    Color(0xFFFF5722),
+                                  ],
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: const Color(0xFF7C5CBF).withOpacity(0.3),
+                                    blurRadius: 10,
+                                  ),
+                                ],
+                              ),
+                              padding: const EdgeInsets.all(2),
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white,
+                                ),
+                                padding: const EdgeInsets.all(4),
+                                child: ClipOval(
+                                  child: Image.asset(
+                                    'assets/images/logo.png',
+                                    fit: BoxFit.contain,
+                                    errorBuilder: (_, __, ___) => Image.asset(
+                                      'assets/logo.png',
+                                      fit: BoxFit.contain,
+                                      errorBuilder: (_, __, ___) => const Icon(
+                                        Icons.trending_up,
+                                        size: 16,
+                                        color: Color(0xFF7C5CBF),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'AI Mentor',
+                                        style: GoogleFonts.plusJakartaSans(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 7, vertical: 2),
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xFF00B894)
+                                              .withOpacity(0.2),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          border: Border.all(
+                                            color: const Color(0xFF00B894)
+                                                .withOpacity(0.4),
+                                          ),
+                                        ),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Container(
+                                              width: 6,
+                                              height: 6,
+                                              decoration: const BoxDecoration(
+                                                color: Color(0xFF00B894),
+                                                shape: BoxShape.circle,
+                                              ),
+                                            ),
+                                            const SizedBox(width: 4),
+                                            Text(
+                                              'Online',
+                                              style: GoogleFonts.plusJakartaSans(
+                                                fontSize: 10.5,
+                                                fontWeight: FontWeight.w700,
+                                                color: const Color(0xFF55EFC4),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    'Knows your full journey • Remembers chats',
+                                    style: GoogleFonts.plusJakartaSans(
+                                      fontSize: 11.5,
+                                      color: const Color(0xFFB3B0D6),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: _clearHistory,
+                              child: Container(
+                                width: 36,
+                                height: 36,
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.08),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: const Icon(
+                                  Icons.delete_outline_rounded,
+                                  color: Colors.white70,
+                                  size: 18,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 12),
+
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              _ContextPill(
+                                track,
+                                const Color(0xFFFF5722),
+                                const Color(0xFFFFF3EE),
+                              ),
+                              const SizedBox(width: 8),
+                              _ContextPill(
+                                '$done/$total weeks',
+                                const Color(0xFF7C5CBF),
+                                const Color(0xFFF5F3FF),
+                              ),
+                              const SizedBox(width: 8),
+                              _ContextPill(
+                                '$xp XP',
+                                const Color(0xFFD48806),
+                                const Color(0xFFFFFBE6),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  Expanded(
+                    child: _isLoading
+                        ? const Center(
+                            child: CircularProgressIndicator(
+                              color: Color(0xFF7C5CBF),
+                            ),
+                          )
+                        : ListView.builder(
+                            controller: _scrollController,
+                            padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                            itemCount:
+                                _messages.length + (_isTyping ? 1 : 0),
+                            itemBuilder: (ctx, i) {
+                              if (i == _messages.length && _isTyping) {
+                                return const _TypingIndicator();
+                              }
+                              final m = _messages[i];
+                              return _MessageBubble(
+                                text: m['text'] ?? '',
+                                isUser: m['role'] == 'user',
+                              );
+                            },
+                          ),
+                  ),
+
+                  if (!_isTyping)
+                    Container(
+                      padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            _QuickChip(
+                              '💡 How do I improve my score?',
+                              _msgController,
+                              _sendMessage,
+                            ),
+                            _QuickChip(
+                              '📚 What should I learn first?',
+                              _msgController,
+                              _sendMessage,
+                            ),
+                            _QuickChip(
+                              '🚀 HTML/CSS Project Ideas',
+                              _msgController,
+                              _sendMessage,
+                            ),
+                            _QuickChip(
+                              '⚡ Review my progress',
+                              _msgController,
+                              _sendMessage,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+
+                  Container(
+                    color: Colors.white,
+                    padding: const EdgeInsets.fromLTRB(16, 10, 16, 16),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: _msgController,
+                            style: GoogleFonts.plusJakartaSans(
+                              fontSize: 14.5,
+                              color: const Color(0xFF1A1A2E),
+                            ),
+                            decoration: InputDecoration(
+                              hintText: 'Ask your mentor anything...',
+                              hintStyle: GoogleFonts.plusJakartaSans(
+                                fontSize: 13.5,
+                                color: const Color(0xFF9B99B5),
+                              ),
+                              filled: true,
+                              fillColor: const Color(0xFFF5F6FA),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25),
+                                borderSide: BorderSide.none,
+                              ),
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 18,
+                                vertical: 13,
+                              ),
+                            ),
+                            onSubmitted: (_) => _sendMessage(),
+                            textInputAction: TextInputAction.send,
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        GestureDetector(
+                          onTap: _sendMessage,
+                          child: Container(
+                            width: 48,
+                            height: 48,
+                            decoration: BoxDecoration(
+                              color: _isTyping
+                                  ? const Color(0xFFE2E4F0)
+                                  : const Color(0xFFFF5722),
+                              shape: BoxShape.circle,
+                              boxShadow: _isTyping
+                                  ? null
+                                  : [
+                                      BoxShadow(
+                                        color: const Color(0xFFFF5722)
+                                            .withOpacity(0.35),
+                                        blurRadius: 8,
+                                        offset: const Offset(0, 3),
+                                      ),
+                                    ],
+                            ),
+                            child: Icon(
+                              Icons.send_rounded,
+                              color: _isTyping
+                                  ? const Color(0xFF9B99B5)
+                                  : Colors.white,
+                              size: 19,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
-              )),
-              GestureDetector(
-                onTap: _clearHistory,
-                child: Container(
-                  width: 36, height: 36,
-                  decoration: BoxDecoration(
-                      color: Colors.white10,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: const Icon(Icons.delete_outline_rounded,
-                      color: Colors.white54, size: 18),
-                ),
-              ),
-            ]),
-          ),
-
-          // User context strip
-          if (_userContext.isNotEmpty)
-            Container(
-              color: AppTheme.navy.withOpacity(0.95),
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),
-              child: Row(children: [
-                _ContextPill(
-                    '${_userContext['track']}', AppTheme.orange),
-                const SizedBox(width: 8),
-                _ContextPill(
-                    '${_userContext['doneWeeks']}/${_userContext['totalWeeks']} weeks',
-                    AppTheme.primary),
-                const SizedBox(width: 8),
-                _ContextPill(
-                    '${_userContext['xp']} XP', AppTheme.amber),
-              ]),
-            ),
-
-          // Messages
-          Expanded(
-            child: _isLoading
-                ? Center(child: CircularProgressIndicator(
-                    color: AppTheme.green))
-                : ListView.builder(
-                    controller: _scrollController,
-                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                    itemCount: _messages.length + (_isTyping ? 1 : 0),
-                    itemBuilder: (context, i) {
-                      if (_isTyping && i == _messages.length) {
-                        return _TypingIndicator();
-                      }
-                      final msg = _messages[i];
-                      final isUser = msg['role'] == 'user';
-                      return _MessageBubble(
-                          text: msg['text'] ?? '',
-                          isUser: isUser);
-                    },
-                  ),
-          ),
-
-          // Quick suggestions
-          if (_messages.length <= 2)
-            Container(
-              color: Colors.white,
-              padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(children: [
-                  _QuickChip('How do I improve my score?',
-                      _msgController, _sendMessage),
-                  _QuickChip('What should I learn next?',
-                      _msgController, _sendMessage),
-                  _QuickChip('How to get my first job?',
-                      _msgController, _sendMessage),
-                  _QuickChip('Review my progress',
-                      _msgController, _sendMessage),
-                ]),
               ),
             ),
-
-          // Input area
-          Container(
-            color: Colors.white,
-            padding: const EdgeInsets.fromLTRB(16, 10, 16, 16),
-            child: Row(children: [
-              Expanded(
-                child: TextField(
-                  controller: _msgController,
-                  style: GoogleFonts.plusJakartaSans(
-                      fontSize: 16, color: AppTheme.textDark),
-                  decoration: InputDecoration(
-                    hintText: 'Ask your mentor anything...',
-                    hintStyle: GoogleFonts.plusJakartaSans(
-                        fontSize: 15, color: AppTheme.textLight),
-                    filled: true,
-                    fillColor: AppTheme.cream,
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(25),
-                        borderSide: BorderSide.none),
-                    contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 16),
-                  ),
-                  onSubmitted: (_) => _sendMessage(),
-                  textInputAction: TextInputAction.send,
-                ),
-              ),
-              const SizedBox(width: 10),
-              GestureDetector(
-                onTap: _sendMessage,
-                child: Container(
-                  width: 52, height: 52,
-                  decoration: BoxDecoration(
-                    color: _isTyping
-                        ? AppTheme.border : AppTheme.navy,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    Icons.send_rounded,
-                    color: _isTyping
-                        ? AppTheme.textLight : Colors.white,
-                    size: 20,
-                  ),
-                ),
-              ),
-            ]),
           ),
-        ]),
+        ),
       ),
     );
   }
 }
-
-// ── Widgets ────────────────────────────────────────────────────────
 
 class _MessageBubble extends StatelessWidget {
   final String text;
@@ -446,55 +596,88 @@ class _MessageBubble extends StatelessWidget {
   const _MessageBubble({required this.text, required this.isUser});
 
   @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.only(bottom: 12),
-    child: Row(
-      mainAxisAlignment:
-          isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        if (!isUser) ...[
-          Container(
-            width: 32, height: 32,
-            decoration: BoxDecoration(
-              color: AppTheme.green,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: const Icon(Icons.psychology_rounded,
-                color: Colors.white, size: 18),
-          ),
-          const SizedBox(width: 8),
-        ],
-        Flexible(
-          child: Container(
-            padding: const EdgeInsets.symmetric(
-                horizontal: 16, vertical: 12),
-            decoration: BoxDecoration(
-              color: isUser ? AppTheme.navy : Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: const Radius.circular(18),
-                topRight: const Radius.circular(18),
-                bottomLeft: Radius.circular(isUser ? 18 : 4),
-                bottomRight: Radius.circular(isUser ? 4 : 18),
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 14),
+      child: Row(
+        mainAxisAlignment:
+            isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (!isUser) ...[
+            Container(
+              width: 38,
+              height: 38,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: const Color(0xFF7C5CBF).withOpacity(0.12),
+                border: Border.all(
+                  color: const Color(0xFF7C5CBF).withOpacity(0.25),
+                ),
               ),
-              border: isUser
-                  ? null
-                  : Border.all(color: AppTheme.border),
+              child: ClipOval(
+                child: Image.asset(
+                  'assets/images/robot-for-chatbot.png',
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) => Image.asset(
+                    'assets/images/ai_mentor_guidance.jpeg',
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => const Icon(
+                      Icons.smart_toy_rounded,
+                      color: Color(0xFF7C5CBF),
+                      size: 22,
+                    ),
+                  ),
+                ),
+              ),
             ),
-            child: Text(text,
+            const SizedBox(width: 10),
+          ],
+          Flexible(
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 12,
+              ),
+              decoration: BoxDecoration(
+                color: isUser ? const Color(0xFF1B1D36) : Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: const Radius.circular(18),
+                  topRight: const Radius.circular(18),
+                  bottomLeft: Radius.circular(isUser ? 18 : 4),
+                  bottomRight: Radius.circular(isUser ? 4 : 18),
+                ),
+                border: isUser
+                    ? null
+                    : Border.all(color: const Color(0xFFE2E4F0), width: 1.1),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.03),
+                    blurRadius: 6,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Text(
+                text,
                 style: GoogleFonts.plusJakartaSans(
-                    fontSize: 15,
-                    color: isUser ? Colors.white : AppTheme.textDark,
-                    height: 1.6)),
+                  fontSize: 14.5,
+                  fontWeight: FontWeight.w400,
+                  color: isUser ? Colors.white : const Color(0xFF111322),
+                  height: 1.5,
+                ),
+              ),
+            ),
           ),
-        ),
-        if (isUser) const SizedBox(width: 8),
-      ],
-    ),
-  );
+          if (isUser) const SizedBox(width: 6),
+        ],
+      ),
+    );
+  }
 }
 
 class _TypingIndicator extends StatefulWidget {
+  const _TypingIndicator();
   @override
   State<_TypingIndicator> createState() => _TypingIndicatorState();
 }
@@ -507,84 +690,116 @@ class _TypingIndicatorState extends State<_TypingIndicator>
   @override
   void initState() {
     super.initState();
-    _ctrl = AnimationController(vsync: this,
-        duration: const Duration(milliseconds: 600))
-      ..repeat(reverse: true);
-    _anim = Tween(begin: 0.4, end: 1.0).animate(_ctrl);
+    _ctrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
+    )..repeat(reverse: true);
+    _anim = Tween(begin: 0.35, end: 1.0).animate(_ctrl);
   }
 
   @override
-  void dispose() { _ctrl.dispose(); super.dispose(); }
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
 
   @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.only(bottom: 12),
-    child: Row(children: [
-      Container(
-        width: 32, height: 32,
-        decoration: BoxDecoration(
-          color: AppTheme.green,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: const Icon(Icons.psychology_rounded,
-            color: Colors.white, size: 18),
-      ),
-      const SizedBox(width: 8),
-      Container(
-        padding: const EdgeInsets.symmetric(
-            horizontal: 16, vertical: 14),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(18),
-            topRight: Radius.circular(18),
-            bottomRight: Radius.circular(18),
-            bottomLeft: Radius.circular(4),
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 14),
+      child: Row(
+        children: [
+          Container(
+            width: 38,
+            height: 38,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: const Color(0xFF7C5CBF).withOpacity(0.12),
+            ),
+            child: ClipOval(
+              child: Image.asset(
+                'assets/images/robot-for-chatbot.png',
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) => const Icon(
+                  Icons.smart_toy_rounded,
+                  color: Color(0xFF7C5CBF),
+                  size: 22,
+                ),
+              ),
+            ),
           ),
-          border: Border.all(color: AppTheme.border),
-        ),
-        child: FadeTransition(
-          opacity: _anim,
-          child: Row(children: [
-            _Dot(AppTheme.green),
-            const SizedBox(width: 4),
-            _Dot(AppTheme.primary),
-            const SizedBox(width: 4),
-            _Dot(AppTheme.orange),
-          ]),
-        ),
+          const SizedBox(width: 10),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(18),
+                topRight: Radius.circular(18),
+                bottomRight: Radius.circular(18),
+                bottomLeft: Radius.circular(4),
+              ),
+              border: Border.all(color: const Color(0xFFE2E4F0)),
+            ),
+            child: FadeTransition(
+              opacity: _anim,
+              child: Row(
+                children: [
+                  _Dot(const Color(0xFF7C5CBF)),
+                  const SizedBox(width: 4),
+                  _Dot(const Color(0xFFFF5722)),
+                  const SizedBox(width: 4),
+                  _Dot(const Color(0xFF00B894)),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
-    ]),
-  );
+    );
+  }
 }
 
 class _Dot extends StatelessWidget {
   final Color color;
   const _Dot(this.color);
   @override
-  Widget build(BuildContext context) => Container(
-    width: 8, height: 8,
-    decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-  );
+  Widget build(BuildContext context) {
+    return Container(
+      width: 7,
+      height: 7,
+      decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+    );
+  }
 }
 
 class _ContextPill extends StatelessWidget {
   final String label;
-  final Color color;
-  const _ContextPill(this.label, this.color);
+  final Color textColor;
+  final Color bgColor;
+  const _ContextPill(this.label, this.textColor, this.bgColor);
+
   @override
-  Widget build(BuildContext context) => Container(
-    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-    decoration: BoxDecoration(
-      color: color.withOpacity(0.15),
-      borderRadius: BorderRadius.circular(20),
-      border: Border.all(color: color.withOpacity(0.3)),
-    ),
-    child: Text(label,
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: bgColor,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: textColor.withOpacity(0.25)),
+      ),
+      child: Text(
+        label,
         style: GoogleFonts.plusJakartaSans(
-            fontSize: 12, fontWeight: FontWeight.w600, color: color),
-        maxLines: 1, overflow: TextOverflow.ellipsis),
-  );
+          fontSize: 11.5,
+          fontWeight: FontWeight.w600,
+          color: textColor,
+        ),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
+    );
+  }
 }
 
 class _QuickChip extends StatelessWidget {
@@ -592,24 +807,38 @@ class _QuickChip extends StatelessWidget {
   final TextEditingController controller;
   final VoidCallback onSend;
   const _QuickChip(this.label, this.controller, this.onSend);
+
   @override
-  Widget build(BuildContext context) => GestureDetector(
-    onTap: () {
-      controller.text = label;
-      onSend();
-    },
-    child: Container(
-      margin: const EdgeInsets.only(right: 8, bottom: 8),
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
-      decoration: BoxDecoration(
-        color: AppTheme.purpleLight,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppTheme.purpleBorder),
-      ),
-      child: Text(label,
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        controller.text = label;
+        onSend();
+      },
+      child: Container(
+        margin: const EdgeInsets.only(right: 8, bottom: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6.5),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(color: const Color(0xFFE2E4F0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.02),
+              blurRadius: 4,
+              offset: const Offset(0, 1),
+            ),
+          ],
+        ),
+        child: Text(
+          label,
           style: GoogleFonts.plusJakartaSans(
-              fontSize: 14, fontWeight: FontWeight.w600,
-              color: AppTheme.primary)),
-    ),
-  );
+            fontSize: 12.5,
+            fontWeight: FontWeight.w600,
+            color: const Color(0xFF4D3B82),
+          ),
+        ),
+      ),
+    );
+  }
 }

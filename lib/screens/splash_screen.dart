@@ -127,10 +127,14 @@ class _SplashScreenState extends State<SplashScreen>
                           child: Image.asset(
                             'assets/images/logo.png',
                             fit: BoxFit.contain,
-                            errorBuilder: (_, __, ___) => const Icon(
-                              Icons.trending_up_rounded,
-                              size: 55,
-                              color: Color(0xFF7C5CBF),
+                            errorBuilder: (_, __, ___) => Image.asset(
+                              'assets/logo.png',
+                              fit: BoxFit.contain,
+                              errorBuilder: (_, __, ___) => const Icon(
+                                Icons.trending_up_rounded,
+                                size: 55,
+                                color: Color(0xFF7C5CBF),
+                              ),
                             ),
                           ),
                         ),

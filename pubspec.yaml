@@ -10,38 +10,23 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # Navigation
   go_router: ^13.0.0
-
-  # State Management
   flutter_riverpod: ^2.5.1
   riverpod_annotation: ^2.3.4
-
-  # Firebase
   firebase_core: ^2.27.0
   firebase_auth: ^4.17.0
   cloud_firestore: ^4.15.0
-
-  # AI / API
   http: ^1.2.0
-
-  # Voice Input
-
-  # UI & Animations
   animate_do: ^3.3.4
   flutter_animate: ^4.5.0
   lottie: ^3.3.3
   shimmer: ^3.0.0
-
-  # Utilities
   shared_preferences: ^2.2.2
   url_launcher: ^6.2.5
   flutter_svg: ^2.0.10+1
   google_fonts: ^8.1.0
   percent_indicator: ^4.2.5
   iconsax: ^0.0.8
-
-  # Icons
   cupertino_icons: ^1.0.6
   confetti: ^0.8.0
   google_sign_in: ^7.2.0
@@ -55,9 +40,11 @@ dev_dependencies:
   flutter_lints: ^3.0.0
   build_runner: ^2.4.8
   riverpod_generator: ^2.3.9
+  flutter_launcher_icons: ^0.14.4
 
 flutter:
   uses-material-design: true
   assets:
+    - assets/
     - assets/images/
     - assets/data/
