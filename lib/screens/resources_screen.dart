@@ -17,48 +17,40 @@ class _ResourcesScreenState extends State<ResourcesScreen>
     {
       'title': 'Python Full Course',
       'channel': 'CodeWithHarry',
-      'flag': '🇮🇳',
+      'channelInitial': 'C',
+      'channelColor': const Color(0xFF3776AB),
       'level': 'Beginner',
       'image': 'assets/Resources/Languages/Python.png',
-      'fallbackIcon': Icons.code_rounded,
-      'color': const Color(0xFF3776AB),
-      'bg': const Color(0xFFEBF3FB),
       'url': 'https://youtu.be/UrsmFxEIp5k?si=4eQoajookdA2CTJC',
       'desc': 'Best beginner Python course in Hindi with projects',
     },
     {
       'title': 'Complete Java Course',
       'channel': 'CodeWithHarry',
-      'flag': '🇮🇳',
+      'channelInitial': 'C',
+      'channelColor': const Color(0xFFE76F00),
       'level': 'Beginner',
       'image': 'assets/Resources/Languages/java.png',
-      'fallbackIcon': Icons.coffee_rounded,
-      'color': const Color(0xFFE76F00),
-      'bg': const Color(0xFFFDF0E6),
       'url': 'https://youtu.be/UmnCZ7-9yDY',
       'desc': 'Complete Java from basics to advanced OOP',
     },
     {
       'title': 'JavaScript Full Playlist',
       'channel': 'Chai aur Code',
-      'flag': '🇮🇳',
+      'channelInitial': 'C',
+      'channelColor': const Color(0xFFE08D00),
       'level': 'Beginner',
       'image': 'assets/Resources/Languages/Javascript.png',
-      'fallbackIcon': Icons.javascript_rounded,
-      'color': const Color(0xFFF7DF1E),
-      'bg': const Color(0xFFFEFBE8),
       'url': 'https://youtube.com/playlist?list=PLu71SKxNbfoBuX3f4EOACle2y-tRC5Q37&si=cLgg8-eMdbhlIeJ3',
       'desc': 'Full JavaScript playlist with DOM & Async JS',
     },
     {
       'title': 'Complete C++ Course',
       'channel': 'Apna College',
-      'flag': '🇮🇳',
+      'channelInitial': 'A',
+      'channelColor': const Color(0xFF00599C),
       'level': 'Beginner',
       'image': 'assets/Resources/Languages/c++.png',
-      'fallbackIcon': Icons.memory_rounded,
-      'color': const Color(0xFF00599C),
-      'bg': const Color(0xFFE6F0FA),
       'url': 'https://youtube.com/playlist?list=PLfqMhTWNBTe0b2nM6JHVCnAkhQRGiZMSJ&si=Y9mCSjU4C99IKJxp',
       'desc': 'Complete C++ programming course for beginners',
     },
@@ -68,36 +60,30 @@ class _ResourcesScreenState extends State<ResourcesScreen>
     {
       'title': 'Complete C++ DSA Course',
       'channel': 'Love Babbar',
-      'flag': '🇮🇳',
+      'channelInitial': 'L',
+      'channelColor': const Color(0xFFFF5722),
       'level': 'Intermediate',
       'image': 'assets/Resources/DSA/loveBabbar.png',
-      'fallbackIcon': Icons.account_tree_rounded,
-      'color': const Color(0xFFFF5722),
-      'bg': const Color(0xFFFFF0EC),
       'url': 'https://youtube.com/playlist?list=PLDzeHZWIZsTryvtXdMr6rPh4IDexB5NIA&si=JgQVPrVCNH5yNS2O',
       'desc': 'Supreme DSA series covering Arrays, Trees & DP',
     },
     {
       'title': 'Strivers A2Z DSA Course',
       'channel': 'take U forward',
-      'flag': '🇮🇳',
+      'channelInitial': 'T',
+      'channelColor': const Color(0xFF7C5CBF),
       'level': 'Interview',
       'image': 'assets/Resources/DSA/StriversA2Z-DSA.png',
-      'fallbackIcon': Icons.school_rounded,
-      'color': const Color(0xFF7C5CBF),
-      'bg': const Color(0xFFF3EFFB),
       'url': 'https://youtube.com/playlist?list=PLgUwDviBIf0oF6QL8m22w1hIDC1vJ_BHz&si=dSCKufLJ0xuwBT7z',
       'desc': 'A to Z complete DSA preparation for MAANG',
     },
     {
       'title': 'NeetCode 150 DSA',
       'channel': 'NeetCode',
-      'flag': '🌍',
+      'channelInitial': 'N',
+      'channelColor': const Color(0xFF00B894),
       'level': 'Advanced',
       'image': 'assets/Resources/DSA/neetCode150.png',
-      'fallbackIcon': Icons.code_rounded,
-      'color': const Color(0xFF00B894),
-      'bg': const Color(0xFFE6F8F4),
       'url': 'https://youtube.com/playlist?list=PLot-Xpze53ldVwtstag2TL4HQhAnC8ATf',
       'desc': 'Blind 75 & NeetCode 150 LeetCode video solutions',
     },
@@ -105,40 +91,34 @@ class _ResourcesScreenState extends State<ResourcesScreen>
 
   final List<Map<String, dynamic>> dev = [
     {
-      'title': 'React.js Complete Course',
+      'title': 'React JS Complete Course',
       'channel': 'Chai aur Code',
-      'flag': '🇮🇳',
+      'channelInitial': 'C',
+      'channelColor': const Color(0xFF61DAFB),
       'level': 'Intermediate',
       'image': 'assets/Resources/DEV & AI/React-JS-complete-course.png',
-      'fallbackIcon': Icons.web_rounded,
-      'color': const Color(0xFF61DAFB),
-      'bg': const Color(0xFFEBF9FE),
-      'url': 'https://youtube.com/playlist?list=PLu71SKxNbfoDqgPchmvIsL4hVQEIjeqcX',
+      'url': 'https://youtube.com/playlist?list=PLu71SKxNbfoDqgPchmvIsL4hTnJIrtige&si=jbMEtRLKDdNATui-',
       'desc': 'Complete React with modern hooks and projects',
     },
     {
       'title': 'Backend Development (Node + Express)',
       'channel': 'Piyush Garg',
-      'flag': '🇮🇳',
+      'channelInitial': 'P',
+      'channelColor': const Color(0xFF68A063),
       'level': 'Intermediate',
       'image': 'assets/Resources/DEV & AI/Backend-development.png',
-      'fallbackIcon': Icons.dns_rounded,
-      'color': const Color(0xFF68A063),
-      'bg': const Color(0xFFEDF6EC),
       'url': 'https://youtube.com/playlist?list=PLinedj3B30sDby4Al-i13hQJGQoRQDfPo',
       'desc': 'Production ready backend engineering in Hindi',
     },
     {
       'title': 'Flutter 3.0 Complete Guide',
       'channel': 'Rivaan Ranawat',
-      'flag': '🇮🇳',
+      'channelInitial': 'R',
+      'channelColor': const Color(0xFF7C5CBF),
       'level': 'All Levels',
       'image': 'assets/Resources/DEV & AI/Flutter.png',
-      'fallbackIcon': Icons.phone_android_rounded,
-      'color': const Color(0xFF02569B),
-      'bg': const Color(0xFFE6F1F8),
       'url': 'https://youtube.com/@rivaanranawat?si=cic9rqgnsefyXwRO',
-      'desc': 'Build full-stack cross-platform mobile apps',
+      'desc': 'Build cross-platform mobile apps',
     },
   ];
 
@@ -146,24 +126,20 @@ class _ResourcesScreenState extends State<ResourcesScreen>
     {
       'title': 'Git & GitHub Masterclass',
       'channel': 'Kunal Kushwaha',
-      'flag': '🇮🇳',
+      'channelInitial': 'K',
+      'channelColor': const Color(0xFFF05032),
       'level': 'Beginner',
       'image': 'assets/Resources/TOOLS/Git&Github.png',
-      'fallbackIcon': Icons.commit_rounded,
-      'color': const Color(0xFFF05032),
-      'bg': const Color(0xFFFEF0ED),
       'url': 'https://youtu.be/apGV9Kg7ics',
       'desc': 'Version control, branching & open source workflow',
     },
     {
       'title': 'Docker for Beginners',
       'channel': 'freeCodeCamp',
-      'flag': '🌍',
+      'channelInitial': 'F',
+      'channelColor': const Color(0xFF2496ED),
       'level': 'Intermediate',
       'image': 'assets/Resources/TOOLS/Docker-for-beginner.png',
-      'fallbackIcon': Icons.view_in_ar_rounded,
-      'color': const Color(0xFF2496ED),
-      'bg': const Color(0xFFEBF5FD),
       'url': 'https://youtu.be/fqMOX6JJhGo',
       'desc': 'Containers, images, volumes & docker-compose',
     },
@@ -186,7 +162,7 @@ class _ResourcesScreenState extends State<ResourcesScreen>
     if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Could not open link')),
+          const SnackBar(content: Text('Could not open YouTube link')),
         );
       }
     }
@@ -273,7 +249,7 @@ class _ResourcesScreenState extends State<ResourcesScreen>
               ),
             ),
 
-            // Resources List
+            // Resources List (Mobile Friendly Cards)
             Expanded(
               child: ListView.builder(
                 padding: const EdgeInsets.fromLTRB(16, 14, 16, 20),
@@ -323,107 +299,163 @@ class _ResourceCard extends StatelessWidget {
   final VoidCallback onTap;
   const _ResourceCard({required this.resource, required this.onTap});
 
+  Widget _buildThumbnail() {
+    final imagePath = resource['image'] as String?;
+    final initial = resource['channelInitial'] as String? ?? 'R';
+    final initialColor = resource['channelColor'] as Color? ?? const Color(0xFF7C5CBF);
+
+    Widget fallbackAvatar = Container(
+      color: const Color(0xFFF3F2F9),
+      child: Center(
+        child: Container(
+          width: 48,
+          height: 48,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.white,
+            border: Border.all(color: initialColor, width: 2),
+          ),
+          child: Center(
+            child: Text(
+              initial,
+              style: GoogleFonts.plusJakartaSans(
+                fontSize: 20,
+                fontWeight: FontWeight.w800,
+                color: initialColor,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    if (imagePath == null) return fallbackAvatar;
+
+    return Image.asset(
+      imagePath,
+      fit: BoxFit.cover,
+      errorBuilder: (context, error, stackTrace) {
+        final altPath = imagePath.contains('Languages /')
+            ? imagePath.replaceAll('Languages /', 'Languages/')
+            : imagePath.replaceAll('Languages/', 'Languages /');
+        return Image.asset(
+          altPath,
+          fit: BoxFit.cover,
+          errorBuilder: (_, __, ___) => fallbackAvatar,
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final color = resource['color'] as Color? ?? const Color(0xFFFF5722);
-    final bg = resource['bg'] as Color? ?? const Color(0xFFF1F2F8);
-    final imagePath = resource['image'] as String?;
-    final fallbackIcon = resource['fallbackIcon'] as IconData? ?? Icons.play_circle_fill_rounded;
+    final initial = resource['channelInitial'] as String? ?? 'R';
+    final initialColor = resource['channelColor'] as Color? ?? const Color(0xFF7C5CBF);
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: const EdgeInsets.only(bottom: 14),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(18),
         border: Border.all(color: const Color(0xFFEAEAF2)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.02),
-            blurRadius: 6,
-            offset: const Offset(0, 2),
+            color: Colors.black.withOpacity(0.03),
+            blurRadius: 8,
+            offset: const Offset(0, 3),
           ),
         ],
       ),
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Thumbnail Image Box
+            // 16:9 YouTube Thumbnail Banner
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              child: Container(
-                width: 52,
-                height: 52,
-                color: bg,
-                child: imagePath != null
-                    ? Image.asset(
-                        imagePath,
-                        fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) => Center(
-                          child: Icon(
-                            fallbackIcon,
-                            color: color,
-                            size: 26,
-                          ),
-                        ),
-                      )
-                    : Center(
-                        child: Icon(
-                          fallbackIcon,
-                          color: color,
-                          size: 26,
-                        ),
-                      ),
+              child: SizedBox(
+                width: 124,
+                height: 72,
+                child: _buildThumbnail(),
               ),
             ),
             const SizedBox(width: 12),
+
+            // Video & Channel Info
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    resource['title'],
+                    resource['title'] ?? '',
                     style: GoogleFonts.plusJakartaSans(
                       fontSize: 13.5,
-                      fontWeight: FontWeight.w700,
+                      fontWeight: FontWeight.w800,
                       color: const Color(0xFF1A1A2E),
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 3),
+                  const SizedBox(height: 4),
                   Row(
                     children: [
-                      Text(
-                        '${resource['flag']} ${resource['channel']}',
-                        style: GoogleFonts.plusJakartaSans(
-                          fontSize: 11.5,
-                          color: const Color(0xFF6B6890),
-                          fontWeight: FontWeight.w500,
+                      // Mini Channel Initial Badge
+                      Container(
+                        width: 18,
+                        height: 18,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white,
+                          border: Border.all(color: initialColor, width: 1.2),
+                        ),
+                        child: Center(
+                          child: Text(
+                            initial,
+                            style: GoogleFonts.plusJakartaSans(
+                              fontSize: 9,
+                              fontWeight: FontWeight.w800,
+                              color: initialColor,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 5),
+                      Flexible(
+                        child: Text(
+                          resource['channel'] ?? '',
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 11,
+                            color: const Color(0xFF6B6890),
+                            fontWeight: FontWeight.w600,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                       const SizedBox(width: 6),
+                      // Level Badge
                       Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 6, vertical: 2),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFEAEBF5),
-                          borderRadius: BorderRadius.circular(5),
+                          color: const Color(0xFFE8F1FC),
+                          borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(
-                          resource['level'],
+                          resource['level'] ?? 'All Levels',
                           style: GoogleFonts.plusJakartaSans(
-                            fontSize: 9.5,
+                            fontSize: 9,
                             fontWeight: FontWeight.w700,
-                            color: const Color(0xFF4A4968),
+                            color: const Color(0xFF2E6FD9),
                           ),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 3),
+                  const SizedBox(height: 4),
                   Text(
-                    resource['desc'],
+                    resource['desc'] ?? '',
                     style: GoogleFonts.plusJakartaSans(
                       fontSize: 11,
                       color: const Color(0xFF9B99B5),
@@ -435,30 +467,42 @@ class _ResourceCard extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 8),
-            // Orange Watch Button
+
+            // Vibrant Watch Now CTA Button
             GestureDetector(
               onTap: onTap,
               child: Container(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                    const EdgeInsets.symmetric(horizontal: 11, vertical: 8),
                 decoration: BoxDecoration(
                   color: const Color(0xFFFF5722),
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
-                      color: const Color(0xFFFF5722).withOpacity(0.3),
+                      color: const Color(0xFFFF5722).withOpacity(0.35),
                       blurRadius: 6,
                       offset: const Offset(0, 2),
                     ),
                   ],
                 ),
-                child: Text(
-                  'Watch',
-                  style: GoogleFonts.plusJakartaSans(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white,
-                  ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(
+                      Icons.play_circle_fill_rounded,
+                      color: Colors.white,
+                      size: 14,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      'Watch Now',
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
