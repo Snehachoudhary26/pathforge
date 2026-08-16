@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../core/theme.dart';
 import '../services/auth_service.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
+
   @override
   State<AuthScreen> createState() => _AuthScreenState();
 }
@@ -14,127 +16,178 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   bool isLogin = true;
   bool isPhoneMode = false;
-  bool isLoading = false;
-  bool isGoogleLoading = false;
   bool _showPassword = false;
   bool _showConfirmPassword = false;
-
-  final _emailController = TextEditingController();
-  final _phoneController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
-  final _nameController = TextEditingController();
-
-  String _selectedCountryCode = '+91';
+  bool isLoading = false;
+  bool isGoogleLoading = false;
   String? errorMessage;
 
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+
+  String _selectedCountryCode = '+91';
   final List<String> _countryCodes = [
     '+91',
     '+1',
     '+44',
-    '+971',
-    '+65',
     '+61',
-    '+49',
-    '+33',
+    '+65',
+    '+971',
   ];
 
   @override
   void dispose() {
+    _nameController.dispose();
     _emailController.dispose();
     _phoneController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
-    _nameController.dispose();
     super.dispose();
   }
 
   Future<void> _submit() async {
-    setState(() => errorMessage = null);
+    setState(() {
+      isLoading = true;
+      errorMessage = null;
+    });
 
-    final pass = _passwordController.text.trim();
-    if (pass.isEmpty) {
-      setState(() => errorMessage =
-          isPhoneMode ? 'Please enter OTP / Password' : 'Password is required');
-      return;
-    }
+    try {
+      if (isPhoneMode) {
+        final phone = _phoneController.text.trim();
+        final pass = _passwordController.text;
 
-    if (!isLogin) {
-      final name = _nameController.text.trim();
-      if (name.isEmpty) {
-        setState(() => errorMessage = 'Please enter your full name');
-        return;
-      }
-      final confirmPass = _confirmPasswordController.text.trim();
-      if (confirmPass.isEmpty) {
-        setState(() => errorMessage = 'Please confirm your password');
-        return;
-      }
-      if (pass != confirmPass) {
-        setState(() => errorMessage = 'Passwords do not match');
-        return;
-      }
-    }
-
-    String authEmail;
-    if (isPhoneMode) {
-      final phone =
-          _phoneController.text.trim().replaceAll(RegExp(r'\s+'), '');
-      if (phone.isEmpty || phone.length < 8) {
-        setState(
-            () => errorMessage = 'Please enter a valid 10-digit mobile number');
-        return;
-      }
-      final cleanDigits = '$_selectedCountryCode$phone'.replaceAll('+', '');
-      authEmail = 'phone_$cleanDigits@pathforge.app';
-    } else {
-      final email = _emailController.text.trim();
-      if (email.isEmpty || !email.contains('@')) {
-        setState(() => errorMessage = 'Please enter a valid email address');
-        return;
-      }
-      authEmail = email;
-    }
-
-    setState(() => isLoading = true);
-
-    if (isLogin) {
-      final error = await AuthService.signIn(
-        email: authEmail,
-        password: pass,
-      );
-      setState(() => isLoading = false);
-      if (error == null) {
-        if (!mounted) return;
-        await _navigateAfterLogin();
-      } else {
-        setState(() => errorMessage = error);
-      }
-    } else {
-      final displayName = _nameController.text.trim();
-      final error = await AuthService.signUp(
-        email: authEmail,
-        password: pass,
-        name: displayName,
-      );
-      setState(() => isLoading = false);
-      if (error == null) {
-        final user = FirebaseAuth.instance.currentUser;
-        if (user != null && isPhoneMode) {
-          final fullPhone =
-              '$_selectedCountryCode ${_phoneController.text.trim()}';
-          await FirebaseFirestore.instance
-              .collection('users')
-              .doc(user.uid)
-              .set({
-            'phone': fullPhone,
-            'authMethod': 'phone',
-          }, SetOptions(merge: true));
+        if (phone.isEmpty || phone.length < 10) {
+          setState(() {
+            errorMessage = 'Please enter a valid 10-digit mobile number';
+            isLoading = false;
+          });
+          return;
         }
-        if (mounted) context.go('/onboarding');
+
+        if (pass.isEmpty || pass.length < 6) {
+          setState(() {
+            errorMessage = 'Password must be at least 6 characters';
+            isLoading = false;
+          });
+          return;
+        }
+
+        final emailPlaceholder =
+            '${_selectedCountryCode.replaceAll('+', '')}$phone@pathforge.app';
+
+        if (isLogin) {
+          final res = await AuthService.signInWithEmail(emailPlaceholder, pass);
+          if (res['error'] != null) {
+            setState(() {
+              errorMessage = res['error'];
+              isLoading = false;
+            });
+            return;
+          }
+          await _navigateAfterLogin();
+        } else {
+          final name = _nameController.text.trim();
+          if (name.isEmpty) {
+            setState(() {
+              errorMessage = 'Please enter your full name';
+              isLoading = false;
+            });
+            return;
+          }
+          final confirm = _confirmPasswordController.text;
+          if (pass != confirm) {
+            setState(() {
+              errorMessage = 'Passwords do not match';
+              isLoading = false;
+            });
+            return;
+          }
+
+          final res = await AuthService.signUpWithEmail(
+            name: name,
+            email: emailPlaceholder,
+            password: pass,
+          );
+          if (res['error'] != null) {
+            setState(() {
+              errorMessage = res['error'];
+              isLoading = false;
+            });
+            return;
+          }
+          if (mounted) context.go('/onboarding');
+        }
       } else {
-        setState(() => errorMessage = error);
+        final email = _emailController.text.trim();
+        final pass = _passwordController.text;
+
+        if (email.isEmpty || !email.contains('@')) {
+          setState(() {
+            errorMessage = 'Please enter a valid email address';
+            isLoading = false;
+          });
+          return;
+        }
+
+        if (pass.isEmpty || pass.length < 6) {
+          setState(() {
+            errorMessage = 'Password must be at least 6 characters';
+            isLoading = false;
+          });
+          return;
+        }
+
+        if (isLogin) {
+          final res = await AuthService.signInWithEmail(email, pass);
+          if (res['error'] != null) {
+            setState(() {
+              errorMessage = res['error'];
+              isLoading = false;
+            });
+            return;
+          }
+          await _navigateAfterLogin();
+        } else {
+          final name = _nameController.text.trim();
+          if (name.isEmpty) {
+            setState(() {
+              errorMessage = 'Please enter your full name';
+              isLoading = false;
+            });
+            return;
+          }
+          final confirm = _confirmPasswordController.text;
+          if (pass != confirm) {
+            setState(() {
+              errorMessage = 'Passwords do not match';
+              isLoading = false;
+            });
+            return;
+          }
+
+          final res = await AuthService.signUpWithEmail(
+            name: name,
+            email: email,
+            password: pass,
+          );
+          if (res['error'] != null) {
+            setState(() {
+              errorMessage = res['error'];
+              isLoading = false;
+            });
+            return;
+          }
+          if (mounted) context.go('/onboarding');
+        }
       }
+    } catch (e) {
+      setState(() => errorMessage = e.toString());
+    } finally {
+      if (mounted) setState(() => isLoading = false);
     }
   }
 
@@ -143,10 +196,11 @@ class _AuthScreenState extends State<AuthScreen> {
       isGoogleLoading = true;
       errorMessage = null;
     });
+
     final result = await AuthService.signInWithGoogle();
-    setState(() => isGoogleLoading = false);
 
     if (!mounted) return;
+    setState(() => isGoogleLoading = false);
 
     if (result['error'] != null) {
       setState(() => errorMessage = result['error']);
@@ -199,21 +253,21 @@ class _AuthScreenState extends State<AuthScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              // ── Top Navy Section (Ultra-Compact Header) ─────
+              // ── Top Navy Section ─────
               Container(
                 width: double.infinity,
                 padding: EdgeInsets.fromLTRB(
                   16,
-                  topPadding > 0 ? topPadding + 4 : 16,
+                  topPadding > 0 ? topPadding + 8 : 20,
                   16,
-                  8,
+                  14,
                 ),
                 color: const Color(0xFF111322),
                 child: Column(
                   children: [
                     Container(
-                      width: 48,
-                      height: 48,
+                      width: 52,
+                      height: 52,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(
@@ -228,16 +282,16 @@ class _AuthScreenState extends State<AuthScreen> {
                           errorBuilder: (_, __, ___) => const Icon(
                             Icons.auto_awesome_rounded,
                             color: Colors.white,
-                            size: 24,
+                            size: 26,
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 6),
                     Text(
                       'PathForge',
                       style: GoogleFonts.plusJakartaSans(
-                        fontSize: 18,
+                        fontSize: 20,
                         fontWeight: FontWeight.w800,
                         color: Colors.white,
                       ),
@@ -245,7 +299,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     Text(
                       'Your AI career roadmap',
                       style: GoogleFonts.plusJakartaSans(
-                        fontSize: 10,
+                        fontSize: 11,
                         color: const Color(0xFFB3B0D6),
                       ),
                     ),
@@ -253,68 +307,68 @@ class _AuthScreenState extends State<AuthScreen> {
                 ),
               ),
 
-              // ── Bottom White Card (Conserved to 1 Screen) ──
+              // ── Bottom White Card (Properly Proportioned & Zero Scroll) ──
               Container(
                 width: double.infinity,
+                constraints: BoxConstraints(
+                  minHeight: MediaQuery.of(context).size.height * 0.68,
+                ),
                 decoration: const BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
                 ),
-                padding: const EdgeInsets.fromLTRB(16, 10, 16, 16),
+                padding: const EdgeInsets.fromLTRB(18, 14, 18, 24),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Community Badge
                     Center(
-                      child: FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 3),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFF4F5FB),
-                            borderRadius: BorderRadius.circular(14),
-                            border: Border.all(color: const Color(0xFFE5E7F2)),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Row(
-                                children: [
-                                  _miniAvatar(const Color(0xFF7C5CBF), 'S'),
-                                  Transform.translate(
-                                    offset: const Offset(-3, 0),
-                                    child: _miniAvatar(
-                                        const Color(0xFFFF5722), 'A'),
-                                  ),
-                                  Transform.translate(
-                                    offset: const Offset(-6, 0),
-                                    child: _miniAvatar(
-                                        const Color(0xFF00B894), 'R'),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(width: 4),
-                              Text(
-                                'Join 50,000+ AI Career Builders 🚀',
-                                style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 9,
-                                  fontWeight: FontWeight.w700,
-                                  color: const Color(0xFF1B1D36),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFF4F5FB),
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(color: const Color(0xFFE5E7F2)),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Row(
+                              children: [
+                                _miniAvatar(const Color(0xFF7C5CBF), 'S'),
+                                Transform.translate(
+                                  offset: const Offset(-4, 0),
+                                  child: _miniAvatar(
+                                      const Color(0xFFFF5722), 'A'),
                                 ),
+                                Transform.translate(
+                                  offset: const Offset(-8, 0),
+                                  child: _miniAvatar(
+                                      const Color(0xFF00B894), 'R'),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              'Join 50,000+ AI Career Builders 🚀',
+                              style: GoogleFonts.plusJakartaSans(
+                                fontSize: 10.5,
+                                fontWeight: FontWeight.w700,
+                                color: const Color(0xFF1B1D36),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
 
-                    const SizedBox(height: 6),
+                    const SizedBox(height: 10),
 
                     Text(
                       isLogin ? 'Welcome back' : 'Create account',
                       style: GoogleFonts.plusJakartaSans(
-                        fontSize: 15.5,
+                        fontSize: 17,
                         fontWeight: FontWeight.w800,
                         color: const Color(0xFF1A1A2E),
                       ),
@@ -324,16 +378,16 @@ class _AuthScreenState extends State<AuthScreen> {
                           ? 'Sign in to continue your roadmap'
                           : 'Join PathForge — get your personalized AI roadmap',
                       style: GoogleFonts.plusJakartaSans(
-                        fontSize: 10,
+                        fontSize: 11,
                         color: const Color(0xFF6B6890),
                       ),
                     ),
-                    const SizedBox(height: 6),
+                    const SizedBox(height: 10),
 
                     // Google Sign-In Button
                     SizedBox(
                       width: double.infinity,
-                      height: 36,
+                      height: 42,
                       child: OutlinedButton(
                         onPressed: isGoogleLoading ? null : _signInWithGoogle,
                         style: OutlinedButton.styleFrom(
@@ -341,15 +395,15 @@ class _AuthScreenState extends State<AuthScreen> {
                           side: const BorderSide(
                               color: Color(0xFFE2E4F0), width: 1.0),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(12),
                           ),
                           elevation: 0,
                           padding: EdgeInsets.zero,
                         ),
                         child: isGoogleLoading
                             ? const SizedBox(
-                                width: 14,
-                                height: 14,
+                                width: 16,
+                                height: 16,
                                 child: CircularProgressIndicator(
                                   color: Color(0xFFFF5722),
                                   strokeWidth: 2,
@@ -360,19 +414,19 @@ class _AuthScreenState extends State<AuthScreen> {
                                 children: [
                                   Image.network(
                                     'https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png',
-                                    width: 15,
-                                    height: 15,
+                                    width: 17,
+                                    height: 17,
                                     errorBuilder: (_, __, ___) => const Icon(
                                       Icons.g_mobiledata_rounded,
                                       color: Color(0xFF4285F4),
-                                      size: 17,
+                                      size: 20,
                                     ),
                                   ),
-                                  const SizedBox(width: 6),
+                                  const SizedBox(width: 8),
                                   Text(
                                     'Continue with Google',
                                     style: GoogleFonts.plusJakartaSans(
-                                      fontSize: 11.5,
+                                      fontSize: 12.5,
                                       fontWeight: FontWeight.w700,
                                       color: const Color(0xFF1B1D36),
                                     ),
@@ -382,7 +436,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       ),
                     ),
 
-                    const SizedBox(height: 6),
+                    const SizedBox(height: 8),
 
                     // Divider
                     Row(
@@ -391,11 +445,11 @@ class _AuthScreenState extends State<AuthScreen> {
                           child: Divider(color: Color(0xFFE8E9F2), thickness: 1),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 6),
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
                           child: Text(
                             'or',
                             style: GoogleFonts.plusJakartaSans(
-                              fontSize: 9.5,
+                              fontSize: 10,
                               color: const Color(0xFF9B99B5),
                               fontWeight: FontWeight.w600,
                             ),
@@ -407,16 +461,16 @@ class _AuthScreenState extends State<AuthScreen> {
                       ],
                     ),
 
-                    const SizedBox(height: 6),
+                    const SizedBox(height: 8),
 
                     // Tab Selector: Email vs Mobile Phone
                     Container(
-                      height: 32,
+                      height: 36,
                       decoration: BoxDecoration(
                         color: const Color(0xFFF3F4FA),
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                      padding: const EdgeInsets.all(2.0),
+                      padding: const EdgeInsets.all(2.5),
                       child: Row(
                         children: [
                           Expanded(
@@ -431,7 +485,16 @@ class _AuthScreenState extends State<AuthScreen> {
                                   color: !isPhoneMode
                                       ? Colors.white
                                       : Colors.transparent,
-                                  borderRadius: BorderRadius.circular(6),
+                                  borderRadius: BorderRadius.circular(8),
+                                  boxShadow: !isPhoneMode
+                                      ? [
+                                          BoxShadow(
+                                            color: Colors.black.withOpacity(0.04),
+                                            blurRadius: 4,
+                                            offset: const Offset(0, 1),
+                                          )
+                                        ]
+                                      : null,
                                 ),
                                 child: Center(
                                   child: Row(
@@ -439,20 +502,20 @@ class _AuthScreenState extends State<AuthScreen> {
                                     children: [
                                       Icon(
                                         Icons.email_outlined,
-                                        size: 11,
+                                        size: 13,
                                         color: !isPhoneMode
                                             ? const Color(0xFF1B1D36)
                                             : const Color(0xFF7B7998),
                                       ),
-                                      const SizedBox(width: 4),
+                                      const SizedBox(width: 5),
                                       Text(
                                         'Email',
                                         style: GoogleFonts.plusJakartaSans(
-                                          fontSize: 10.5,
+                                          fontSize: 11.5,
                                           fontWeight: FontWeight.w700,
                                           color: !isPhoneMode
-                                            ? const Color(0xFF1B1D36)
-                                            : const Color(0xFF7B7998),
+                                              ? const Color(0xFF1B1D36)
+                                              : const Color(0xFF7B7998),
                                         ),
                                       ),
                                     ],
@@ -473,28 +536,37 @@ class _AuthScreenState extends State<AuthScreen> {
                                   color: isPhoneMode
                                       ? Colors.white
                                       : Colors.transparent,
-                                  borderRadius: BorderRadius.circular(6),
+                                  borderRadius: BorderRadius.circular(8),
+                                  boxShadow: isPhoneMode
+                                      ? [
+                                          BoxShadow(
+                                            color: Colors.black.withOpacity(0.04),
+                                            blurRadius: 4,
+                                            offset: const Offset(0, 1),
+                                          )
+                                        ]
+                                      : null,
                                 ),
                                 child: Center(
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Icon(
-                                        Icons.phone_android_rounded,
-                                        size: 11,
+                                        Icons.phone_iphone_rounded,
+                                        size: 13,
                                         color: isPhoneMode
                                             ? const Color(0xFF1B1D36)
                                             : const Color(0xFF7B7998),
                                       ),
-                                      const SizedBox(width: 4),
+                                      const SizedBox(width: 5),
                                       Text(
                                         'Mobile Phone',
                                         style: GoogleFonts.plusJakartaSans(
-                                          fontSize: 10.5,
+                                          fontSize: 11.5,
                                           fontWeight: FontWeight.w700,
                                           color: isPhoneMode
-                                            ? const Color(0xFF1B1D36)
-                                            : const Color(0xFF7B7998),
+                                              ? const Color(0xFF1B1D36)
+                                              : const Color(0xFF7B7998),
                                         ),
                                       ),
                                     ],
@@ -507,16 +579,17 @@ class _AuthScreenState extends State<AuthScreen> {
                       ),
                     ),
 
-                    const SizedBox(height: 6),
+                    const SizedBox(height: 10),
 
-                    // Full Name Field (Sign Up only)
+                    // Name Field (Sign Up only)
                     if (!isLogin) ...[
                       _buildTextField(
                         controller: _nameController,
                         hint: 'Full Name',
                         icon: Icons.person_outline_rounded,
+                        keyboardType: TextInputType.name,
                       ),
-                      const SizedBox(height: 5),
+                      const SizedBox(height: 8),
                     ],
 
                     // Email or Phone Input
@@ -528,12 +601,11 @@ class _AuthScreenState extends State<AuthScreen> {
                         keyboardType: TextInputType.emailAddress,
                       ),
                     ] else ...[
-                      // FIXED SPACING: Country code is small (60px), Contact number gets ~85% width!
                       Row(
                         children: [
                           Container(
-                            width: 60,
-                            height: 36,
+                            width: 62,
+                            height: 42,
                             padding: const EdgeInsets.symmetric(horizontal: 4),
                             decoration: BoxDecoration(
                               color: Colors.white,
@@ -549,7 +621,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                     size: 16, color: Color(0xFF6B6890)),
                                 dropdownColor: Colors.white,
                                 style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 11,
+                                  fontSize: 11.5,
                                   fontWeight: FontWeight.w700,
                                   color: const Color(0xFF1B1D36),
                                 ),
@@ -559,7 +631,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                     child: Text(
                                       c,
                                       style: GoogleFonts.plusJakartaSans(
-                                        fontSize: 11,
+                                        fontSize: 11.5,
                                         fontWeight: FontWeight.w700,
                                         color: const Color(0xFF1B1D36),
                                       ),
@@ -587,12 +659,12 @@ class _AuthScreenState extends State<AuthScreen> {
                       ),
                     ],
 
-                    const SizedBox(height: 5),
+                    const SizedBox(height: 8),
 
                     // Password Field
                     _buildTextField(
                       controller: _passwordController,
-                      hint: isPhoneMode ? 'Enter OTP / Password' : 'Password',
+                      hint: isPhoneMode ? 'Enter Password' : 'Password',
                       icon: Icons.lock_outline_rounded,
                       isPassword: true,
                       showPassword: _showPassword,
@@ -601,7 +673,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     ),
 
                     if (!isLogin) ...[
-                      const SizedBox(height: 5),
+                      const SizedBox(height: 8),
                       _buildTextField(
                         controller: _confirmPasswordController,
                         hint: 'Confirm Password',
@@ -614,37 +686,38 @@ class _AuthScreenState extends State<AuthScreen> {
                     ],
 
                     if (errorMessage != null) ...[
-                      const SizedBox(height: 4),
+                      const SizedBox(height: 6),
                       Text(
                         errorMessage!,
                         style: GoogleFonts.plusJakartaSans(
-                          fontSize: 10,
+                          fontSize: 10.5,
                           color: Colors.red.shade600,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                     ],
 
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 12),
 
-                    // Submit Button
+                    // Submit Button (Crisp Centered Typography - 0 Clipping)
                     SizedBox(
                       width: double.infinity,
-                      height: 38,
+                      height: 46,
                       child: ElevatedButton(
                         onPressed: isLoading ? null : _submit,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFFF5722),
                           foregroundColor: Colors.white,
+                          padding: EdgeInsets.zero,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(12),
                           ),
                           elevation: 0,
                         ),
                         child: isLoading
                             ? const SizedBox(
-                                width: 14,
-                                height: 14,
+                                width: 18,
+                                height: 18,
                                 child: CircularProgressIndicator(
                                   color: Colors.white,
                                   strokeWidth: 2,
@@ -652,47 +725,55 @@ class _AuthScreenState extends State<AuthScreen> {
                               )
                             : Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
                                     isLogin ? 'Sign In' : 'Create Account',
                                     style: GoogleFonts.plusJakartaSans(
-                                      fontSize: 12,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.w800,
+                                      color: Colors.white,
                                     ),
                                   ),
-                                  const SizedBox(width: 4),
-                                  const Icon(Icons.arrow_forward_rounded,
-                                      size: 13),
+                                  const SizedBox(width: 6),
+                                  const Icon(
+                                    Icons.arrow_forward_rounded,
+                                    color: Colors.white,
+                                    size: 16,
+                                  ),
                                 ],
                               ),
                       ),
                     ),
 
-                    const SizedBox(height: 6),
+                    const SizedBox(height: 10),
 
-                    // Toggle Sign In vs Sign Up
+                    // Toggle Login / Sign Up
                     Center(
                       child: GestureDetector(
-                        onTap: () => setState(() {
-                          isLogin = !isLogin;
-                          errorMessage = null;
-                        }),
+                        onTap: () {
+                          setState(() {
+                            isLogin = !isLogin;
+                            errorMessage = null;
+                          });
+                        },
                         child: RichText(
                           text: TextSpan(
-                            text: isLogin
-                                ? "Don't have an account? "
-                                : "Already have an account? ",
                             style: GoogleFonts.plusJakartaSans(
-                              fontSize: 10,
+                              fontSize: 11.5,
                               color: const Color(0xFF6B6890),
                             ),
                             children: [
                               TextSpan(
+                                text: isLogin
+                                    ? "Don't have an account? "
+                                    : "Already have an account? ",
+                              ),
+                              TextSpan(
                                 text: isLogin ? 'Sign Up' : 'Sign In',
-                                style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 10,
+                                style: const TextStyle(
+                                  color: Color(0xFFFF5722),
                                   fontWeight: FontWeight.w800,
-                                  color: const Color(0xFFFF5722),
                                 ),
                               ),
                             ],
@@ -710,17 +791,39 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 
+  Widget _miniAvatar(Color color, String letter) {
+    return Container(
+      width: 17,
+      height: 17,
+      decoration: BoxDecoration(
+        color: color,
+        shape: BoxShape.circle,
+        border: Border.all(color: Colors.white, width: 1.5),
+      ),
+      child: Center(
+        child: Text(
+          letter,
+          style: GoogleFonts.plusJakartaSans(
+            fontSize: 7.5,
+            fontWeight: FontWeight.w800,
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildTextField({
     required TextEditingController controller,
     required String hint,
     required IconData icon,
+    TextInputType keyboardType = TextInputType.text,
     bool isPassword = false,
     bool showPassword = false,
     VoidCallback? onTogglePassword,
-    TextInputType? keyboardType,
   }) {
     return Container(
-      height: 36,
+      height: 42,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
@@ -731,17 +834,18 @@ class _AuthScreenState extends State<AuthScreen> {
         obscureText: isPassword && !showPassword,
         keyboardType: keyboardType,
         style: GoogleFonts.plusJakartaSans(
-          fontSize: 11.5,
-          fontWeight: FontWeight.w600,
+          fontSize: 12.5,
           color: const Color(0xFF1B1D36),
+          fontWeight: FontWeight.w600,
         ),
         decoration: InputDecoration(
           hintText: hint,
           hintStyle: GoogleFonts.plusJakartaSans(
-            fontSize: 11,
+            fontSize: 12,
             color: const Color(0xFF9B99B5),
+            fontWeight: FontWeight.w500,
           ),
-          prefixIcon: Icon(icon, color: const Color(0xFF9B99B5), size: 14),
+          prefixIcon: Icon(icon, color: const Color(0xFF9B99B5), size: 16),
           suffixIcon: isPassword
               ? GestureDetector(
                   onTap: onTogglePassword,
@@ -750,35 +854,14 @@ class _AuthScreenState extends State<AuthScreen> {
                         ? Icons.visibility_off_outlined
                         : Icons.visibility_outlined,
                     color: const Color(0xFF9B99B5),
-                    size: 14,
+                    size: 16,
                   ),
                 )
               : null,
-          isDense: true,
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 8, vertical: 7),
           border: InputBorder.none,
-        ),
-      ),
-    );
-  }
-
-  Widget _miniAvatar(Color color, String letter) {
-    return Container(
-      width: 15,
-      height: 15,
-      decoration: BoxDecoration(
-        color: color,
-        shape: BoxShape.circle,
-        border: Border.all(color: Colors.white, width: 1.0),
-      ),
-      child: Center(
-        child: Text(
-          letter,
-          style: GoogleFonts.plusJakartaSans(
-            fontSize: 7.5,
-            fontWeight: FontWeight.w800,
-            color: Colors.white,
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 10,
+            vertical: 10,
           ),
         ),
       ),

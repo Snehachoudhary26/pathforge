@@ -544,22 +544,24 @@ No markdown. No explanation. Just JSON.
             const SizedBox(height: 10),
             SizedBox(
               width: double.infinity,
-              height: 38,
+              height: 46,
               child: ElevatedButton.icon(
                 onPressed: _runAgent,
-                icon: const Icon(Icons.auto_fix_high_rounded, size: 14),
+                icon: const Icon(Icons.auto_fix_high_rounded, size: 16),
                 label: Text(
                   'Rewrite My Resume',
                   style: GoogleFonts.plusJakartaSans(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
+                    fontSize: 13.5,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.white,
                   ),
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFFF5722),
                   foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(12),
                   ),
                   elevation: 0,
                 ),

@@ -18,16 +18,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final List<Map<String, dynamic>> questions = [
     {
       'question': 'What is your engineering branch?',
-      'subtitle': 'AI adapts your roadmap foundation to your degree',
+      'subtitle': 'Customizes courses, core subjects & projects',
       'icon': Icons.school_rounded,
       'key': 'branch',
       'options': [
-        {'title': 'Computer Science', 'desc': 'Software, Algorithms & Systems', 'icon': Icons.computer_rounded},
-        {'title': 'Information Technology', 'desc': 'Cloud, Web & Database Systems', 'icon': Icons.lan_rounded},
-        {'title': 'Electronics', 'desc': 'Embedded, VLSI & IoT Systems', 'icon': Icons.memory_rounded},
-        {'title': 'Mechanical', 'desc': 'Automation, Robotics & CAD', 'icon': Icons.precision_manufacturing_rounded},
-        {'title': 'Other', 'desc': 'Other branches & disciplines', 'icon': Icons.auto_awesome_rounded},
-      ],
+        {'title': 'Computer Science', 'desc': 'CSE, Software & Programming'},
+        {'title': 'Information Technology', 'desc': 'IT, Systems & Web Tech'},
+        {'title': 'Electronics & Comm', 'desc': 'ECE, Embedded & Hardware'},
+        {'title': 'Mechanical / Civil', 'desc': 'Core Engineering Branches'},
+        {'title': 'Other Branch', 'desc': 'BCA, BSc, MCA or other degree'},
+      ]
     },
     {
       'question': 'Which year are you in?',
@@ -35,54 +35,54 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       'icon': Icons.calendar_today_rounded,
       'key': 'year',
       'options': [
-        {'title': '1st Year', 'desc': 'Building fundamentals & basics', 'icon': Icons.looks_one_rounded},
-        {'title': '2nd Year', 'desc': 'Core skills & mini projects', 'icon': Icons.looks_two_rounded},
-        {'title': '3rd Year', 'desc': 'Internship prep & major projects', 'icon': Icons.looks_3_rounded, 'badge': 'Peak Prep 🔥'},
-        {'title': '4th Year', 'desc': 'Placements & full-time job hunt', 'icon': Icons.looks_4_rounded, 'badge': 'Job Ready ⚡'},
-        {'title': 'Graduated', 'desc': 'Immediate hiring & career switch', 'icon': Icons.workspace_premium_rounded},
-      ],
+        {'title': '1st Year', 'desc': 'Building fundamentals & basics', 'tag': ''},
+        {'title': '2nd Year', 'desc': 'Core skills & mini projects', 'tag': ''},
+        {'title': '3rd Year', 'desc': 'Internship prep & major projects', 'tag': 'Peak Prep 🔥'},
+        {'title': '4th Year', 'desc': 'Placements & full-time job hunt', 'tag': 'Job Ready ⚡'},
+        {'title': 'Graduated', 'desc': 'Immediate career switch / job search', 'tag': ''},
+      ]
     },
     {
       'question': 'What is your coding experience?',
-      'subtitle': 'Calibrates starting difficulty so you never feel stuck',
-      'icon': Icons.code_rounded,
+      'subtitle': 'We adapt the roadmap difficulty to your level',
+      'icon': Icons.laptop_mac_rounded,
       'key': 'experience',
       'options': [
-        {'title': 'Complete Beginner', 'desc': 'Never written a line of code', 'icon': Icons.sentiment_satisfied_alt_rounded},
-        {'title': 'Know basics', 'desc': 'Syntax, loops, basic conditions', 'icon': Icons.trending_up_rounded},
-        {'title': 'Intermediate', 'desc': 'Built small apps, know DSA basics', 'icon': Icons.star_rounded, 'badge': 'Popular 🌟'},
-        {'title': 'Advanced', 'desc': 'Proficient with frameworks & APIs', 'icon': Icons.rocket_launch_rounded},
-      ],
+        {'title': 'Complete Beginner', 'desc': 'Never coded or just starting out'},
+        {'title': 'Know Basics', 'desc': 'Familiar with syntax and loops'},
+        {'title': 'Intermediate', 'desc': 'Built small projects & know DSA basics'},
+        {'title': 'Advanced', 'desc': 'Confident in full-stack, ML or systems'},
+      ]
     },
     {
-      'question': 'How many hours can you study per week?',
-      'subtitle': 'AI calibrates your weekly roadmap milestones',
+      'question': 'How many hours can you study?',
+      'subtitle': 'Calculates your estimated weekly completion targets',
       'icon': Icons.access_time_rounded,
       'key': 'hours',
       'options': [
-        {'title': '2-4 hours', 'desc': 'Casual • 20-30 mins/day', 'icon': Icons.bolt_rounded},
-        {'title': '5-8 hours', 'desc': 'Steady Pace • 1 hr/day', 'icon': Icons.local_fire_department_rounded, 'badge': 'Recommended 🌟'},
-        {'title': '8-12 hours', 'desc': 'Accelerated Track • 1.5-2 hrs/day', 'icon': Icons.rocket_launch_rounded, 'badge': 'Popular'},
-        {'title': '12+ hours', 'desc': 'Bootcamp Mode • 2+ hrs/day', 'icon': Icons.whatshot_rounded},
-      ],
+        {'title': '2–4 hours / week', 'desc': 'Light pace · Casual learning'},
+        {'title': '5–8 hours / week', 'desc': 'Balanced pace · Recommended'},
+        {'title': '8–12 hours / week', 'desc': 'Intensive pace · Fast-track'},
+        {'title': '12+ hours / week', 'desc': 'Full-time immersive bootcamp mode'},
+      ]
     },
     {
-      'question': 'What is your main goal?',
-      'subtitle': 'We customize interview questions & projects for this',
+      'question': 'What is your primary career goal?',
+      'subtitle': 'AI tailors interview questions & portfolio guidance',
       'icon': Icons.flag_rounded,
       'key': 'goal',
       'options': [
-        {'title': 'Get a job', 'desc': 'Target tech & software companies', 'icon': Icons.work_outline_rounded},
-        {'title': 'Crack FAANG', 'desc': 'Top-tier product MNCs (Google/Amazon)', 'icon': Icons.military_tech_rounded, 'badge': 'Top Choice 🏆'},
-        {'title': 'Build startup', 'desc': 'Launch your own tech products', 'icon': Icons.rocket_rounded},
-        {'title': 'Research & PhD', 'desc': 'Academic research & higher studies', 'icon': Icons.science_rounded},
-      ],
+        {'title': 'Get a Software Job', 'desc': 'Land high-paying campus/off-campus role'},
+        {'title': 'Crack Top Product Companies', 'desc': 'FAANG, Tier-1 MNCs & startups'},
+        {'title': 'Build AI & Web Startups', 'desc': 'Launch products & freelance'},
+        {'title': 'Higher Studies & Research', 'desc': 'MS, GATE or PhD preparation'},
+      ]
     },
   ];
 
   void selectAnswer(String answer) async {
     setState(() => answers[questions[currentStep]['key']] = answer);
-    await Future.delayed(const Duration(milliseconds: 220));
+    await Future.delayed(const Duration(milliseconds: 200));
     if (!mounted) return;
     if (currentStep < questions.length - 1) {
       setState(() => currentStep++);
@@ -104,358 +104,284 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Widget build(BuildContext context) {
     final q = questions[currentStep];
     final progress = (currentStep + 1) / questions.length;
-    final currentOptions = q['options'] as List<Map<String, dynamic>>;
+    final options = q['options'] as List<Map<String, String>>;
+    final topPadding = MediaQuery.of(context).padding.top;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF111322),
+      backgroundColor: const Color(0xFFF8F9FE),
       body: SafeArea(
         top: false,
-        child: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 540),
-            child: Container(
-              color: const Color(0xFFF8F9FE),
+        child: Column(
+          children: [
+            // Top App Bar
+            Container(
+              color: const Color(0xFF111322),
+              padding: EdgeInsets.fromLTRB(
+                16,
+                topPadding > 0 ? topPadding + 6 : 18,
+                16,
+                12,
+              ),
               child: Column(
                 children: [
-                  Container(
-                    width: double.infinity,
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Color(0xFF111322),
-                          Color(0xFF1B1D36),
-                        ],
-                      ),
-                    ),
-                    padding: EdgeInsets.fromLTRB(
-                      16,
-                      MediaQuery.of(context).padding.top + 16,
-                      20,
-                      20,
-                    ),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            if (currentStep > 0)
-                              GestureDetector(
-                                onTap: () => setState(() => currentStep--),
-                                child: Container(
-                                  padding: const EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.08),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: const Icon(
-                                    Icons.arrow_back_ios_new_rounded,
-                                    color: Colors.white,
-                                    size: 16,
-                                  ),
-                                ),
-                              )
-                            else
-                              const SizedBox(width: 32),
-                            const SizedBox(width: 12),
-                            Text(
-                              'Step ${currentStep + 1} of ${questions.length}',
-                              style: GoogleFonts.plusJakartaSans(
-                                fontSize: 13.5,
-                                fontWeight: FontWeight.w600,
-                                color: const Color(0xFFB3B0D6),
-                              ),
-                            ),
-                            const Spacer(),
-                            Row(
-                              children: [
-                                Text(
-                                  'PathForge Setup',
-                                  style: GoogleFonts.plusJakartaSans(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w700,
-                                    color: const Color(0xFFFF5722),
-                                  ),
-                                ),
-                                const SizedBox(width: 8),
-                                Container(
-                                  width: 22,
-                                  height: 22,
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.white,
-                                  ),
-                                  padding: const EdgeInsets.all(2),
-                                  child: ClipOval(
-                                    child: Image.asset(
-                                      'assets/images/logo.png',
-                                      fit: BoxFit.contain,
-                                      errorBuilder: (_, __, ___) => Image.asset(
-                                        'assets/logo.png',
-                                        fit: BoxFit.contain,
-                                        errorBuilder: (_, __, ___) => const Icon(
-                                          Icons.trending_up,
-                                          size: 14,
-                                          color: Color(0xFF7C5CBF),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 14),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(6),
-                          child: TweenAnimationBuilder<double>(
-                            tween: Tween(begin: 0, end: progress),
-                            duration: const Duration(milliseconds: 350),
-                            builder: (_, val, __) => LinearProgressIndicator(
-                              value: val,
-                              backgroundColor: Colors.white12,
-                              valueColor: const AlwaysStoppedAnimation(
-                                Color(0xFFFF5722),
-                              ),
-                              minHeight: 6,
-                            ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          if (currentStep > 0) {
+                            setState(() => currentStep--);
+                          }
+                        },
+                        child: Container(
+                          width: 30,
+                          height: 30,
+                          decoration: BoxDecoration(
+                            color: Colors.white12,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Icon(
+                            Icons.arrow_back_ios_new_rounded,
+                            color: currentStep > 0
+                                ? Colors.white
+                                : Colors.white24,
+                            size: 13,
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-
-                  Expanded(
-                    child: SingleChildScrollView(
-                      padding: const EdgeInsets.fromLTRB(20, 24, 20, 28),
-                      child: AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 250),
-                        child: Column(
-                          key: ValueKey(currentStep),
-                          children: [
-                            Center(
-                              child: Container(
-                                width: 72,
-                                height: 72,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  gradient: const LinearGradient(
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                    colors: [
-                                      Color(0xFF7C5CBF),
-                                      Color(0xFFFF5722),
-                                    ],
-                                  ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: const Color(0xFF7C5CBF)
-                                          .withOpacity(0.28),
-                                      blurRadius: 18,
-                                      offset: const Offset(0, 6),
-                                    ),
-                                  ],
-                                ),
-                                child: Center(
-                                  child: Icon(
-                                    q['icon'] as IconData,
-                                    color: Colors.white,
-                                    size: 34,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-
-                            Text(
-                              q['question'],
-                              style: GoogleFonts.plusJakartaSans(
-                                fontSize: 22,
-                                fontWeight: FontWeight.w800,
-                                color: const Color(0xFF111322),
-                                height: 1.25,
-                                letterSpacing: -0.3,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: 6),
-
-                            Text(
-                              q['subtitle'] ?? 'Choose one to continue',
-                              style: GoogleFonts.plusJakartaSans(
-                                fontSize: 13.5,
-                                color: const Color(0xFF6B6890),
-                                fontWeight: FontWeight.w500,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: 24),
-
-                            ...currentOptions.map((opt) {
-                              final title = opt['title'] as String;
-                              final desc = opt['desc'] as String?;
-                              final icon = opt['icon'] as IconData?;
-                              final badge = opt['badge'] as String?;
-                              final isSelected = answers[q['key']] == title;
-
-                              return GestureDetector(
-                                onTap: () => selectAnswer(title),
-                                child: AnimatedContainer(
-                                  duration: const Duration(milliseconds: 180),
-                                  width: double.infinity,
-                                  margin: const EdgeInsets.only(bottom: 12),
-                                  padding: const EdgeInsets.all(16),
-                                  decoration: BoxDecoration(
-                                    color: isSelected
-                                        ? const Color(0xFFFFF3EE)
-                                        : Colors.white,
-                                    borderRadius: BorderRadius.circular(18),
-                                    border: Border.all(
-                                      color: isSelected
-                                          ? const Color(0xFFFF5722)
-                                          : const Color(0xFFE2E4F0),
-                                      width: isSelected ? 2 : 1.2,
-                                    ),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: isSelected
-                                            ? const Color(0xFFFF5722)
-                                                .withOpacity(0.14)
-                                            : Colors.black.withOpacity(0.03),
-                                        blurRadius: isSelected ? 12 : 6,
-                                        offset: const Offset(0, 3),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        width: 44,
-                                        height: 44,
-                                        decoration: BoxDecoration(
-                                          color: isSelected
-                                              ? const Color(0xFFFF5722)
-                                                  .withOpacity(0.15)
-                                              : const Color(0xFF7C5CBF)
-                                                  .withOpacity(0.08),
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                        ),
-                                        child: Icon(
-                                          icon ?? q['icon'] as IconData,
-                                          color: isSelected
-                                              ? const Color(0xFFFF5722)
-                                              : const Color(0xFF7C5CBF),
-                                          size: 22,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 14),
-
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                  child: Text(
-                                                    title,
-                                                    style: GoogleFonts
-                                                        .plusJakartaSans(
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      color:
-                                                          const Color(0xFF111322),
-                                                    ),
-                                                  ),
-                                                ),
-                                                if (badge != null)
-                                                  Container(
-                                                    padding:
-                                                        const EdgeInsets.symmetric(
-                                                      horizontal: 8,
-                                                      vertical: 3,
-                                                    ),
-                                                    decoration: BoxDecoration(
-                                                      color: const Color(
-                                                              0xFFFF5722)
-                                                          .withOpacity(0.12),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                    ),
-                                                    child: Text(
-                                                      badge,
-                                                      style: GoogleFonts
-                                                          .plusJakartaSans(
-                                                        fontSize: 11,
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        color: const Color(
-                                                            0xFFFF5722),
-                                                      ),
-                                                    ),
-                                                  ),
-                                              ],
-                                            ),
-                                            if (desc != null) ...[
-                                              const SizedBox(height: 3),
-                                              Text(
-                                                desc,
-                                                style: GoogleFonts
-                                                    .plusJakartaSans(
-                                                  fontSize: 12.5,
-                                                  fontWeight: FontWeight.w500,
-                                                  color:
-                                                      const Color(0xFF6B6890),
-                                                ),
-                                              ),
-                                            ],
-                                          ],
-                                        ),
-                                      ),
-                                      const SizedBox(width: 10),
-
-                                      Container(
-                                        width: 24,
-                                        height: 24,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: isSelected
-                                              ? const Color(0xFFFF5722)
-                                              : Colors.transparent,
-                                          border: Border.all(
-                                            color: isSelected
-                                                ? const Color(0xFFFF5722)
-                                                : const Color(0xFFD3D5E6),
-                                            width: 1.5,
-                                          ),
-                                        ),
-                                        child: isSelected
-                                            ? const Icon(
-                                                Icons.check_rounded,
-                                                color: Colors.white,
-                                                size: 15,
-                                              )
-                                            : null,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            }),
-                          ],
+                      ),
+                      Text(
+                        'Step ${currentStep + 1} of ${questions.length}',
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white70,
                         ),
                       ),
+                      Text(
+                        'PathForge Setup',
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                          color: const Color(0xFFFF5722),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(4),
+                    child: LinearProgressIndicator(
+                      value: progress,
+                      backgroundColor: Colors.white12,
+                      valueColor: const AlwaysStoppedAnimation(
+                        Color(0xFFFF5722),
+                      ),
+                      minHeight: 4,
                     ),
                   ),
                 ],
               ),
             ),
-          ),
+
+            // Quiz Body (Proportioned to fit on 1 screen)
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+                child: Column(
+                  children: [
+                    // Icon Badge
+                    Container(
+                      width: 44,
+                      height: 44,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: LinearGradient(
+                          colors: [Color(0xFFFF5722), Color(0xFF7C5CBF)],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                      ),
+                      child: Icon(
+                        q['icon'] as IconData,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+
+                    // Question Title
+                    Text(
+                      q['question'],
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w800,
+                        color: const Color(0xFF1A1A2E),
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 2),
+
+                    // Subtitle
+                    Text(
+                      q['subtitle'],
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 11,
+                        color: const Color(0xFF6B6890),
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 12),
+
+                    // Options List
+                    ...options.asMap().entries.map((entry) {
+                      final idx = entry.key;
+                      final opt = entry.value;
+                      final isSelected =
+                          answers[q['key']] == opt['title'];
+                      final tag = opt['tag'] ?? '';
+
+                      return GestureDetector(
+                        onTap: () => selectAnswer(opt['title']!),
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 180),
+                          width: double.infinity,
+                          margin: const EdgeInsets.only(bottom: 7),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 8.5,
+                          ),
+                          decoration: BoxDecoration(
+                            color: isSelected
+                                ? const Color(0xFF111322)
+                                : Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: isSelected
+                                  ? const Color(0xFF111322)
+                                  : const Color(0xFFE5E7F2),
+                              width: 1.2,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.02),
+                                blurRadius: 4,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            children: [
+                              // Number Badge
+                              Container(
+                                width: 22,
+                                height: 22,
+                                decoration: BoxDecoration(
+                                  color: isSelected
+                                      ? const Color(0xFFFF5722)
+                                      : const Color(0xFFF0EDF8),
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    '${idx + 1}',
+                                    style: GoogleFonts.plusJakartaSans(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w800,
+                                      color: isSelected
+                                          ? Colors.white
+                                          : const Color(0xFF7C5CBF),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+
+                              // Title & Description
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          opt['title']!,
+                                          style:
+                                              GoogleFonts.plusJakartaSans(
+                                            fontSize: 12.5,
+                                            fontWeight: FontWeight.w800,
+                                            color: isSelected
+                                                ? Colors.white
+                                                : const Color(0xFF1A1A2E),
+                                          ),
+                                        ),
+                                        if (tag.isNotEmpty) ...[
+                                          const SizedBox(width: 6),
+                                          Container(
+                                            padding:
+                                                const EdgeInsets.symmetric(
+                                              horizontal: 5,
+                                              vertical: 1.5,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xFFFF5722)
+                                                  .withOpacity(0.15),
+                                              borderRadius:
+                                                  BorderRadius.circular(4),
+                                            ),
+                                            child: Text(
+                                              tag,
+                                              style: GoogleFonts
+                                                  .plusJakartaSans(
+                                                fontSize: 8.5,
+                                                fontWeight:
+                                                    FontWeight.w700,
+                                                color: const Color(
+                                                    0xFFFF5722),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ],
+                                    ),
+                                    Text(
+                                      opt['desc']!,
+                                      style:
+                                          GoogleFonts.plusJakartaSans(
+                                        fontSize: 10,
+                                        color: isSelected
+                                            ? Colors.white70
+                                            : const Color(0xFF7B7998),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              // Radio Indicator
+                              Container(
+                                width: 18,
+                                height: 18,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: isSelected
+                                        ? const Color(0xFFFF5722)
+                                        : const Color(0xFFD4D6E2),
+                                    width: isSelected ? 4 : 1.5,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
