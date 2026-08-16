@@ -14,7 +14,6 @@ class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _ctrl;
   late Animation<double> _scaleAnim;
-  late Animation<double> _fadeAnim;
 
   @override
   void initState() {
@@ -24,7 +23,6 @@ class _SplashScreenState extends State<SplashScreen>
       duration: const Duration(milliseconds: 900),
     );
     _scaleAnim = CurvedAnimation(parent: _ctrl, curve: Curves.easeOutBack);
-    _fadeAnim = CurvedAnimation(parent: _ctrl, curve: Curves.easeIn);
     _ctrl.forward();
     _checkAndNavigate();
   }
@@ -36,7 +34,7 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   Future<void> _checkAndNavigate() async {
-    await Future.delayed(const Duration(milliseconds: 2200));
+    await Future.delayed(const Duration(milliseconds: 2400));
     if (!mounted) return;
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
@@ -64,52 +62,132 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF111322),
-      body: Center(
-        child: FadeTransition(
-          opacity: _fadeAnim,
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: RadialGradient(
+            center: Alignment(0, -0.2),
+            radius: 1.1,
+            colors: [
+              Color(0xFF1B1A38),
+              Color(0xFF0F0E1E),
+              Color(0xFF090814),
+            ],
+          ),
+        ),
+        child: SafeArea(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              const Spacer(flex: 3),
+
+              // Glowing Circular Emblem (Zero White Square Box!)
               ScaleTransition(
                 scale: _scaleAnim,
-                child: SizedBox(
-                  width: 140,
-                  height: 140,
-                  child: Image.asset(
-                    'assets/images/logo.png',
-                    fit: BoxFit.contain,
-                    errorBuilder: (_, __, ___) => Image.asset(
-                      'assets/logo.png',
-                      fit: BoxFit.contain,
-                      errorBuilder: (_, __, ___) => const Icon(
-                        Icons.trending_up_rounded,
-                        size: 70,
-                        color: Color(0xFFFF5722),
+                child: Container(
+                  width: 200,
+                  height: 200,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFF7C5CBF).withOpacity(0.45),
+                        blurRadius: 40,
+                        spreadRadius: 6,
+                        offset: const Offset(0, 8),
+                      ),
+                      BoxShadow(
+                        color: const Color(0xFFFF5722).withOpacity(0.25),
+                        blurRadius: 30,
+                        spreadRadius: 2,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: ClipOval(
+                    child: Image.asset(
+                      'assets/images/logo.png',
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => Container(
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: LinearGradient(
+                            colors: [Color(0xFF7C5CBF), Color(0xFFFF5722)],
+                          ),
+                        ),
+                        child: const Icon(
+                          Icons.auto_awesome_rounded,
+                          color: Colors.white,
+                          size: 70,
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-              const SizedBox(height: 24),
+
+              const SizedBox(height: 32),
+
+              // Brand Title
               Text(
                 'PathForge',
                 style: GoogleFonts.plusJakartaSans(
-                  fontSize: 36,
+                  fontSize: 38,
                   fontWeight: FontWeight.w800,
                   color: Colors.white,
-                  letterSpacing: -0.5,
+                  letterSpacing: -0.6,
                 ),
               ),
-              const SizedBox(height: 6),
+
+              const SizedBox(height: 8),
+
+              // Subtitle
               Text(
                 'Your AI career roadmap',
                 style: GoogleFonts.plusJakartaSans(
-                  fontSize: 15,
+                  fontSize: 16,
+                  color: const Color(0xFFD4C9FF),
                   fontWeight: FontWeight.w500,
-                  color: const Color(0xFFB3B0D6),
+                  letterSpacing: 0.2,
                 ),
               ),
+
+              const Spacer(flex: 4),
+
+              // Bottom 3 Carousel Dots
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 22,
+                    height: 8,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFF5722),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Container(
+                    width: 8,
+                    height: 8,
+                    decoration: const BoxDecoration(
+                      color: Color(0xFF434164),
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Container(
+                    width: 8,
+                    height: 8,
+                    decoration: const BoxDecoration(
+                      color: Color(0xFF434164),
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 36),
             ],
           ),
         ),
