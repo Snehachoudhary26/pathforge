@@ -60,7 +60,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String get _initial =>
       _name.isNotEmpty ? _name[0].toUpperCase() : 'S';
 
-  // ── Photo Picker Modal (Triggered by clicking on Avatar or Camera icon) ──
   void _openPhotoPickerSheet() {
     showModalBottomSheet(
       context: context,
@@ -106,7 +105,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  // ── Text Details Edit Sheet (Triggered ONLY by the top-right Edit button) ──
   void _openEditSheet() {
     showModalBottomSheet(
       context: context,
@@ -244,10 +242,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Container(
                 color: const Color(0xFF111322),
                 padding: EdgeInsets.fromLTRB(
+                  16,
+                  MediaQuery.of(context).padding.top + 10,
+                  16,
                   20,
-                  MediaQuery.of(context).padding.top + 14,
-                  20,
-                  24,
                 ),
                 child: Column(
                   children: [
@@ -258,8 +256,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         GestureDetector(
                           onTap: () => context.go('/home'),
                           child: Container(
-                            width: 36,
-                            height: 36,
+                            width: 34,
+                            height: 34,
                             decoration: BoxDecoration(
                               color: Colors.white12,
                               borderRadius: BorderRadius.circular(10),
@@ -267,14 +265,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             child: const Icon(
                               Icons.arrow_back_ios_new_rounded,
                               color: Colors.white,
-                              size: 16,
+                              size: 15,
                             ),
                           ),
                         ),
                         Text(
                           'Profile',
                           style: GoogleFonts.plusJakartaSans(
-                            fontSize: 18,
+                            fontSize: 16,
                             fontWeight: FontWeight.w800,
                             color: Colors.white,
                           ),
@@ -282,8 +280,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         GestureDetector(
                           onTap: _openEditSheet,
                           child: Container(
-                            width: 36,
-                            height: 36,
+                            width: 34,
+                            height: 34,
                             decoration: BoxDecoration(
                               color: const Color(0xFFFF5722).withOpacity(0.2),
                               borderRadius: BorderRadius.circular(10),
@@ -294,23 +292,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             child: const Icon(
                               Icons.edit_rounded,
                               color: Color(0xFFFF5722),
-                              size: 18,
+                              size: 16,
                             ),
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 18),
+                    const SizedBox(height: 14),
 
-                    // Interactive Profile Avatar with Photo Picker
+                    // Interactive Profile Avatar
                     GestureDetector(
                       onTap: _openPhotoPickerSheet,
                       child: Stack(
                         alignment: Alignment.center,
                         children: [
                           Container(
-                            width: 86,
-                            height: 86,
+                            width: 76,
+                            height: 76,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               gradient: const LinearGradient(
@@ -319,60 +317,60 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               boxShadow: [
                                 BoxShadow(
                                   color: const Color(0xFFFF5722).withOpacity(0.35),
-                                  blurRadius: 16,
-                                  offset: const Offset(0, 4),
+                                  blurRadius: 12,
+                                  offset: const Offset(0, 3),
                                 ),
                               ],
                             ),
-                            padding: const EdgeInsets.all(3),
+                            padding: const EdgeInsets.all(2.5),
                             child: ClipOval(
-                              child: _buildAvatarWidget(80),
+                              child: _buildAvatarWidget(70),
                             ),
                           ),
                           Positioned(
                             right: 0,
                             bottom: 0,
                             child: Container(
-                              width: 28,
-                              height: 28,
+                              width: 24,
+                              height: 24,
                               decoration: BoxDecoration(
                                 color: const Color(0xFFFF5722),
                                 shape: BoxShape.circle,
                                 border: Border.all(
                                   color: const Color(0xFF111322),
-                                  width: 2.5,
+                                  width: 2,
                                 ),
                               ),
                               child: const Icon(
                                 Icons.camera_alt_rounded,
                                 color: Colors.white,
-                                size: 14,
+                                size: 12,
                               ),
                             ),
                           ),
                         ],
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 10),
 
                     // User Name & Subtitle
                     Text(
                       _name,
                       style: GoogleFonts.plusJakartaSans(
-                        fontSize: 22,
+                        fontSize: 18,
                         fontWeight: FontWeight.w800,
                         color: Colors.white,
                       ),
                     ),
-                    const SizedBox(height: 3),
+                    const SizedBox(height: 2),
                     Text(
                       '${userData?['branch'] ?? 'Other'} · ${userData?['year'] ?? 'Graduated'}',
                       style: GoogleFonts.plusJakartaSans(
-                        fontSize: 12.5,
+                        fontSize: 11.5,
                         color: const Color(0xFFB3B0D6),
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 8),
 
                     // Level & Track Badges
                     Row(
@@ -380,10 +378,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       children: [
                         Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 5),
+                              horizontal: 10, vertical: 4),
                           decoration: BoxDecoration(
                             color: const Color(0xFFFF5722).withOpacity(0.18),
-                            borderRadius: BorderRadius.circular(20),
+                            borderRadius: BorderRadius.circular(16),
                             border: Border.all(
                               color: const Color(0xFFFF5722).withOpacity(0.4),
                             ),
@@ -394,15 +392,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               const Icon(
                                 Icons.star_rounded,
                                 color: Color(0xFFFF5722),
-                                size: 14,
+                                size: 13,
                               ),
-                              const SizedBox(width: 5),
+                              const SizedBox(width: 4),
                               Text(
-                                'Level $level · $levelName',
+                                'Level $level: $levelName',
                                 style: GoogleFonts.plusJakartaSans(
                                   fontSize: 11,
-                                  fontWeight: FontWeight.w800,
-                                  color: const Color(0xFFFF5722),
+                                  fontWeight: FontWeight.w700,
+                                  color: const Color(0xFFFF8A65),
                                 ),
                               ),
                             ],
@@ -411,10 +409,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         const SizedBox(width: 8),
                         Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 5),
+                              horizontal: 10, vertical: 4),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF7C5CBF).withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(20),
+                            color: const Color(0xFF7C5CBF).withOpacity(0.18),
+                            borderRadius: BorderRadius.circular(16),
                             border: Border.all(
                               color: const Color(0xFF7C5CBF).withOpacity(0.4),
                             ),
@@ -434,147 +432,62 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
 
-              // Stats Row Card
+              // Body Content (White Card)
               Container(
-                margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(18),
-                  border: Border.all(color: const Color(0xFFE8E9F2)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.03),
-                      blurRadius: 10,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
+                decoration: const BoxDecoration(
+                  color: Color(0xFFF8F9FE),
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
                 ),
-                child: Row(
-                  children: [
-                    _StatItem(
-                      '$xp',
-                      'Total XP',
-                      Icons.bolt_rounded,
-                      const Color(0xFFE08D00),
-                      const Color(0xFFFFF9E6),
-                    ),
-                    _Div(),
-                    _StatItem(
-                      '$doneWeeks',
-                      'Weeks done',
-                      Icons.check_circle_rounded,
-                      const Color(0xFF00B894),
-                      const Color(0xFFE6F8F4),
-                    ),
-                    _Div(),
-                    _StatItem(
-                      '$streak',
-                      'Day streak',
-                      Icons.local_fire_department_rounded,
-                      const Color(0xFFFF5722),
-                      const Color(0xFFFFECE5),
-                    ),
-                    _Div(),
-                    _StatItem(
-                      'Lv.$level',
-                      'Level',
-                      Icons.star_rounded,
-                      const Color(0xFF7C5CBF),
-                      const Color(0xFFF3F0FA),
-                    ),
-                  ],
-                ),
-              ),
-
-              // Body Content
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+                padding: const EdgeInsets.all(14),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Job Readiness Score Card
-                    GestureDetector(
-                      onTap: () => context.go('/job-readiness'),
-                      child: Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF1B1D36),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 44,
-                              height: 44,
-                              decoration: const BoxDecoration(
-                                color: Color(0xFFFF5722),
-                                shape: BoxShape.circle,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  '0',
-                                  style: GoogleFonts.plusJakartaSans(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w800,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 14),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Job Readiness Score',
-                                    style: GoogleFonts.plusJakartaSans(
-                                      fontSize: 14.5,
-                                      fontWeight: FontWeight.w800,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  Text(
-                                    'See your full score breakdown',
-                                    style: GoogleFonts.plusJakartaSans(
-                                      fontSize: 11,
-                                      color: const Color(0xFF9B99B5),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 14, vertical: 7),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFFF5722),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Text(
-                                'View',
-                                style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w800,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                    // Stats Row
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: const Color(0xFFE8E9F2)),
+                      ),
+                      child: Row(
+                        children: [
+                          _StatItem(
+                            '$streak days',
+                            'Streak',
+                            Icons.local_fire_department_rounded,
+                            const Color(0xFFFF5722),
+                            const Color(0xFFFFECE5),
+                          ),
+                          _Div(),
+                          _StatItem(
+                            '$xp',
+                            'Total XP',
+                            Icons.bolt_rounded,
+                            const Color(0xFFE08D00),
+                            const Color(0xFFFEFBE8),
+                          ),
+                          _Div(),
+                          _StatItem(
+                            '$doneWeeks/$totalWeeks',
+                            'Weeks done',
+                            Icons.check_circle_outline_rounded,
+                            const Color(0xFF00B894),
+                            const Color(0xFFE6F8F4),
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(height: 18),
+                    const SizedBox(height: 14),
 
-                    // XP Progress Card
-                    _SectionTitle('XP Progress'),
-                    const SizedBox(height: 8),
+                    // Roadmap Progress
+                    _SectionTitle('Roadmap Progress'),
+                    const SizedBox(height: 6),
                     Container(
-                      padding: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF1B1D36),
-                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: const Color(0xFFE8E9F2)),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -583,81 +496,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                levelName,
-                                style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w800,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              Text(
-                                '$xp / 500 XP',
-                                style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w800,
-                                  color: const Color(0xFFFF5722),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 10),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(6),
-                            child: LinearProgressIndicator(
-                              value: ((xp % 500) / 500).clamp(0.0, 1.0),
-                              backgroundColor: Colors.white12,
-                              valueColor: const AlwaysStoppedAnimation(
-                                  Color(0xFFFF5722)),
-                              minHeight: 8,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            '${500 - (xp % 500)} XP to Level 2',
-                            style: GoogleFonts.plusJakartaSans(
-                              fontSize: 11,
-                              color: const Color(0xFF9B99B5),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 18),
-
-                    // Current Progress Card
-                    _SectionTitle('Current progress'),
-                    const SizedBox(height: 8),
-                    Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: const Color(0xFFE8E9F2)),
-                      ),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
                                 track,
                                 style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 14.5,
+                                  fontSize: 13,
                                   fontWeight: FontWeight.w800,
                                   color: const Color(0xFF1A1A2E),
                                 ),
                               ),
                               Text(
-                                '$doneWeeks/$totalWeeks weeks',
+                                '${(progress * 100).toInt()}% complete',
                                 style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w800,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w700,
                                   color: const Color(0xFFFF5722),
                                 ),
                               ),
                             ],
                           ),
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 8),
                           ClipRRect(
                             borderRadius: BorderRadius.circular(6),
                             child: LinearProgressIndicator(
@@ -665,114 +521,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               backgroundColor: const Color(0xFFF0EDF8),
                               valueColor: const AlwaysStoppedAnimation(
                                   Color(0xFFFF5722)),
-                              minHeight: 8,
+                              minHeight: 6,
                             ),
-                          ),
-                          const SizedBox(height: 10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                '${(progress * 100).toInt()}% complete',
-                                style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 11.5,
-                                  color: const Color(0xFF6B6890),
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () => context.go(
-                                    '/roadmap?track=${Uri.encodeComponent(track)}'),
-                                child: Text(
-                                  'View Roadmap →',
-                                  style: GoogleFonts.plusJakartaSans(
-                                    fontSize: 11.5,
-                                    fontWeight: FontWeight.w800,
-                                    color: const Color(0xFFFF5722),
-                                  ),
-                                ),
-                              ),
-                            ],
                           ),
                         ],
                       ),
                     ),
-                    const SizedBox(height: 18),
+                    const SizedBox(height: 14),
 
-                    // Achievements Row
-                    _SectionTitle('Achievements'),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: _Badge(
-                            Icons.rocket_launch_rounded,
-                            'Started',
-                            'Joined PathForge',
-                            const Color(0xFFFF5722),
-                            const Color(0xFFFFECE5),
-                            true,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: _Badge(
-                            Icons.code_rounded,
-                            'Coder',
-                            'Completed Week 1',
-                            const Color(0xFF7C5CBF),
-                            const Color(0xFFF3F0FA),
-                            doneWeeks >= 1,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: _Badge(
-                            Icons.local_fire_department_rounded,
-                            '7–Day Streak',
-                            'Keeps going!',
-                            const Color(0xFFE08D00),
-                            const Color(0xFFFFF9E6),
-                            streak >= 7,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 18),
-
-                    // My Profile Details Section
+                    // Academic & Goals
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        _SectionTitle('My profile'),
+                        _SectionTitle('Academic & Goals'),
                         GestureDetector(
                           onTap: _openEditSheet,
-                          child: Row(
-                            children: [
-                              const Icon(
-                                Icons.edit_rounded,
-                                size: 13,
-                                color: Color(0xFFFF5722),
-                              ),
-                              const SizedBox(width: 3),
-                              Text(
-                                'Edit',
-                                style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w800,
-                                  color: const Color(0xFFFF5722),
-                                ),
-                              ),
-                            ],
+                          child: Text(
+                            'Edit',
+                            style: GoogleFonts.plusJakartaSans(
+                              fontSize: 11.5,
+                              fontWeight: FontWeight.w800,
+                              color: const Color(0xFFFF5722),
+                            ),
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 6),
                     Container(
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(16),
                         border: Border.all(color: const Color(0xFFE8E9F2)),
                       ),
                       child: Column(
@@ -806,11 +585,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 18),
+                    const SizedBox(height: 14),
 
                     // Settings & Account
                     _SectionTitle('Settings & Account'),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 6),
                     _SettingTile(
                       Icons.swap_horiz_rounded,
                       'Change Career Track',
@@ -819,43 +598,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       const Color(0xFFF3F0FA),
                       () => context.go('/track'),
                     ),
-                    const SizedBox(height: 8),
-                    _SettingTile(
-                      Icons.delete_sweep_rounded,
-                      'Reset Mentor Chat History',
-                      'Clear conversation context with AI Mentor',
-                      const Color(0xFFFF5722),
-                      const Color(0xFFFFECE5),
-                      () async {
-                        final uid = FirebaseAuth.instance.currentUser?.uid;
-                        if (uid != null) {
-                          await FirebaseFirestore.instance
-                              .collection('mentor_chats')
-                              .doc(uid)
-                              .delete();
-                          if (context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  'Mentor chat history cleared!',
-                                  style: GoogleFonts.plusJakartaSans(
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                backgroundColor: const Color(0xFF00B894),
-                                behavior: SnackBarBehavior.floating,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                margin: const EdgeInsets.all(16),
-                              ),
-                            );
-                          }
-                        }
-                      },
-                    ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 6),
                     _SettingTile(
                       Icons.logout_rounded,
                       'Sign Out',
@@ -877,7 +620,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
       // Bottom Navigation Bar
       bottomNavigationBar: Container(
-        padding: const EdgeInsets.symmetric(vertical: 8),
+        padding: const EdgeInsets.symmetric(vertical: 6),
         decoration: const BoxDecoration(
           color: Colors.white,
           border: Border(top: BorderSide(color: Color(0xFFE8E9F2))),
@@ -958,237 +701,72 @@ class _PhotoPickerSheetState extends State<_PhotoPickerSheet> {
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
       ),
-      padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
+      padding: const EdgeInsets.fromLTRB(18, 14, 18, 28),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Drag Handle
           Center(
             child: Container(
-              width: 40,
+              width: 36,
               height: 4,
               decoration: BoxDecoration(
-                color: const Color(0xFFE2E4F0),
+                color: const Color(0xFFD4D6E2),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
           ),
-          const SizedBox(height: 16),
-
+          const SizedBox(height: 12),
           Text(
             'Change Profile Photo',
             style: GoogleFonts.plusJakartaSans(
-              fontSize: 18,
+              fontSize: 16,
               fontWeight: FontWeight.w800,
               color: const Color(0xFF1A1A2E),
             ),
           ),
-          const SizedBox(height: 4),
-          Text(
-            'Select an image from your device or pick a developer avatar',
-            style: GoogleFonts.plusJakartaSans(
-              fontSize: 12.5,
-              color: const Color(0xFF6B6890),
+          const SizedBox(height: 12),
+          SizedBox(
+            width: double.infinity,
+            height: 44,
+            child: ElevatedButton.icon(
+              onPressed: _isProcessing ? null : _pickImageFromDevice,
+              icon: _isProcessing
+                  ? const SizedBox(
+                      width: 16,
+                      height: 16,
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 2,
+                      ),
+                    )
+                  : const Icon(Icons.upload_file_rounded, size: 16),
+              label: Text(
+                'Upload from Device',
+                style: GoogleFonts.plusJakartaSans(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFFF5722),
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                elevation: 0,
+              ),
             ),
           ),
-          const SizedBox(height: 20),
-
-          if (_isProcessing)
-            const Center(
-              child: Padding(
-                padding: EdgeInsets.all(20),
-                child: CircularProgressIndicator(color: Color(0xFFFF5722)),
-              ),
-            )
-          else ...[
-            // Option 1: Pick from Device / Browser Gallery
-            GestureDetector(
-              onTap: _pickImageFromDevice,
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFFFECE5),
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(
-                    color: const Color(0xFFFF5722).withOpacity(0.3),
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 42,
-                      height: 42,
-                      decoration: const BoxDecoration(
-                        color: Color(0xFFFF5722),
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.photo_library_rounded,
-                        color: Colors.white,
-                        size: 20,
-                      ),
-                    ),
-                    const SizedBox(width: 14),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Choose from Device / Gallery',
-                            style: GoogleFonts.plusJakartaSans(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w800,
-                              color: const Color(0xFF1A1A2E),
-                            ),
-                          ),
-                          Text(
-                            'Upload PNG, JPG, or WEBP photo',
-                            style: GoogleFonts.plusJakartaSans(
-                              fontSize: 11.5,
-                              color: const Color(0xFF6B6890),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const Icon(
-                      Icons.chevron_right_rounded,
-                      color: Color(0xFFFF5722),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 12),
-
-            // Option 2: Choose Preset Avatars
-            Text(
-              'Or choose a Developer Avatar',
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 12,
-                fontWeight: FontWeight.w700,
-                color: const Color(0xFF9B99B5),
-              ),
-            ),
-            const SizedBox(height: 10),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  _PresetAvatarTile(
-                    label: 'PathForge Emblem',
-                    imagePath: 'assets/images/logo.png',
-                    onTap: () {
-                      widget.onPhotoSelected('assets/images/logo.png');
-                      Navigator.pop(context);
-                    },
-                  ),
-                  _PresetAvatarTile(
-                    label: 'FORGE Robot',
-                    imagePath: 'assets/images/robot-for-chatbot.png',
-                    onTap: () {
-                      widget.onPhotoSelected('assets/images/robot-for-chatbot.png');
-                      Navigator.pop(context);
-                    },
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            // Option 3: Remove Current Photo
-            if (widget.currentPhotoUrl != null &&
-                widget.currentPhotoUrl!.isNotEmpty)
-              GestureDetector(
-                onTap: () {
-                  widget.onPhotoSelected('');
-                  Navigator.pop(context);
-                },
-                child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: Text(
-                      'Remove Current Photo',
-                      style: GoogleFonts.plusJakartaSans(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.red.shade600,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-          ],
         ],
       ),
     );
   }
 }
 
-class _PresetAvatarTile extends StatelessWidget {
-  final String label;
-  final String imagePath;
-  final VoidCallback onTap;
-  const _PresetAvatarTile({
-    required this.label,
-    required this.imagePath,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        margin: const EdgeInsets.only(right: 12),
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          color: const Color(0xFFF6F4FB),
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: const Color(0xFFE2DCF2)),
-        ),
-        child: Column(
-          children: [
-            Container(
-              width: 50,
-              height: 50,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Color(0xFF111322),
-              ),
-              child: ClipOval(
-                child: Image.asset(
-                  imagePath,
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) => const Icon(
-                    Icons.account_circle,
-                    color: Colors.white,
-                    size: 36,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 6),
-            Text(
-              label,
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 11,
-                fontWeight: FontWeight.w700,
-                color: const Color(0xFF1B1D36),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// ── Edit Profile Sheet (Text Fields Only) ─────────────────────────
+// ── Edit Profile Sheet ───────────────────────────────────────────
 
 class _EditProfileSheet extends StatefulWidget {
   final Map<String, dynamic> userData;
@@ -1248,11 +826,11 @@ class _EditProfileSheetState extends State<_EditProfileSheet> {
     setState(() => _saving = true);
     await widget.onSaved({
       'name': _nameController.text.trim(),
-      if (_branch != null) 'branch': _branch,
-      if (_year != null) 'year': _year,
-      if (_experience != null) 'experience': _experience,
-      if (_hours != null) 'hours': _hours,
-      if (_goal != null) 'goal': _goal,
+      'branch': _branch,
+      'year': _year,
+      'experience': _experience,
+      'hours': _hours,
+      'goal': _goal,
     });
     if (mounted) Navigator.pop(context);
   }
@@ -1262,13 +840,13 @@ class _EditProfileSheetState extends State<_EditProfileSheet> {
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
       ),
       padding: EdgeInsets.fromLTRB(
-        24,
-        20,
-        24,
-        MediaQuery.of(context).viewInsets.bottom + 24,
+        18,
+        14,
+        18,
+        MediaQuery.of(context).viewInsets.bottom + 20,
       ),
       child: SingleChildScrollView(
         child: Column(
@@ -1277,67 +855,69 @@ class _EditProfileSheetState extends State<_EditProfileSheet> {
           children: [
             Center(
               child: Container(
-                width: 40,
+                width: 36,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFE2E4F0),
+                  color: const Color(0xFFD4D6E2),
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 12),
             Text(
               'Edit Profile',
               style: GoogleFonts.plusJakartaSans(
-                fontSize: 18,
+                fontSize: 16,
                 fontWeight: FontWeight.w800,
                 color: const Color(0xFF1A1A2E),
               ),
             ),
-            const SizedBox(height: 16),
-
-            // Name Field
-            TextField(
-              controller: _nameController,
-              decoration: InputDecoration(
-                labelText: 'Full Name',
-                prefixIcon: const Icon(Icons.person_outline_rounded),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(14),
+            const SizedBox(height: 12),
+            _buildField(
+              'Full Name',
+              TextField(
+                controller: _nameController,
+                style: GoogleFonts.plusJakartaSans(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xFF1B1D36),
+                ),
+                decoration: InputDecoration(
+                  isDense: true,
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: const BorderSide(color: Color(0xFFE2E4F0)),
+                  ),
                 ),
               ),
             ),
-            const SizedBox(height: 12),
-
-            // Dropdowns
-            _dropdown('Branch', _branch, branches, (v) => setState(() => _branch = v)),
-            const SizedBox(height: 12),
-            _dropdown('Year', _year, years, (v) => setState(() => _year = v)),
-            const SizedBox(height: 12),
-            _dropdown('Experience', _experience, experiences,
-                (v) => setState(() => _experience = v)),
-            const SizedBox(height: 12),
-            _dropdown('Study Hours', _hours, hoursList,
-                (v) => setState(() => _hours = v)),
-            const SizedBox(height: 12),
-            _dropdown('Main Goal', _goal, goals, (v) => setState(() => _goal = v)),
-            const SizedBox(height: 20),
-
+            const SizedBox(height: 10),
+            _buildDropdown('Branch', branches, _branch, (v) => setState(() => _branch = v)),
+            const SizedBox(height: 10),
+            _buildDropdown('Year', years, _year, (v) => setState(() => _year = v)),
+            const SizedBox(height: 10),
+            _buildDropdown('Experience', experiences, _experience, (v) => setState(() => _experience = v)),
+            const SizedBox(height: 10),
+            _buildDropdown('Main Goal', goals, _goal, (v) => setState(() => _goal = v)),
+            const SizedBox(height: 14),
             SizedBox(
               width: double.infinity,
+              height: 44,
               child: ElevatedButton(
                 onPressed: _saving ? null : _save,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFFF5722),
-                  padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
+                    borderRadius: BorderRadius.circular(12),
                   ),
+                  elevation: 0,
                 ),
                 child: _saving
                     ? const SizedBox(
-                        width: 20,
-                        height: 20,
+                        width: 16,
+                        height: 16,
                         child: CircularProgressIndicator(
                           color: Colors.white,
                           strokeWidth: 2,
@@ -1346,7 +926,7 @@ class _EditProfileSheetState extends State<_EditProfileSheet> {
                     : Text(
                         'Save Changes',
                         style: GoogleFonts.plusJakartaSans(
-                          fontSize: 15,
+                          fontSize: 13,
                           fontWeight: FontWeight.w800,
                           color: Colors.white,
                         ),
@@ -1359,43 +939,66 @@ class _EditProfileSheetState extends State<_EditProfileSheet> {
     );
   }
 
-  Widget _dropdown(String label, String? current, List<String> items,
-      ValueChanged<String?> onChanged) {
-    return DropdownButtonFormField<String>(
-      value: items.contains(current) ? current : items.first,
-      decoration: InputDecoration(
-        labelText: label,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
+  Widget _buildField(String label, Widget field) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: GoogleFonts.plusJakartaSans(
+            fontSize: 11.5,
+            fontWeight: FontWeight.w700,
+            color: const Color(0xFF6B6890),
+          ),
         ),
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-      ),
-      items: items
-          .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-          .toList(),
-      onChanged: onChanged,
+        const SizedBox(height: 4),
+        field,
+      ],
+    );
+  }
+
+  Widget _buildDropdown(
+      String label, List<String> items, String? current, Function(String?) onChanged) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: GoogleFonts.plusJakartaSans(
+            fontSize: 11.5,
+            fontWeight: FontWeight.w700,
+            color: const Color(0xFF6B6890),
+          ),
+        ),
+        const SizedBox(height: 4),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          decoration: BoxDecoration(
+            border: Border.all(color: const Color(0xFFE2E4F0)),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<String>(
+              isExpanded: true,
+              value: items.contains(current) ? current : items.first,
+              style: GoogleFonts.plusJakartaSans(
+                fontSize: 12.5,
+                fontWeight: FontWeight.w600,
+                color: const Color(0xFF1B1D36),
+              ),
+              items: items
+                  .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                  .toList(),
+              onChanged: onChanged,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
 
-// ── Supporting Profile Widgets ─────────────────────────────────────
-
-class _SectionTitle extends StatelessWidget {
-  final String title;
-  const _SectionTitle(this.title);
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      title,
-      style: GoogleFonts.plusJakartaSans(
-        fontSize: 15,
-        fontWeight: FontWeight.w800,
-        color: const Color(0xFF1A1A2E),
-      ),
-    );
-  }
-}
+// ── Supporting Helper Widgets ─────────────────────────────────────
 
 class _StatItem extends StatelessWidget {
   final String value;
@@ -1409,23 +1012,23 @@ class _StatItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12),
+        padding: const EdgeInsets.symmetric(vertical: 10),
         child: Column(
           children: [
             Container(
-              width: 32,
-              height: 32,
+              width: 30,
+              height: 30,
               decoration: BoxDecoration(
                 color: bg,
                 shape: BoxShape.circle,
               ),
-              child: Icon(icon, color: color, size: 16),
+              child: Icon(icon, color: color, size: 15),
             ),
-            const SizedBox(height: 6),
+            const SizedBox(height: 4),
             Text(
               value,
               style: GoogleFonts.plusJakartaSans(
-                fontSize: 16,
+                fontSize: 14,
                 fontWeight: FontWeight.w800,
                 color: const Color(0xFF1A1A2E),
               ),
@@ -1433,7 +1036,7 @@ class _StatItem extends StatelessWidget {
             Text(
               label,
               style: GoogleFonts.plusJakartaSans(
-                fontSize: 10.5,
+                fontSize: 10,
                 color: const Color(0xFF6B6890),
                 fontWeight: FontWeight.w600,
               ),
@@ -1449,71 +1052,9 @@ class _Div extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
         width: 1,
-        height: 40,
+        height: 36,
         color: const Color(0xFFE8E9F2),
       );
-}
-
-class _Badge extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final String sub;
-  final Color color;
-  final Color bg;
-  final bool unlocked;
-  const _Badge(
-      this.icon, this.title, this.sub, this.color, this.bg, this.unlocked);
-
-  @override
-  Widget build(BuildContext context) {
-    return Opacity(
-      opacity: unlocked ? 1.0 : 0.4,
-      child: Container(
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: unlocked
-                ? const Color(0xFFFF5722).withOpacity(0.3)
-                : const Color(0xFFE8E9F2),
-          ),
-        ),
-        child: Column(
-          children: [
-            Container(
-              width: 38,
-              height: 38,
-              decoration: BoxDecoration(
-                color: bg,
-                shape: BoxShape.circle,
-              ),
-              child: Icon(icon, color: color, size: 18),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              title,
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 12,
-                fontWeight: FontWeight.w800,
-                color: const Color(0xFF1A1A2E),
-              ),
-            ),
-            Text(
-              sub,
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 10,
-                color: const Color(0xFF6B6890),
-              ),
-              textAlign: TextAlign.center,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }
 
 class _InfoRow extends StatelessWidget {
@@ -1526,7 +1067,7 @@ class _InfoRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
       decoration: BoxDecoration(
         border: isLast
             ? null
@@ -1534,12 +1075,12 @@ class _InfoRow extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(icon, color: const Color(0xFF7C5CBF), size: 18),
-          const SizedBox(width: 12),
+          Icon(icon, color: const Color(0xFF7C5CBF), size: 16),
+          const SizedBox(width: 10),
           Text(
             label,
             style: GoogleFonts.plusJakartaSans(
-              fontSize: 13,
+              fontSize: 12,
               color: const Color(0xFF6B6890),
               fontWeight: FontWeight.w600,
             ),
@@ -1548,7 +1089,7 @@ class _InfoRow extends StatelessWidget {
           Text(
             value,
             style: GoogleFonts.plusJakartaSans(
-              fontSize: 13,
+              fontSize: 12,
               fontWeight: FontWeight.w800,
               color: const Color(0xFF1A1A2E),
             ),
@@ -1574,24 +1115,24 @@ class _SettingTile extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(14),
+        padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.circular(16),
           border: Border.all(color: const Color(0xFFE8E9F2)),
         ),
         child: Row(
           children: [
             Container(
-              width: 38,
-              height: 38,
+              width: 34,
+              height: 34,
               decoration: BoxDecoration(
                 color: iconBg,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(10),
               ),
-              child: Icon(icon, color: iconColor, size: 20),
+              child: Icon(icon, color: iconColor, size: 18),
             ),
-            const SizedBox(width: 14),
+            const SizedBox(width: 10),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -1599,7 +1140,7 @@ class _SettingTile extends StatelessWidget {
                   Text(
                     title,
                     style: GoogleFonts.plusJakartaSans(
-                      fontSize: 13.5,
+                      fontSize: 12.5,
                       fontWeight: FontWeight.w800,
                       color: const Color(0xFF1A1A2E),
                     ),
@@ -1607,7 +1148,7 @@ class _SettingTile extends StatelessWidget {
                   Text(
                     subtitle,
                     style: GoogleFonts.plusJakartaSans(
-                      fontSize: 11,
+                      fontSize: 10.5,
                       color: const Color(0xFF6B6890),
                     ),
                   ),
@@ -1617,7 +1158,7 @@ class _SettingTile extends StatelessWidget {
             const Icon(
               Icons.chevron_right_rounded,
               color: Color(0xFF9B99B5),
-              size: 20,
+              size: 18,
             ),
           ],
         ),
@@ -1626,15 +1167,26 @@ class _SettingTile extends StatelessWidget {
   }
 }
 
+Widget _SectionTitle(String text) {
+  return Text(
+    text,
+    style: GoogleFonts.plusJakartaSans(
+      fontSize: 13,
+      fontWeight: FontWeight.w800,
+      color: const Color(0xFF1A1A2E),
+    ),
+  );
+}
+
 Widget _NavItem(IconData icon, IconData activeIcon, String label,
     bool active, VoidCallback onTap) {
   return GestureDetector(
     onTap: onTap,
     child: Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
       decoration: BoxDecoration(
         color: active ? const Color(0xFFFFEFEA) : Colors.transparent,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -1642,13 +1194,13 @@ Widget _NavItem(IconData icon, IconData activeIcon, String label,
           Icon(
             active ? activeIcon : icon,
             color: active ? const Color(0xFFFF5722) : const Color(0xFF9B99B5),
-            size: 22,
+            size: 20,
           ),
           const SizedBox(height: 2),
           Text(
             label,
             style: GoogleFonts.plusJakartaSans(
-              fontSize: 10,
+              fontSize: 9.5,
               color:
                   active ? const Color(0xFFFF5722) : const Color(0xFF9B99B5),
               fontWeight: active ? FontWeight.w700 : FontWeight.w500,

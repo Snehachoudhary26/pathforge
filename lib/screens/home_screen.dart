@@ -166,6 +166,8 @@ class _HomeScreenState extends State<HomeScreen> {
             orElse: () => weeks.first)
         : {'title': 'Python Basics', 'weekNumber': 1};
 
+    final topPadding = MediaQuery.of(context).padding.top;
+
     return Scaffold(
       backgroundColor: const Color(0xFF111322),
       body: SafeArea(
@@ -181,89 +183,90 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: ListView(
                         padding: EdgeInsets.zero,
                         children: [
-                          // ── 1. Top Header ────────────────────────
+                          // ── 1. Top Header ───────────────────────
                           Container(
                             color: const Color(0xFF111322),
                             padding: EdgeInsets.fromLTRB(
-                              20,
-                              MediaQuery.of(context).padding.top + 14,
-                              20,
                               16,
+                              topPadding > 0 ? topPadding + 10 : 26,
+                              16,
+                              14,
                             ),
                             child: Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
                               children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      width: 44,
-                                      height: 44,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: const Color(0xFF1A1A2E),
-                                        border: Border.all(
-                                          color: const Color(0xFF7C5CBF)
-                                              .withOpacity(0.6),
-                                          width: 2,
-                                        ),
-                                      ),
-                                      child: ClipOval(
-                                        child: Image.asset(
-                                          'assets/images/logo.png',
-                                          fit: BoxFit.cover,
-                                          errorBuilder: (_, __, ___) =>
-                                              Center(
-                                            child: Text(
-                                              userName.isNotEmpty
-                                                  ? userName[0].toUpperCase()
-                                                  : 'N',
-                                              style: GoogleFonts
-                                                  .plusJakartaSans(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w800,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
+                                // User Avatar
+                                Container(
+                                  width: 38,
+                                  height: 38,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: const Color(0xFF1A1A2E),
+                                    border: Border.all(
+                                      color: const Color(0xFF7C5CBF)
+                                          .withOpacity(0.6),
+                                      width: 1.5,
                                     ),
-                                    const SizedBox(width: 12),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'Good day, ${userName.split(' ').first}',
+                                  ),
+                                  child: ClipOval(
+                                    child: Image.asset(
+                                      'assets/images/logo.png',
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (_, __, ___) => Center(
+                                        child: Text(
+                                          userName.isNotEmpty
+                                              ? userName[0].toUpperCase()
+                                              : 'N',
                                           style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 18,
+                                            fontSize: 15,
                                             fontWeight: FontWeight.w800,
                                             color: Colors.white,
                                           ),
                                         ),
-                                        const SizedBox(height: 2),
-                                        Text(
-                                          _currentLevelName,
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 12,
-                                            color: const Color(0xFF9B99B5),
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ],
+                                      ),
                                     ),
-                                  ],
+                                  ),
                                 ),
+                                const SizedBox(width: 10),
+                                // Name & Level Title
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Good day, ${userName.split(' ').first}',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: GoogleFonts.plusJakartaSans(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w800,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      Text(
+                                        _currentLevelName,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: GoogleFonts.plusJakartaSans(
+                                          fontSize: 10.5,
+                                          color: const Color(0xFF9B99B5),
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(width: 6),
+                                // Streak & XP Pills
                                 Row(
+                                  mainAxisSize: MainAxisSize.min,
                                   children: [
                                     _StatPill(
-                                      icon: Icons
-                                          .local_fire_department_rounded,
+                                      icon: Icons.local_fire_department_rounded,
                                       iconColor: const Color(0xFFFF5722),
                                       value: '$streak',
                                     ),
-                                    const SizedBox(width: 8),
+                                    const SizedBox(width: 5),
                                     _StatPill(
                                       icon: Icons.bolt_rounded,
                                       iconColor: const Color(0xFFE08D00),
@@ -280,45 +283,45 @@ class _HomeScreenState extends State<HomeScreen> {
                             decoration: const BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(28),
+                                top: Radius.circular(26),
                               ),
                             ),
-                            padding: const EdgeInsets.fromLTRB(16, 20, 16, 100),
+                            padding: const EdgeInsets.fromLTRB(16, 16, 16, 90),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 // Active Track Card
                                 _buildActiveTrackCard(track, doneCount,
                                     totalWeeks, progress, currentWeek),
-                                const SizedBox(height: 16),
+                                const SizedBox(height: 14),
 
-                                // 🤖 AI Mentor Hero Card with Full 100% Unstretched Image
+                                // 🤖 AI Mentor Hero Card
                                 _buildAiMentorBanner(context),
-                                const SizedBox(height: 16),
+                                const SizedBox(height: 14),
 
-                                // Agentic Tools Suite (Without duplicate AI Mentor)
+                                // Agentic Tools Suite
                                 _buildAgenticToolsRow(context, track),
-                                const SizedBox(height: 16),
+                                const SizedBox(height: 14),
 
                                 // 👨‍💻 Job Readiness Score Card
                                 _buildJobReadinessCard(context),
                                 const SizedBox(height: 12),
 
-                                // 👨‍💻 Career Placement Goal Card (Full 100% Unstretched Photo)
+                                // 👨‍💻 Career Placement Goal Card
                                 _buildPlacementGoalCard(context),
-                                const SizedBox(height: 16),
+                                const SizedBox(height: 14),
 
                                 // AI Coach Live Insight Banner
                                 _buildCoachCard(),
-                                const SizedBox(height: 16),
+                                const SizedBox(height: 14),
 
-                                // 🚀 Leaderboard & Peer Study Group (Full 100% Unstretched Photo)
+                                // 🚀 Leaderboard & Peer Study Group
                                 _buildLeaderboardSection(context),
-                                const SizedBox(height: 16),
+                                const SizedBox(height: 14),
 
                                 // Weekly Streak Tracker Card
                                 _buildStreakTargetCard(),
-                                const SizedBox(height: 16),
+                                const SizedBox(height: 14),
 
                                 // Daily 5-Min Challenge Card
                                 _buildChallengeCard(track),
@@ -337,19 +340,19 @@ class _HomeScreenState extends State<HomeScreen> {
                 // ── 3. Floating FORGE AI Compact Card ───────
                 if (isChatOpen)
                   Positioned(
-                    right: 16,
-                    bottom: 130,
-                    left: 16,
+                    right: 14,
+                    bottom: 110,
+                    left: 14,
                     child: Center(
                       child: ConstrainedBox(
                         constraints: const BoxConstraints(
-                          maxWidth: 400,
-                          maxHeight: 460,
+                          maxWidth: 380,
+                          maxHeight: 380,
                         ),
                         child: Container(
                           decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius: BorderRadius.circular(24),
+                            borderRadius: BorderRadius.circular(20),
                             border: Border.all(
                               color: const Color(0xFFE8E9F2),
                               width: 1.5,
@@ -357,8 +360,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.black.withOpacity(0.18),
-                                blurRadius: 25,
-                                offset: const Offset(0, 8),
+                                blurRadius: 20,
+                                offset: const Offset(0, 6),
                               ),
                             ],
                           ),
@@ -368,17 +371,17 @@ class _HomeScreenState extends State<HomeScreen> {
                               // Header
                               Container(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 12),
+                                    horizontal: 12, vertical: 8),
                                 decoration: const BoxDecoration(
                                   color: Color(0xFF1B1D36),
                                   borderRadius: BorderRadius.vertical(
-                                      top: Radius.circular(22)),
+                                      top: Radius.circular(18)),
                                 ),
                                 child: Row(
                                   children: [
                                     Container(
-                                      width: 34,
-                                      height: 34,
+                                      width: 26,
+                                      height: 26,
                                       decoration: const BoxDecoration(
                                         color: Colors.white12,
                                         shape: BoxShape.circle,
@@ -391,12 +394,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                               const Icon(
                                             Icons.smart_toy_rounded,
                                             color: Colors.white,
-                                            size: 18,
+                                            size: 14,
                                           ),
                                         ),
                                       ),
                                     ),
-                                    const SizedBox(width: 10),
+                                    const SizedBox(width: 8),
                                     Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -407,15 +410,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                               'FORGE AI',
                                               style: GoogleFonts
                                                   .plusJakartaSans(
-                                                fontSize: 15,
+                                                fontSize: 12.5,
                                                 fontWeight: FontWeight.w800,
                                                 color: Colors.white,
                                               ),
                                             ),
-                                            const SizedBox(width: 6),
+                                            const SizedBox(width: 5),
                                             Container(
-                                              width: 6,
-                                              height: 6,
+                                              width: 5,
+                                              height: 5,
                                               decoration: const BoxDecoration(
                                                 color: Color(0xFF00B894),
                                                 shape: BoxShape.circle,
@@ -426,7 +429,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         Text(
                                           'PathForge Assistant · Online',
                                           style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 11,
+                                            fontSize: 9.5,
                                             color: const Color(0xFFB3B0D6),
                                           ),
                                         ),
@@ -437,16 +440,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                       onTap: () => setState(
                                           () => isChatOpen = false),
                                       child: Container(
-                                        padding: const EdgeInsets.all(4),
+                                        padding: const EdgeInsets.all(3),
                                         decoration: BoxDecoration(
                                           color: Colors.white12,
                                           borderRadius:
-                                              BorderRadius.circular(8),
+                                              BorderRadius.circular(6),
                                         ),
                                         child: const Icon(
                                           Icons.close_rounded,
                                           color: Colors.white,
-                                          size: 18,
+                                          size: 15,
                                         ),
                                       ),
                                     ),
@@ -454,20 +457,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
 
-                              // Chat messages list
+                              // Chat messages list & suggestions
                               Flexible(
                                 child: SingleChildScrollView(
-                                  padding: const EdgeInsets.all(14),
+                                  padding: const EdgeInsets.all(10),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
                                       Container(
-                                        padding: const EdgeInsets.all(12),
+                                        padding: const EdgeInsets.all(8),
                                         decoration: BoxDecoration(
                                           color: const Color(0xFFF7F8FC),
                                           borderRadius:
-                                              BorderRadius.circular(16),
+                                              BorderRadius.circular(12),
                                           border: Border.all(
                                             color: const Color(0xFFE2E4F0),
                                           ),
@@ -476,13 +479,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                           'Hi! I\'m FORGE 🤖 — your PathForge career assistant. Ask me anything about your $track roadmap, interview prep, or skills!',
                                           style: GoogleFonts
                                               .plusJakartaSans(
-                                            fontSize: 13,
+                                            fontSize: 10.5,
                                             color: const Color(0xFF1A1A2E),
-                                            height: 1.4,
+                                            height: 1.3,
                                           ),
                                         ),
                                       ),
-                                      const SizedBox(height: 10),
+                                      const SizedBox(height: 6),
 
                                       ...[
                                         '🎯 What is my #1 priority this week?',
@@ -497,16 +500,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                           child: Container(
                                             width: double.infinity,
                                             margin: const EdgeInsets.only(
-                                                bottom: 6),
+                                                bottom: 4),
                                             padding: const EdgeInsets
                                                 .symmetric(
-                                              horizontal: 12,
-                                              vertical: 7.5,
+                                              horizontal: 8,
+                                              vertical: 4.5,
                                             ),
                                             decoration: BoxDecoration(
                                               color: const Color(0xFFF6F4FB),
                                               borderRadius:
-                                                  BorderRadius.circular(20),
+                                                  BorderRadius.circular(12),
                                               border: Border.all(
                                                 color: const Color(0xFFE2DCF2),
                                                 width: 1.0,
@@ -516,7 +519,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               prompt,
                                               style: GoogleFonts
                                                   .plusJakartaSans(
-                                                fontSize: 12,
+                                                fontSize: 10,
                                                 fontWeight: FontWeight.w700,
                                                 color: const Color(0xFF1B1D36),
                                               ),
@@ -530,19 +533,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                             m['role'] == 'user';
                                         return Container(
                                           margin: const EdgeInsets.only(
-                                              top: 8),
+                                              top: 5),
                                           alignment: isUser
                                               ? Alignment.centerRight
                                               : Alignment.centerLeft,
                                           child: Container(
                                             padding:
-                                                const EdgeInsets.all(11),
+                                                const EdgeInsets.all(8),
                                             decoration: BoxDecoration(
                                               color: isUser
                                                   ? const Color(0xFF1B1D36)
                                                   : const Color(0xFFF3F0FA),
                                               borderRadius:
-                                                  BorderRadius.circular(14),
+                                                  BorderRadius.circular(10),
                                               border: isUser
                                                   ? null
                                                   : Border.all(
@@ -553,11 +556,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                               m['text'] ?? '',
                                               style: GoogleFonts
                                                   .plusJakartaSans(
-                                                fontSize: 12.5,
+                                                fontSize: 10.5,
                                                 color: isUser
                                                     ? Colors.white
                                                     : const Color(0xFF1A1A2E),
-                                                height: 1.4,
+                                                height: 1.3,
                                               ),
                                             ),
                                           ),
@@ -565,13 +568,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                       }),
 
                                       if (_isForgeTyping) ...[
-                                        const SizedBox(height: 8),
+                                        const SizedBox(height: 5),
                                         const SizedBox(
-                                          width: 16,
-                                          height: 16,
+                                          width: 12,
+                                          height: 12,
                                           child: CircularProgressIndicator(
                                             color: Color(0xFF7C5CBF),
-                                            strokeWidth: 2,
+                                            strokeWidth: 1.5,
                                           ),
                                         ),
                                       ],
@@ -583,11 +586,11 @@ class _HomeScreenState extends State<HomeScreen> {
                               // Chat text input bar
                               Container(
                                 padding: const EdgeInsets.fromLTRB(
-                                    12, 6, 12, 10),
+                                    8, 4, 8, 6),
                                 decoration: const BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.vertical(
-                                      bottom: Radius.circular(22)),
+                                      bottom: Radius.circular(18)),
                                   border: Border(
                                     top: BorderSide(
                                         color: Color(0xFFE2E4F0)),
@@ -602,7 +605,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             controller: _quickChatInput,
                                             style: GoogleFonts
                                                 .plusJakartaSans(
-                                              fontSize: 13,
+                                              fontSize: 11.5,
                                               color: const Color(0xFF1A1A2E),
                                             ),
                                             decoration: InputDecoration(
@@ -610,7 +613,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   'Ask FORGE anything...',
                                               hintStyle: GoogleFonts
                                                   .plusJakartaSans(
-                                                fontSize: 12,
+                                                fontSize: 10.5,
                                                 color: const Color(
                                                     0xFF9B99B5),
                                               ),
@@ -620,13 +623,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   const Color(0xFFF5F6FA),
                                               border: OutlineInputBorder(
                                                 borderRadius:
-                                                    BorderRadius.circular(20),
+                                                    BorderRadius.circular(14),
                                                 borderSide: BorderSide.none,
                                               ),
                                               contentPadding:
                                                   const EdgeInsets.symmetric(
-                                                horizontal: 14,
-                                                vertical: 8,
+                                                horizontal: 10,
+                                                vertical: 6,
                                               ),
                                             ),
                                             onSubmitted: (val) =>
@@ -634,15 +637,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     val, track, doneCount),
                                           ),
                                         ),
-                                        const SizedBox(width: 8),
+                                        const SizedBox(width: 5),
                                         GestureDetector(
                                           onTap: () => _sendForgeMessage(
                                               _quickChatInput.text,
                                               track,
                                               doneCount),
                                           child: Container(
-                                            width: 36,
-                                            height: 36,
+                                            width: 28,
+                                            height: 28,
                                             decoration: const BoxDecoration(
                                               color: Color(0xFFFF5722),
                                               shape: BoxShape.circle,
@@ -650,13 +653,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                             child: const Icon(
                                               Icons.arrow_upward_rounded,
                                               color: Colors.white,
-                                              size: 18,
+                                              size: 14,
                                             ),
                                           ),
                                         ),
                                       ],
                                     ),
-                                    const SizedBox(height: 6),
+                                    const SizedBox(height: 3),
                                     GestureDetector(
                                       onTap: () {
                                         setState(() => isChatOpen = false);
@@ -665,7 +668,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       child: Text(
                                         'Open Full AI Mentor Screen →',
                                         style: GoogleFonts.plusJakartaSans(
-                                          fontSize: 11,
+                                          fontSize: 9.5,
                                           fontWeight: FontWeight.w700,
                                           color: const Color(0xFFFF5722),
                                         ),
@@ -681,16 +684,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
 
-                // ── 4. Floating Robot FAB (Zero Orange Border) ─
+                // ── 4. Floating Robot Trigger ──────────────
                 Positioned(
-                  right: 18,
-                  bottom: 66,
+                  right: 16,
+                  bottom: 60,
                   child: GestureDetector(
                     onTap: () =>
                         setState(() => isChatOpen = !isChatOpen),
                     child: SizedBox(
-                      width: 48,
-                      height: 48,
+                      width: 44,
+                      height: 44,
                       child: isChatOpen
                           ? Container(
                               decoration: const BoxDecoration(
@@ -700,7 +703,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: const Icon(
                                 Icons.close_rounded,
                                 color: Colors.white,
-                                size: 24,
+                                size: 22,
                               ),
                             )
                           : Image.asset(
@@ -709,7 +712,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               errorBuilder: (_, __, ___) => const Icon(
                                 Icons.smart_toy_rounded,
                                 color: Color(0xFF7C5CBF),
-                                size: 32,
+                                size: 30,
                               ),
                             ),
                     ),
@@ -730,57 +733,62 @@ class _HomeScreenState extends State<HomeScreen> {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(18),
         border: Border.all(color: const Color(0xFFEAEAF2)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            color: Colors.black.withOpacity(0.03),
+            blurRadius: 8,
+            offset: const Offset(0, 3),
           ),
         ],
       ),
-      padding: const EdgeInsets.all(18),
+      padding: const EdgeInsets.all(14),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'ACTIVE ROADMAP',
-                    style: GoogleFonts.plusJakartaSans(
-                      fontSize: 10,
-                      fontWeight: FontWeight.w800,
-                      color: const Color(0xFFFF5722),
-                      letterSpacing: 1.1,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'ACTIVE ROADMAP',
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 9,
+                        fontWeight: FontWeight.w800,
+                        color: const Color(0xFFFF5722),
+                        letterSpacing: 1.0,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 3),
-                  Text(
-                    track,
-                    style: GoogleFonts.plusJakartaSans(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w800,
-                      color: const Color(0xFF1A1A2E),
+                    const SizedBox(height: 1),
+                    Text(
+                      track,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w800,
+                        color: const Color(0xFF1A1A2E),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
+              const SizedBox(width: 6),
               Container(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                 decoration: BoxDecoration(
                   color: const Color(0xFFF3F0FA),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
                   '$doneCount / $totalWeeks WEEKS',
                   style: GoogleFonts.plusJakartaSans(
-                    fontSize: 11,
+                    fontSize: 10,
                     fontWeight: FontWeight.w800,
                     color: const Color(0xFF7C5CBF),
                   ),
@@ -788,36 +796,41 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           ClipRRect(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(6),
             child: LinearProgressIndicator(
               value: progress,
               backgroundColor: const Color(0xFFF0EDF8),
               valueColor:
                   const AlwaysStoppedAnimation(Color(0xFFFF5722)),
-              minHeight: 8,
+              minHeight: 6,
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'Next: ${currentWeek['title'] ?? 'Week 1 Milestone'}',
-                style: GoogleFonts.plusJakartaSans(
-                  fontSize: 12,
-                  color: const Color(0xFF6B6890),
-                  fontWeight: FontWeight.w600,
+              Expanded(
+                child: Text(
+                  'Next: ${currentWeek['title'] ?? 'Week 1 Milestone'}',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: GoogleFonts.plusJakartaSans(
+                    fontSize: 11,
+                    color: const Color(0xFF6B6890),
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
+              const SizedBox(width: 6),
               GestureDetector(
                 onTap: () => context
                     .go('/roadmap?track=${Uri.encodeComponent(track)}'),
                 child: Text(
                   'Continue →',
                   style: GoogleFonts.plusJakartaSans(
-                    fontSize: 12,
+                    fontSize: 11,
                     fontWeight: FontWeight.w800,
                     color: const Color(0xFFFF5722),
                   ),
@@ -830,23 +843,23 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // 🤖 AI Mentor Featured Banner (100% Full Unstretched Photo)
+  // 🤖 AI Mentor Featured Banner (100% Overflow-Free & Crisp White Text)
   Widget _buildAiMentorBanner(BuildContext context) {
     return GestureDetector(
       onTap: () => context.go('/mentor'),
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(22),
+          borderRadius: BorderRadius.circular(18),
           boxShadow: [
             BoxShadow(
               color: const Color(0xFF7C5CBF).withOpacity(0.18),
-              blurRadius: 14,
-              offset: const Offset(0, 4),
+              blurRadius: 10,
+              offset: const Offset(0, 3),
             ),
           ],
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(22),
+          borderRadius: BorderRadius.circular(18),
           child: Stack(
             children: [
               AspectRatio(
@@ -871,14 +884,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     gradient: LinearGradient(
                       colors: [
                         const Color(0xFF111322).withOpacity(0.92),
-                        const Color(0xFF111322).withOpacity(0.2),
+                        const Color(0xFF111322).withOpacity(0.15),
                       ],
                       begin: Alignment.bottomCenter,
                       end: Alignment.topCenter,
                       stops: const [0.0, 0.65],
                     ),
                   ),
-                  padding: const EdgeInsets.all(14),
+                  padding: const EdgeInsets.all(10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -887,65 +900,75 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 3.5),
+                                horizontal: 6, vertical: 2),
                             decoration: BoxDecoration(
                               color: const Color(0xFFFF5722),
-                              borderRadius: BorderRadius.circular(8),
+                              borderRadius: BorderRadius.circular(5),
                             ),
                             child: Text(
                               'AI MENTOR',
                               style: GoogleFonts.plusJakartaSans(
-                                fontSize: 9.5,
+                                fontSize: 8.5,
                                 fontWeight: FontWeight.w800,
                                 color: Colors.white,
                               ),
                             ),
                           ),
-                          const SizedBox(width: 8),
-                          Text(
-                            '24/7 Personalized Career Coaching',
-                            style: GoogleFonts.plusJakartaSans(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w700,
-                              color: const Color(0xFFD6C8F5),
+                          const SizedBox(width: 6),
+                          Expanded(
+                            child: Text(
+                              '24/7 Personalized Career Coaching',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.plusJakartaSans(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 6),
+                      const SizedBox(height: 3),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            'Ask DSA, Roadmaps & Strategy',
-                            style: GoogleFonts.plusJakartaSans(
-                              fontSize: 14.5,
-                              fontWeight: FontWeight.w800,
-                              color: Colors.white,
+                          Expanded(
+                            child: Text(
+                              'Ask DSA, Roadmaps & Strategy',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.plusJakartaSans(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w800,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
+                          const SizedBox(width: 6),
                           Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 6),
+                                horizontal: 8, vertical: 4),
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
+                              borderRadius: BorderRadius.circular(6),
                             ),
                             child: Row(
+                              mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(
                                   'Chat Now',
                                   style: GoogleFonts.plusJakartaSans(
-                                    fontSize: 11.5,
+                                    fontSize: 9.5,
                                     fontWeight: FontWeight.w800,
                                     color: const Color(0xFF111322),
                                   ),
                                 ),
-                                const SizedBox(width: 4),
+                                const SizedBox(width: 2),
                                 const Icon(
                                   Icons.arrow_forward_rounded,
                                   color: Color(0xFF111322),
-                                  size: 13,
+                                  size: 10,
                                 ),
                               ],
                             ),
@@ -963,7 +986,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // Agentic Tools Row (Without duplicate AI Career Mentor)
+  // Agentic Tools Row
   Widget _buildAgenticToolsRow(BuildContext context, String track) {
     return Column(
       children: [
@@ -976,7 +999,7 @@ class _HomeScreenState extends State<HomeScreen> {
           subtitle: 'Real-time demand, salary & trending skills',
           onTap: () => context.go('/job-market'),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 8),
         _ToolItemTile(
           icon: Icons.edit_document,
           iconColor: const Color(0xFFFF5722),
@@ -986,7 +1009,7 @@ class _HomeScreenState extends State<HomeScreen> {
           subtitle: 'Paste any job → AI rewrites your resume',
           onTap: () => context.go('/resume-rewriter'),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 8),
         _ToolItemTile(
           icon: Icons.document_scanner_rounded,
           iconColor: const Color(0xFF7C5CBF),
@@ -1006,14 +1029,14 @@ class _HomeScreenState extends State<HomeScreen> {
     return Container(
       decoration: BoxDecoration(
         color: const Color(0xFF1B1D36),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(16),
       ),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(12),
       child: Row(
         children: [
           Container(
-            width: 44,
-            height: 44,
+            width: 36,
+            height: 36,
             decoration: const BoxDecoration(
               color: Color(0xFFFF5722),
               shape: BoxShape.circle,
@@ -1022,14 +1045,14 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Text(
                 '0',
                 style: GoogleFonts.plusJakartaSans(
-                  fontSize: 18,
+                  fontSize: 15,
                   fontWeight: FontWeight.w800,
                   color: Colors.white,
                 ),
               ),
             ),
           ),
-          const SizedBox(width: 14),
+          const SizedBox(width: 10),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1037,7 +1060,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Text(
                   'Job Readiness Score',
                   style: GoogleFonts.plusJakartaSans(
-                    fontSize: 14.5,
+                    fontSize: 12.5,
                     fontWeight: FontWeight.w800,
                     color: Colors.white,
                   ),
@@ -1045,25 +1068,26 @@ class _HomeScreenState extends State<HomeScreen> {
                 Text(
                   'Getting Started · Tap to see breakdown',
                   style: GoogleFonts.plusJakartaSans(
-                    fontSize: 11,
+                    fontSize: 10,
                     color: const Color(0xFF9B99B5),
                   ),
                 ),
               ],
             ),
           ),
+          const SizedBox(width: 6),
           GestureDetector(
             onTap: () => context.go('/job-readiness'),
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               decoration: BoxDecoration(
                 color: const Color(0xFFFF5722),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
                 'View',
                 style: GoogleFonts.plusJakartaSans(
-                  fontSize: 12,
+                  fontSize: 10.5,
                   fontWeight: FontWeight.w800,
                   color: Colors.white,
                 ),
@@ -1075,27 +1099,27 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // 👨‍💻 Career Placement Goal Card (100% Full Unstretched Photo of men-with-laptop)
+  // 👨‍💻 Career Placement Goal Card
   Widget _buildPlacementGoalCard(BuildContext context) {
     return GestureDetector(
       onTap: () => context.go('/job-readiness'),
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(22),
+          borderRadius: BorderRadius.circular(18),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.06),
-              blurRadius: 12,
-              offset: const Offset(0, 4),
+              color: Colors.black.withOpacity(0.04),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
             ),
           ],
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(22),
+          borderRadius: BorderRadius.circular(18),
           child: Stack(
             children: [
               AspectRatio(
-                aspectRatio: 16 / 10,
+                aspectRatio: 16 / 9.5,
                 child: Image.asset(
                   'assets/men-with-laptop.png',
                   fit: BoxFit.cover,
@@ -1116,47 +1140,49 @@ class _HomeScreenState extends State<HomeScreen> {
                     gradient: LinearGradient(
                       colors: [
                         const Color(0xFF111322).withOpacity(0.92),
-                        const Color(0xFF111322).withOpacity(0.15),
+                        const Color(0xFF111322).withOpacity(0.12),
                       ],
                       begin: Alignment.bottomCenter,
                       end: Alignment.topCenter,
                       stops: const [0.0, 0.6],
                     ),
                   ),
-                  padding: const EdgeInsets.all(14),
+                  padding: const EdgeInsets.all(10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 3.5),
+                            horizontal: 6, vertical: 2),
                         decoration: BoxDecoration(
                           color: const Color(0xFFFF5722),
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(5),
                         ),
                         child: Text(
                           'CAREER GOAL',
                           style: GoogleFonts.plusJakartaSans(
-                            fontSize: 9.5,
+                            fontSize: 8.5,
                             fontWeight: FontWeight.w800,
                             color: Colors.white,
                           ),
                         ),
                       ),
-                      const SizedBox(height: 6),
+                      const SizedBox(height: 3),
                       Text(
                         'Placement Ready: ₹12–25 LPA',
                         style: GoogleFonts.plusJakartaSans(
-                          fontSize: 15,
+                          fontSize: 12.5,
                           fontWeight: FontWeight.w800,
                           color: Colors.white,
                         ),
                       ),
                       Text(
                         'Master your roadmap to crack dream campus offers',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: GoogleFonts.plusJakartaSans(
-                          fontSize: 11,
+                          fontSize: 10,
                           color: const Color(0xFFD6C8F5),
                         ),
                       ),
@@ -1175,26 +1201,26 @@ class _HomeScreenState extends State<HomeScreen> {
     return Container(
       decoration: BoxDecoration(
         color: const Color(0xFFF2FBF7),
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(14),
         border: Border.all(color: const Color(0xFFC7EEDB)),
       ),
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.all(10),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(6),
             decoration: BoxDecoration(
               color: const Color(0xFF00B894),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(8),
             ),
             child: const Icon(
               Icons.auto_awesome_rounded,
               color: Colors.white,
-              size: 18,
+              size: 15,
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: 8),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1204,15 +1230,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     Text(
                       'AI coach · live',
                       style: GoogleFonts.plusJakartaSans(
-                        fontSize: 11.5,
+                        fontSize: 10.5,
                         fontWeight: FontWeight.w800,
                         color: const Color(0xFF00B894),
                       ),
                     ),
-                    const SizedBox(width: 6),
+                    const SizedBox(width: 4),
                     Container(
-                      width: 6,
-                      height: 6,
+                      width: 5,
+                      height: 5,
                       decoration: const BoxDecoration(
                         color: Color(0xFFFF5722),
                         shape: BoxShape.circle,
@@ -1220,15 +1246,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 3),
+                const SizedBox(height: 2),
                 Text(
                   coachInsight.isNotEmpty
                       ? coachInsight
                       : 'Start Week 1 of Data Scientist today — the first step is the hardest. 12 weeks from now you will be interview-ready.',
                   style: GoogleFonts.plusJakartaSans(
-                    fontSize: 12,
+                    fontSize: 11,
                     color: const Color(0xFF1B1D36),
-                    height: 1.35,
+                    height: 1.3,
                   ),
                 ),
               ],
@@ -1239,21 +1265,20 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // 🚀 Leaderboard & Study Group Card (100% Full Unstretched Photo of GroupProgress)
+  // 🚀 Leaderboard & Study Group Card
   Widget _buildLeaderboardSection(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(22),
+        borderRadius: BorderRadius.circular(18),
         border: Border.all(color: const Color(0xFFE8E9F2)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Graphic header with GroupProgress 100% visible
           ClipRRect(
             borderRadius:
-                const BorderRadius.vertical(top: Radius.circular(22)),
+                const BorderRadius.vertical(top: Radius.circular(18)),
             child: Stack(
               children: [
                 AspectRatio(
@@ -1286,7 +1311,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 14, vertical: 12),
+                        horizontal: 10, vertical: 8),
                     alignment: Alignment.bottomLeft,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1294,7 +1319,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         Text(
                           'Peer Study Leaderboard',
                           style: GoogleFonts.plusJakartaSans(
-                            fontSize: 13.5,
+                            fontSize: 11.5,
                             fontWeight: FontWeight.w800,
                             color: Colors.white,
                           ),
@@ -1302,7 +1327,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         const Icon(
                           Icons.emoji_events_rounded,
                           color: Color(0xFFFFC107),
-                          size: 20,
+                          size: 16,
                         ),
                       ],
                     ),
@@ -1313,18 +1338,18 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
 
           Padding(
-            padding: const EdgeInsets.all(14),
+            padding: const EdgeInsets.all(10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
                   children: [
-                    const Text('🥇', style: TextStyle(fontSize: 16)),
-                    const SizedBox(width: 8),
+                    const Text('🥇', style: TextStyle(fontSize: 13)),
+                    const SizedBox(width: 5),
                     Text(
                       'Sarthak',
                       style: GoogleFonts.plusJakartaSans(
-                        fontSize: 12.5,
+                        fontSize: 11.5,
                         fontWeight: FontWeight.w700,
                         color: const Color(0xFF1A1A2E),
                       ),
@@ -1334,7 +1359,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Text(
                   '400 XP',
                   style: GoogleFonts.plusJakartaSans(
-                    fontSize: 12,
+                    fontSize: 11,
                     fontWeight: FontWeight.w800,
                     color: const Color(0xFF7C5CBF),
                   ),
@@ -1351,10 +1376,10 @@ class _HomeScreenState extends State<HomeScreen> {
     return Container(
       decoration: BoxDecoration(
         color: const Color(0xFFFFFBF0),
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(14),
         border: Border.all(color: const Color(0xFFFFE8B3)),
       ),
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.all(10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -1364,7 +1389,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Text(
                 'This week — don\'t break it!',
                 style: GoogleFonts.plusJakartaSans(
-                  fontSize: 13,
+                  fontSize: 11.5,
                   fontWeight: FontWeight.w800,
                   color: const Color(0xFF1B1D36),
                 ),
@@ -1374,13 +1399,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   const Icon(
                     Icons.local_fire_department_rounded,
                     color: Color(0xFFFF5722),
-                    size: 16,
+                    size: 14,
                   ),
-                  const SizedBox(width: 3),
+                  const SizedBox(width: 2),
                   Text(
                     '$streak days',
                     style: GoogleFonts.plusJakartaSans(
-                      fontSize: 12,
+                      fontSize: 11,
                       fontWeight: FontWeight.w800,
                       color: const Color(0xFFFF5722),
                     ),
@@ -1389,7 +1414,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -1411,25 +1436,25 @@ class _HomeScreenState extends State<HomeScreen> {
     return Container(
       decoration: BoxDecoration(
         color: const Color(0xFFF3F0FA),
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(14),
         border: Border.all(color: const Color(0xFFE2DCF2)),
       ),
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.all(10),
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(6),
             decoration: BoxDecoration(
               color: const Color(0xFF7C5CBF),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(8),
             ),
             child: const Icon(
               Icons.bolt_rounded,
               color: Colors.white,
-              size: 20,
+              size: 16,
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: 8),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1437,7 +1462,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Text(
                   'Daily 5-Min Challenge',
                   style: GoogleFonts.plusJakartaSans(
-                    fontSize: 13,
+                    fontSize: 11.5,
                     fontWeight: FontWeight.w800,
                     color: const Color(0xFF1B1D36),
                   ),
@@ -1445,7 +1470,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Text(
                   'Earn +50 XP towards Level ${_level + 1}',
                   style: GoogleFonts.plusJakartaSans(
-                    fontSize: 11,
+                    fontSize: 10,
                     color: const Color(0xFF6B6890),
                   ),
                 ),
@@ -1456,15 +1481,15 @@ class _HomeScreenState extends State<HomeScreen> {
             onTap: () => setState(() => isChatOpen = true),
             child: Container(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
                 color: const Color(0xFF7C5CBF),
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(6),
               ),
               child: Text(
                 'Start',
                 style: GoogleFonts.plusJakartaSans(
-                  fontSize: 11.5,
+                  fontSize: 10.5,
                   fontWeight: FontWeight.w800,
                   color: Colors.white,
                 ),
@@ -1478,7 +1503,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildBottomNav(BuildContext context, String track) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: 6),
       decoration: const BoxDecoration(
         color: Colors.white,
         border: Border(
@@ -1514,20 +1539,21 @@ class _StatPill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.08),
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(10),
         border: Border.all(color: Colors.white.withOpacity(0.1)),
       ),
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, color: iconColor, size: 16),
-          const SizedBox(width: 4),
+          Icon(icon, color: iconColor, size: 13),
+          const SizedBox(width: 3),
           Text(
             value,
             style: GoogleFonts.plusJakartaSans(
-              fontSize: 12,
+              fontSize: 10.5,
               fontWeight: FontWeight.w800,
               color: Colors.white,
             ),
@@ -1565,57 +1591,61 @@ class _ToolItemTile extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(color: const Color(0xFFEAEAF2)),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.02),
-              blurRadius: 6,
-              offset: const Offset(0, 2),
+              blurRadius: 4,
+              offset: const Offset(0, 1),
             ),
           ],
         ),
         child: Row(
           children: [
             Container(
-              width: 38,
-              height: 38,
+              width: 32,
+              height: 32,
               decoration: BoxDecoration(
                 color: iconBg,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(8),
               ),
-              child: Icon(icon, color: iconColor, size: 20),
+              child: Icon(icon, color: iconColor, size: 16),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: 8),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
-                      Text(
-                        title,
-                        style: GoogleFonts.plusJakartaSans(
-                          fontSize: 13.5,
-                          fontWeight: FontWeight.w800,
-                          color: const Color(0xFF1B1D36),
+                      Flexible(
+                        child: Text(
+                          title,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w800,
+                            color: const Color(0xFF1B1D36),
+                          ),
                         ),
                       ),
-                      const SizedBox(width: 6),
+                      const SizedBox(width: 4),
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 6, vertical: 1.5),
+                            horizontal: 4, vertical: 1),
                         decoration: BoxDecoration(
                           color: bColor.withOpacity(0.12),
-                          borderRadius: BorderRadius.circular(6),
+                          borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(
                           badgeText,
                           style: GoogleFonts.plusJakartaSans(
-                            fontSize: 9,
+                            fontSize: 8,
                             fontWeight: FontWeight.w800,
                             color: bColor,
                           ),
@@ -1623,11 +1653,12 @@ class _ToolItemTile extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 2),
                   Text(
                     subtitle,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: GoogleFonts.plusJakartaSans(
-                      fontSize: 11,
+                      fontSize: 10,
                       color: const Color(0xFF6B6890),
                     ),
                   ),
@@ -1637,7 +1668,7 @@ class _ToolItemTile extends StatelessWidget {
             const Icon(
               Icons.chevron_right_rounded,
               color: Color(0xFF9B99B5),
-              size: 20,
+              size: 16,
             ),
           ],
         ),
@@ -1654,11 +1685,11 @@ class _DayPill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 34,
-      height: 34,
+      width: 28,
+      height: 28,
       decoration: BoxDecoration(
         color: active ? const Color(0xFFFF5722) : Colors.white,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(6),
         border: Border.all(
           color: active ? const Color(0xFFFF5722) : const Color(0xFFE2E4F0),
         ),
@@ -1667,7 +1698,7 @@ class _DayPill extends StatelessWidget {
         child: Text(
           day,
           style: GoogleFonts.plusJakartaSans(
-            fontSize: 12,
+            fontSize: 10,
             fontWeight: active ? FontWeight.w800 : FontWeight.w600,
             color: active ? Colors.white : const Color(0xFF6B6890),
           ),
@@ -1682,10 +1713,10 @@ Widget _NavItem(IconData icon, IconData activeIcon, String label,
   return GestureDetector(
     onTap: onTap,
     child: Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
       decoration: BoxDecoration(
         color: active ? const Color(0xFFFFEFEA) : Colors.transparent,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -1693,13 +1724,13 @@ Widget _NavItem(IconData icon, IconData activeIcon, String label,
           Icon(
             active ? activeIcon : icon,
             color: active ? const Color(0xFFFF5722) : const Color(0xFF9B99B5),
-            size: 22,
+            size: 20,
           ),
           const SizedBox(height: 2),
           Text(
             label,
             style: GoogleFonts.plusJakartaSans(
-              fontSize: 10,
+              fontSize: 9.5,
               color:
                   active ? const Color(0xFFFF5722) : const Color(0xFF9B99B5),
               fontWeight: active ? FontWeight.w700 : FontWeight.w500,
