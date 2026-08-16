@@ -3,8 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../core/theme.dart';
-import '../services/firestore_service.dart';
 import '../services/gemini_service.dart';
 import '../services/ai_engine.dart';
 
@@ -22,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int streak = 0;
   int weeklyTargetHours = 10;
   int completedHours = 0;
-  String selectedDay = 'Mon';
+  String selectedDay = 'Sun';
   bool isChatOpen = false;
   String coachInsight = '';
   bool isLoadingCoach = false;
@@ -31,7 +29,12 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Map<String, String>> _quickChatMessages = [];
   bool _isForgeTyping = false;
 
-  final List<String> days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  final List<Map<String, dynamic>> leaderboard = [
+    {'name': 'Sarthak', 'xp': 400, 'rank': 1, 'badge': '🥇'},
+    {'name': 'Priya', 'xp': 280, 'rank': 2, 'badge': '🥈'},
+    {'name': 'Aman', 'xp': 220, 'rank': 3, 'badge': '🥉'},
+    {'name': 'Rahul', 'xp': 180, 'rank': 4, 'badge': '⭐'},
+  ];
 
   @override
   void initState() {
@@ -63,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
           userData = userDoc.data() ?? {};
           userName = userData?['name'] ?? 'Engineer';
           xp = userData?['xp'] ?? 0;
-          streak = userData?['streak'] ?? 0;
+          streak = userData?['streak'] ?? 1;
           weeklyTargetHours = userData?['weeklyHours'] ?? 10;
           completedHours = userData?['completedHours'] ?? 0;
           if (rSnap.docs.isNotEmpty) {
@@ -85,9 +88,9 @@ class _HomeScreenState extends State<HomeScreen> {
     try {
       final insight = await GeminiService.getCoachInsight(
         userName: userName,
-        track: roadmapData?['track'] ?? 'Software Engineer',
+        track: roadmapData?['track'] ?? 'Data Scientist',
         doneWeeks: doneWeeks,
-        totalWeeks: weeks.length,
+        totalWeeks: weeks.isEmpty ? 12 : weeks.length,
         streak: streak,
         xp: xp,
         goal: userData?['goal'] ?? 'Get placed',
@@ -112,27 +115,12 @@ class _HomeScreenState extends State<HomeScreen> {
     return 'PathForge Legend';
   }
 
-  int get _xpForCurrentLevel {
-    if (xp < 500) return 0;
-    if (xp < 1500) return 500;
-    if (xp < 3500) return 1500;
-    if (xp < 7000) return 3500;
-    return 7000;
-  }
-
-  int get _xpForNextLevel {
-    if (xp < 500) return 500;
-    if (xp < 1500) return 1500;
-    if (xp < 3500) return 3500;
-    if (xp < 7000) return 7000;
-    return 10000;
-  }
-
-  double get _levelProgress {
-    final range = _xpForNextLevel - _xpForCurrentLevel;
-    if (range <= 0) return 1.0;
-    final current = xp - _xpForCurrentLevel;
-    return (current / range).clamp(0.0, 1.0);
+  int get _level {
+    if (xp < 500) return 1;
+    if (xp < 1500) return 2;
+    if (xp < 3500) return 3;
+    if (xp < 7000) return 4;
+    return 5;
   }
 
   void _sendForgeMessage(String query, String track, int doneCount) async {
@@ -170,13 +158,13 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final weeks = roadmapData?['weeks'] as List? ?? [];
     final doneCount = weeks.where((w) => w['status'] == 'done').length;
-    final totalWeeks = weeks.isEmpty ? 8 : weeks.length;
+    final totalWeeks = weeks.isEmpty ? 12 : weeks.length;
     final progress = totalWeeks > 0 ? doneCount / totalWeeks : 0.0;
-    final track = roadmapData?['track'] ?? 'Data Analyst';
+    final track = roadmapData?['track'] ?? 'Data Scientist';
     final currentWeek = weeks.isNotEmpty
         ? weeks.firstWhere((w) => w['status'] != 'done',
-            orElse: () => weeks.last)
-        : {};
+            orElse: () => weeks.first)
+        : {'title': 'Python Basics', 'weekNumber': 1};
 
     return Scaffold(
       backgroundColor: const Color(0xFF111322),
@@ -185,633 +173,549 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 480),
-            child: isGenerating
-                ? Container(
-                    color: const Color(0xFF111322),
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+            child: Stack(
+              children: [
+                Column(
+                  children: [
+                    Expanded(
+                      child: ListView(
+                        padding: EdgeInsets.zero,
                         children: [
-                          const SizedBox(
-                            width: 60,
-                            height: 60,
-                            child: CircularProgressIndicator(
-                              color: Color(0xFFFF5722),
-                              strokeWidth: 3,
+                          // ── 1. Top Header ────────────────────────
+                          Container(
+                            color: const Color(0xFF111322),
+                            padding: EdgeInsets.fromLTRB(
+                              20,
+                              MediaQuery.of(context).padding.top + 14,
+                              20,
+                              16,
                             ),
-                          ),
-                          const SizedBox(height: 24),
-                          Text(
-                            'Regenerating Roadmap...',
-                            style: GoogleFonts.plusJakartaSans(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'Tailoring modules to your new settings',
-                            style: GoogleFonts.plusJakartaSans(
-                              fontSize: 13,
-                              color: const Color(0xFF9B99B5),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
-                : Stack(
-                    children: [
-                      Column(
-                        children: [
-                          Expanded(
-                            child: ListView(
-                              padding: EdgeInsets.zero,
+                            child: Row(
+                              mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
                               children: [
-                                // Deep Navy Header
-                                Container(
-                                  color: const Color(0xFF111322),
-                                  padding: EdgeInsets.fromLTRB(
-                                    20,
-                                    MediaQuery.of(context).padding.top + 16,
-                                    20,
-                                    16,
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Container(
-                                                width: 44,
-                                                height: 44,
-                                                decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color: const Color(0xFF1A1A2E),
-                                                  border: Border.all(
-                                                    color: const Color(0xFF7C5CBF)
-                                                        .withOpacity(0.6),
-                                                    width: 2,
-                                                  ),
-                                                ),
-                                                child: ClipOval(
-                                                  child: Image.asset(
-                                                    'assets/images/logo.png',
-                                                    fit: BoxFit.cover,
-                                                    errorBuilder:
-                                                        (_, __, ___) =>
-                                                            Center(
-                                                      child: Text(
-                                                        userName.isNotEmpty
-                                                            ? userName[0]
-                                                                .toUpperCase()
-                                                            : 'U',
-                                                        style: GoogleFonts
-                                                            .plusJakartaSans(
-                                                          fontSize: 18,
-                                                          fontWeight:
-                                                              FontWeight.w800,
-                                                          color: Colors.white,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              const SizedBox(width: 12),
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    'Good day, ${userName.split(' ').first}',
-                                                    style: GoogleFonts
-                                                        .plusJakartaSans(
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.w800,
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(height: 2),
-                                                  Text(
-                                                    _currentLevelName,
-                                                    style: GoogleFonts
-                                                        .plusJakartaSans(
-                                                      fontSize: 12,
-                                                      color: const Color(
-                                                          0xFF9B99B5),
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              _StatPill(
-                                                icon: Icons
-                                                    .local_fire_department_rounded,
-                                                iconColor:
-                                                    const Color(0xFFFF5722),
-                                                value: '$streak',
-                                              ),
-                                              const SizedBox(width: 8),
-                                              _StatPill(
-                                                icon: Icons.bolt_rounded,
-                                                iconColor:
-                                                    const Color(0xFFE08D00),
-                                                value: '$xp',
-                                              ),
-                                            ],
-                                          ),
-                                        ],
+                                Row(
+                                  children: [
+                                    Container(
+                                      width: 44,
+                                      height: 44,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: const Color(0xFF1A1A2E),
+                                        border: Border.all(
+                                          color: const Color(0xFF7C5CBF)
+                                              .withOpacity(0.6),
+                                          width: 2,
+                                        ),
                                       ),
-                                    ],
-                                  ),
-                                ),
-
-                                // Main White Card Body
-                                Container(
-                                  decoration: const BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.vertical(
-                                      top: Radius.circular(28),
+                                      child: ClipOval(
+                                        child: Image.asset(
+                                          'assets/images/logo.png',
+                                          fit: BoxFit.cover,
+                                          errorBuilder: (_, __, ___) =>
+                                              Center(
+                                            child: Text(
+                                              userName.isNotEmpty
+                                                  ? userName[0].toUpperCase()
+                                                  : 'N',
+                                              style: GoogleFonts
+                                                  .plusJakartaSans(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w800,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                  padding: const EdgeInsets.fromLTRB(
-                                      16, 20, 16, 100),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      // Active Track Card
-                                      _buildActiveTrackCard(
-                                          track,
-                                          doneCount,
-                                          totalWeeks,
-                                          progress,
-                                          currentWeek),
-                                      const SizedBox(height: 16),
-
-                                      // Agentic Tools Row
-                                      _buildAgenticToolsRow(context),
-                                      const SizedBox(height: 16),
-
-                                      // Job Readiness Score Card
-                                      _buildJobReadinessCard(context),
-                                      const SizedBox(height: 16),
-
-                                      // AI Coach Live Insight Banner
-                                      _buildCoachCard(),
-                                      const SizedBox(height: 16),
-
-                                      // Daily Streak & Target Card
-                                      _buildStreakTargetCard(),
-                                    ],
-                                  ),
+                                    const SizedBox(width: 12),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Good day, ${userName.split(' ').first}',
+                                          style: GoogleFonts.plusJakartaSans(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w800,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 2),
+                                        Text(
+                                          _currentLevelName,
+                                          style: GoogleFonts.plusJakartaSans(
+                                            fontSize: 12,
+                                            color: const Color(0xFF9B99B5),
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    _StatPill(
+                                      icon: Icons
+                                          .local_fire_department_rounded,
+                                      iconColor: const Color(0xFFFF5722),
+                                      value: '$streak',
+                                    ),
+                                    const SizedBox(width: 8),
+                                    _StatPill(
+                                      icon: Icons.bolt_rounded,
+                                      iconColor: const Color(0xFFE08D00),
+                                      value: '$xp',
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
                           ),
 
-                          // Bottom Navigation Bar
-                          _buildBottomNav(context, track),
-                        ],
-                      ),
-
-                      // Floating FORGE AI Compact Card
-                      if (isChatOpen)
-                        Positioned(
-                          right: 16,
-                          bottom: 130,
-                          left: 16,
-                          child: Center(
-                            child: ConstrainedBox(
-                              constraints: const BoxConstraints(
-                                maxWidth: 400,
-                                maxHeight: 460,
-                              ),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(24),
-                                  border: Border.all(
-                                    color: const Color(0xFFE8E9F2),
-                                    width: 1.5,
-                                  ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.18),
-                                      blurRadius: 25,
-                                      offset: const Offset(0, 8),
-                                    ),
-                                  ],
-                                ),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    // FORGE AI Settled Navy Header
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 16, vertical: 12),
-                                      decoration: const BoxDecoration(
-                                        color: Color(0xFF1B1D36),
-                                        borderRadius: BorderRadius.vertical(
-                                            top: Radius.circular(22)),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            width: 34,
-                                            height: 34,
-                                            decoration: const BoxDecoration(
-                                              color: Colors.white12,
-                                              shape: BoxShape.circle,
-                                            ),
-                                            child: ClipOval(
-                                              child: Image.asset(
-                                                'assets/images/robot-for-chatbot.png',
-                                                fit: BoxFit.cover,
-                                                errorBuilder: (_, __, ___) =>
-                                                    const Icon(
-                                                  Icons.smart_toy_rounded,
-                                                  color: Colors.white,
-                                                  size: 18,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(width: 10),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Text(
-                                                    'FORGE AI',
-                                                    style: GoogleFonts
-                                                        .plusJakartaSans(
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.w800,
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(width: 6),
-                                                  Container(
-                                                    width: 6,
-                                                    height: 6,
-                                                    decoration:
-                                                        const BoxDecoration(
-                                                      color:
-                                                          Color(0xFF00B894),
-                                                      shape: BoxShape.circle,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              Text(
-                                                'PathForge Assistant · Online',
-                                                style: GoogleFonts
-                                                    .plusJakartaSans(
-                                                  fontSize: 11,
-                                                  color:
-                                                      const Color(0xFFB3B0D6),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          const Spacer(),
-                                          GestureDetector(
-                                            onTap: () => setState(
-                                                () => isChatOpen = false),
-                                            child: Container(
-                                              padding: const EdgeInsets.all(4),
-                                              decoration: BoxDecoration(
-                                                color: Colors.white12,
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                              ),
-                                              child: const Icon(
-                                                Icons.close_rounded,
-                                                color: Colors.white,
-                                                size: 18,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-
-                                    // Chat & Questions Scroll Area
-                                    Flexible(
-                                      child: SingleChildScrollView(
-                                        padding: const EdgeInsets.all(14),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              padding:
-                                                  const EdgeInsets.all(12),
-                                              decoration: BoxDecoration(
-                                                color: const Color(0xFFF7F8FC),
-                                                borderRadius:
-                                                    BorderRadius.circular(16),
-                                                border: Border.all(
-                                                  color: const Color(
-                                                      0xFFE2E4F0),
-                                                ),
-                                              ),
-                                              child: Text(
-                                                'Hi! I\'m FORGE 🤖 — your PathForge career assistant. Ask me anything about your $track roadmap, interview prep, or skills!',
-                                                style: GoogleFonts
-                                                    .plusJakartaSans(
-                                                  fontSize: 13,
-                                                  color: const Color(
-                                                      0xFF1A1A2E),
-                                                  height: 1.4,
-                                                ),
-                                              ),
-                                            ),
-                                            const SizedBox(height: 10),
-
-                                            ...[
-                                              '🎯 What is my #1 priority this week?',
-                                              '⚡ How do I boost my Job Readiness Score?',
-                                              '💡 Recommend a portfolio project',
-                                              '🔥 Give me a 5-minute coding challenge',
-                                              '💼 What salary can I expect for my track?',
-                                            ].map((prompt) {
-                                              return GestureDetector(
-                                                onTap: () =>
-                                                    _sendForgeMessage(
-                                                        prompt,
-                                                        track,
-                                                        doneCount),
-                                                child: Container(
-                                                  width: double.infinity,
-                                                  margin:
-                                                      const EdgeInsets.only(
-                                                          bottom: 6),
-                                                  padding:
-                                                      const EdgeInsets.symmetric(
-                                                    horizontal: 12,
-                                                    vertical: 7.5,
-                                                  ),
-                                                  decoration: BoxDecoration(
-                                                    color: const Color(
-                                                        0xFFF6F4FB),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20),
-                                                    border: Border.all(
-                                                      color: const Color(
-                                                          0xFFE2DCF2),
-                                                      width: 1.0,
-                                                    ),
-                                                  ),
-                                                  child: Text(
-                                                    prompt,
-                                                    style: GoogleFonts
-                                                        .plusJakartaSans(
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      color: const Color(
-                                                          0xFF1B1D36),
-                                                    ),
-                                                  ),
-                                                ),
-                                              );
-                                            }),
-
-                                            ..._quickChatMessages.map((m) {
-                                              final isUser =
-                                                  m['role'] == 'user';
-                                              return Container(
-                                                margin: const EdgeInsets.only(
-                                                    top: 8),
-                                                alignment: isUser
-                                                    ? Alignment.centerRight
-                                                    : Alignment.centerLeft,
-                                                child: Container(
-                                                  padding:
-                                                      const EdgeInsets.all(11),
-                                                  decoration: BoxDecoration(
-                                                    color: isUser
-                                                        ? const Color(
-                                                            0xFF1B1D36)
-                                                        : const Color(
-                                                            0xFFF3F0FA),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            14),
-                                                    border: isUser
-                                                        ? null
-                                                        : Border.all(
-                                                            color: const Color(
-                                                                0xFFE2DCF2)),
-                                                  ),
-                                                  child: Text(
-                                                    m['text'] ?? '',
-                                                    style: GoogleFonts
-                                                        .plusJakartaSans(
-                                                      fontSize: 12.5,
-                                                      color: isUser
-                                                          ? Colors.white
-                                                          : const Color(
-                                                              0xFF1A1A2E),
-                                                      height: 1.4,
-                                                    ),
-                                                  ),
-                                                ),
-                                              );
-                                            }),
-
-                                            if (_isForgeTyping) ...[
-                                              const SizedBox(height: 8),
-                                              const SizedBox(
-                                                width: 16,
-                                                height: 16,
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  color: Color(0xFF7C5CBF),
-                                                  strokeWidth: 2,
-                                                ),
-                                              ),
-                                            ],
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-
-                                    // Input Bar & Full Chat Link
-                                    Container(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          12, 6, 12, 10),
-                                      decoration: const BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.vertical(
-                                            bottom: Radius.circular(22)),
-                                        border: Border(
-                                          top: BorderSide(
-                                              color: Color(0xFFE2E4F0)),
-                                        ),
-                                      ),
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: TextField(
-                                                  controller:
-                                                      _quickChatInput,
-                                                  style: GoogleFonts
-                                                      .plusJakartaSans(
-                                                    fontSize: 13,
-                                                    color: const Color(
-                                                        0xFF1A1A2E),
-                                                  ),
-                                                  decoration: InputDecoration(
-                                                    hintText:
-                                                        'Ask FORGE anything...',
-                                                    hintStyle: GoogleFonts
-                                                        .plusJakartaSans(
-                                                      fontSize: 12,
-                                                      color: const Color(
-                                                          0xFF9B99B5),
-                                                    ),
-                                                    isDense: true,
-                                                    filled: true,
-                                                    fillColor: const Color(
-                                                        0xFFF5F6FA),
-                                                    border: OutlineInputBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              20),
-                                                      borderSide:
-                                                          BorderSide.none,
-                                                    ),
-                                                    contentPadding:
-                                                        const EdgeInsets
-                                                            .symmetric(
-                                                      horizontal: 14,
-                                                      vertical: 8,
-                                                    ),
-                                                  ),
-                                                  onSubmitted: (val) =>
-                                                      _sendForgeMessage(
-                                                          val,
-                                                          track,
-                                                          doneCount),
-                                                ),
-                                              ),
-                                              const SizedBox(width: 8),
-                                              GestureDetector(
-                                                onTap: () =>
-                                                    _sendForgeMessage(
-                                                        _quickChatInput.text,
-                                                        track,
-                                                        doneCount),
-                                                child: Container(
-                                                  width: 36,
-                                                  height: 36,
-                                                  decoration:
-                                                      const BoxDecoration(
-                                                    color: Color(0xFFFF5722),
-                                                    shape: BoxShape.circle,
-                                                  ),
-                                                  child: const Icon(
-                                                    Icons.arrow_upward_rounded,
-                                                    color: Colors.white,
-                                                    size: 18,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(height: 6),
-                                          GestureDetector(
-                                            onTap: () {
-                                              setState(() =>
-                                                  isChatOpen = false);
-                                              context.go('/mentor');
-                                            },
-                                            child: Text(
-                                              'Open Full AI Mentor Screen →',
-                                              style: GoogleFonts
-                                                  .plusJakartaSans(
-                                                fontSize: 11,
-                                                fontWeight: FontWeight.w700,
-                                                color:
-                                                    const Color(0xFFFF5722),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                          // ── 2. White Card Content Body ──────────
+                          Container(
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(28),
                               ),
                             ),
-                          ),
-                        ),
+                            padding: const EdgeInsets.fromLTRB(16, 20, 16, 100),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Active Track Card
+                                _buildActiveTrackCard(track, doneCount,
+                                    totalWeeks, progress, currentWeek),
+                                const SizedBox(height: 16),
 
-                      // Floating Robot Trigger Button (Zero Orange Background - Natural 3D Robot)
-                      Positioned(
-                        right: 18,
-                        bottom: 66,
-                        child: GestureDetector(
-                          onTap: () =>
-                              setState(() => isChatOpen = !isChatOpen),
-                          child: SizedBox(
-                            width: 48,
-                            height: 48,
-                            child: isChatOpen
-                                ? Container(
-                                    decoration: const BoxDecoration(
-                                      color: Color(0xFF1B1D36),
-                                      shape: BoxShape.circle,
+                                // Agentic Tools Suite (3 Tools)
+                                _buildAgenticToolsRow(context, track),
+                                const SizedBox(height: 16),
+
+                                // Job Readiness Score Card
+                                _buildJobReadinessCard(context),
+                                const SizedBox(height: 16),
+
+                                // AI Coach Live Insight Banner
+                                _buildCoachCard(),
+                                const SizedBox(height: 16),
+
+                                // Leaderboard Section
+                                _buildLeaderboardSection(context),
+                                const SizedBox(height: 16),
+
+                                // Weekly Streak Tracker Card
+                                _buildStreakTargetCard(),
+                                const SizedBox(height: 16),
+
+                                // Daily 5-Min Challenge Card
+                                _buildChallengeCard(track),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    // Bottom Navigation Bar
+                    _buildBottomNav(context, track),
+                  ],
+                ),
+
+                // ── 3. Floating FORGE AI Compact Card ───────
+                if (isChatOpen)
+                  Positioned(
+                    right: 16,
+                    bottom: 130,
+                    left: 16,
+                    child: Center(
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(
+                          maxWidth: 400,
+                          maxHeight: 460,
+                        ),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(24),
+                            border: Border.all(
+                              color: const Color(0xFFE8E9F2),
+                              width: 1.5,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.18),
+                                blurRadius: 25,
+                                offset: const Offset(0, 8),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              // Header
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 12),
+                                decoration: const BoxDecoration(
+                                  color: Color(0xFF1B1D36),
+                                  borderRadius: BorderRadius.vertical(
+                                      top: Radius.circular(22)),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: 34,
+                                      height: 34,
+                                      decoration: const BoxDecoration(
+                                        color: Colors.white12,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: ClipOval(
+                                        child: Image.asset(
+                                          'assets/images/robot-for-chatbot.png',
+                                          fit: BoxFit.cover,
+                                          errorBuilder: (_, __, ___) =>
+                                              const Icon(
+                                            Icons.smart_toy_rounded,
+                                            color: Colors.white,
+                                            size: 18,
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                    child: const Icon(
-                                      Icons.close_rounded,
-                                      color: Colors.white,
-                                      size: 24,
+                                    const SizedBox(width: 10),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text(
+                                              'FORGE AI',
+                                              style: GoogleFonts
+                                                  .plusJakartaSans(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w800,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            const SizedBox(width: 6),
+                                            Container(
+                                              width: 6,
+                                              height: 6,
+                                              decoration: const BoxDecoration(
+                                                color: Color(0xFF00B894),
+                                                shape: BoxShape.circle,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Text(
+                                          'PathForge Assistant · Online',
+                                          style: GoogleFonts.plusJakartaSans(
+                                            fontSize: 11,
+                                            color: const Color(0xFFB3B0D6),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  )
-                                : Image.asset(
-                                    'assets/images/robot-for-chatbot.png',
-                                    fit: BoxFit.contain,
-                                    errorBuilder: (_, __, ___) => const Icon(
-                                      Icons.smart_toy_rounded,
-                                      color: Color(0xFF7C5CBF),
-                                      size: 32,
+                                    const Spacer(),
+                                    GestureDetector(
+                                      onTap: () => setState(
+                                          () => isChatOpen = false),
+                                      child: Container(
+                                        padding: const EdgeInsets.all(4),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white12,
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        child: const Icon(
+                                          Icons.close_rounded,
+                                          color: Colors.white,
+                                          size: 18,
+                                        ),
+                                      ),
                                     ),
+                                  ],
+                                ),
+                              ),
+
+                              // Chat messages list
+                              Flexible(
+                                child: SingleChildScrollView(
+                                  padding: const EdgeInsets.all(14),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.all(12),
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xFFF7F8FC),
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                          border: Border.all(
+                                            color: const Color(0xFFE2E4F0),
+                                          ),
+                                        ),
+                                        child: Text(
+                                          'Hi! I\'m FORGE 🤖 — your PathForge career assistant. Ask me anything about your $track roadmap, interview prep, or skills!',
+                                          style: GoogleFonts
+                                              .plusJakartaSans(
+                                            fontSize: 13,
+                                            color: const Color(0xFF1A1A2E),
+                                            height: 1.4,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 10),
+
+                                      ...[
+                                        '🎯 What is my #1 priority this week?',
+                                        '⚡ How do I boost my Job Readiness Score?',
+                                        '💡 Recommend a portfolio project',
+                                        '🔥 Give me a 5-minute coding challenge',
+                                        '💼 What salary can I expect for my track?',
+                                      ].map((prompt) {
+                                        return GestureDetector(
+                                          onTap: () => _sendForgeMessage(
+                                              prompt, track, doneCount),
+                                          child: Container(
+                                            width: double.infinity,
+                                            margin: const EdgeInsets.only(
+                                                bottom: 6),
+                                            padding: const EdgeInsets
+                                                .symmetric(
+                                              horizontal: 12,
+                                              vertical: 7.5,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xFFF6F4FB),
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              border: Border.all(
+                                                color: const Color(0xFFE2DCF2),
+                                                width: 1.0,
+                                              ),
+                                            ),
+                                            child: Text(
+                                              prompt,
+                                              style: GoogleFonts
+                                                  .plusJakartaSans(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w700,
+                                                color: const Color(0xFF1B1D36),
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      }),
+
+                                      ..._quickChatMessages.map((m) {
+                                        final isUser =
+                                            m['role'] == 'user';
+                                        return Container(
+                                          margin: const EdgeInsets.only(
+                                              top: 8),
+                                          alignment: isUser
+                                              ? Alignment.centerRight
+                                              : Alignment.centerLeft,
+                                          child: Container(
+                                            padding:
+                                                const EdgeInsets.all(11),
+                                            decoration: BoxDecoration(
+                                              color: isUser
+                                                  ? const Color(0xFF1B1D36)
+                                                  : const Color(0xFFF3F0FA),
+                                              borderRadius:
+                                                  BorderRadius.circular(14),
+                                              border: isUser
+                                                  ? null
+                                                  : Border.all(
+                                                      color: const Color(
+                                                          0xFFE2DCF2)),
+                                            ),
+                                            child: Text(
+                                              m['text'] ?? '',
+                                              style: GoogleFonts
+                                                  .plusJakartaSans(
+                                                fontSize: 12.5,
+                                                color: isUser
+                                                    ? Colors.white
+                                                    : const Color(0xFF1A1A2E),
+                                                height: 1.4,
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      }),
+
+                                      if (_isForgeTyping) ...[
+                                        const SizedBox(height: 8),
+                                        const SizedBox(
+                                          width: 16,
+                                          height: 16,
+                                          child: CircularProgressIndicator(
+                                            color: Color(0xFF7C5CBF),
+                                            strokeWidth: 2,
+                                          ),
+                                        ),
+                                      ],
+                                    ],
                                   ),
+                                ),
+                              ),
+
+                              // Chat text input bar
+                              Container(
+                                padding: const EdgeInsets.fromLTRB(
+                                    12, 6, 12, 10),
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.vertical(
+                                      bottom: Radius.circular(22)),
+                                  border: Border(
+                                    top: BorderSide(
+                                        color: Color(0xFFE2E4F0)),
+                                  ),
+                                ),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: TextField(
+                                            controller: _quickChatInput,
+                                            style: GoogleFonts
+                                                .plusJakartaSans(
+                                              fontSize: 13,
+                                              color: const Color(0xFF1A1A2E),
+                                            ),
+                                            decoration: InputDecoration(
+                                              hintText:
+                                                  'Ask FORGE anything...',
+                                              hintStyle: GoogleFonts
+                                                  .plusJakartaSans(
+                                                fontSize: 12,
+                                                color: const Color(
+                                                    0xFF9B99B5),
+                                              ),
+                                              isDense: true,
+                                              filled: true,
+                                              fillColor:
+                                                  const Color(0xFFF5F6FA),
+                                              border: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                                borderSide: BorderSide.none,
+                                              ),
+                                              contentPadding:
+                                                  const EdgeInsets.symmetric(
+                                                horizontal: 14,
+                                                vertical: 8,
+                                              ),
+                                            ),
+                                            onSubmitted: (val) =>
+                                                _sendForgeMessage(
+                                                    val, track, doneCount),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        GestureDetector(
+                                          onTap: () => _sendForgeMessage(
+                                              _quickChatInput.text,
+                                              track,
+                                              doneCount),
+                                          child: Container(
+                                            width: 36,
+                                            height: 36,
+                                            decoration: const BoxDecoration(
+                                              color: Color(0xFFFF5722),
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: const Icon(
+                                              Icons.arrow_upward_rounded,
+                                              color: Colors.white,
+                                              size: 18,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 6),
+                                    GestureDetector(
+                                      onTap: () {
+                                        setState(() => isChatOpen = false);
+                                        context.go('/mentor');
+                                      },
+                                      child: Text(
+                                        'Open Full AI Mentor Screen →',
+                                        style: GoogleFonts.plusJakartaSans(
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.w700,
+                                          color: const Color(0xFFFF5722),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                    ],
+                    ),
                   ),
+
+                // ── 4. Floating Robot FAB (Zero Orange Border) ─
+                Positioned(
+                  right: 18,
+                  bottom: 66,
+                  child: GestureDetector(
+                    onTap: () =>
+                        setState(() => isChatOpen = !isChatOpen),
+                    child: SizedBox(
+                      width: 48,
+                      height: 48,
+                      child: isChatOpen
+                          ? Container(
+                              decoration: const BoxDecoration(
+                                color: Color(0xFF1B1D36),
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.close_rounded,
+                                color: Colors.white,
+                                size: 24,
+                              ),
+                            )
+                          : Image.asset(
+                              'assets/images/robot-for-chatbot.png',
+                              fit: BoxFit.contain,
+                              errorBuilder: (_, __, ___) => const Icon(
+                                Icons.smart_toy_rounded,
+                                color: Color(0xFF7C5CBF),
+                                size: 32,
+                              ),
+                            ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  // ── Helper Sub-Widgets ───────────────────────────────────────────
+  // ── Helper Widgets & Sections ───────────────────────────────────
 
   Widget _buildActiveTrackCard(String track, int doneCount, int totalWeeks,
       double progress, Map<dynamic, dynamic> currentWeek) {
@@ -883,7 +787,7 @@ class _HomeScreenState extends State<HomeScreen> {
               value: progress,
               backgroundColor: const Color(0xFFF0EDF8),
               valueColor:
-                  const dynamicColorAnimation(Color(0xFFFF5722)),
+                  const AlwaysStoppedAnimation(Color(0xFFFF5722)),
               minHeight: 8,
             ),
           ),
@@ -918,7 +822,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildAgenticToolsRow(BuildContext context) {
+  Widget _buildAgenticToolsRow(BuildContext context, String track) {
     return Column(
       children: [
         _ToolItemTile(
@@ -1082,7 +986,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Text(
                   coachInsight.isNotEmpty
                       ? coachInsight
-                      : 'Start Week 1 today — consistency beats intensity. Every module you complete puts you ahead of 90% of job seekers!',
+                      : 'Start Week 1 of Data Scientist today — the first step is the hardest. 12 weeks from now you will be interview-ready.',
                   style: GoogleFonts.plusJakartaSans(
                     fontSize: 12,
                     color: const Color(0xFF1B1D36),
@@ -1091,6 +995,68 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLeaderboardSection(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: const Color(0xFFE8E9F2)),
+      ),
+      padding: const EdgeInsets.all(14),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Leaderboard',
+                style: GoogleFonts.plusJakartaSans(
+                  fontSize: 13.5,
+                  fontWeight: FontWeight.w800,
+                  color: const Color(0xFF1B1D36),
+                ),
+              ),
+              const Icon(
+                Icons.emoji_events_rounded,
+                color: Color(0xFFE08D00),
+                size: 18,
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  const Text('🥇', style: TextStyle(fontSize: 16)),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Sarthak',
+                    style: GoogleFonts.plusJakartaSans(
+                      fontSize: 12.5,
+                      fontWeight: FontWeight.w700,
+                      color: const Color(0xFF1A1A2E),
+                    ),
+                  ),
+                ],
+              ),
+              Text(
+                '400 XP',
+                style: GoogleFonts.plusJakartaSans(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w800,
+                  color: const Color(0xFF7C5CBF),
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -1151,6 +1117,74 @@ class _HomeScreenState extends State<HomeScreen> {
               _DayPill('S', false),
               _DayPill('S', true),
             ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildChallengeCard(String track) {
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xFFF3F0FA),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: const Color(0xFFE2DCF2)),
+      ),
+      padding: const EdgeInsets.all(14),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: const Color(0xFF7C5CBF),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: const Icon(
+              Icons.bolt_rounded,
+              color: Colors.white,
+              size: 20,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Daily 5-Min Challenge',
+                  style: GoogleFonts.plusJakartaSans(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w800,
+                    color: const Color(0xFF1B1D36),
+                  ),
+                ),
+                Text(
+                  'Earn +50 XP towards Level ${_level + 1}',
+                  style: GoogleFonts.plusJakartaSans(
+                    fontSize: 11,
+                    color: const Color(0xFF6B6890),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          GestureDetector(
+            onTap: () => setState(() => isChatOpen = true),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              decoration: BoxDecoration(
+                color: const Color(0xFF7C5CBF),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Text(
+                'Start',
+                style: GoogleFonts.plusJakartaSans(
+                  fontSize: 11.5,
+                  fontWeight: FontWeight.w800,
+                  color: Colors.white,
+                ),
+              ),
+            ),
           ),
         ],
       ),
@@ -1389,8 +1423,4 @@ Widget _NavItem(IconData icon, IconData activeIcon, String label,
       ),
     ),
   );
-}
-
-class dynamicColorAnimation extends AlwaysStoppedAnimation<Color> {
-  const dynamicColorAnimation(Color color) : super(color);
 }
