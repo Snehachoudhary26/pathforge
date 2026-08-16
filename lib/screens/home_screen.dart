@@ -292,23 +292,27 @@ class _HomeScreenState extends State<HomeScreen> {
                                     totalWeeks, progress, currentWeek),
                                 const SizedBox(height: 16),
 
-                                // 🤖 AI Mentor Hero Card with Image
+                                // 🤖 AI Mentor Hero Card with Full 100% Unstretched Image
                                 _buildAiMentorBanner(context),
                                 const SizedBox(height: 16),
 
-                                // Agentic Tools Suite (4 Tools including AI Mentor)
+                                // Agentic Tools Suite (Without duplicate AI Mentor)
                                 _buildAgenticToolsRow(context, track),
                                 const SizedBox(height: 16),
 
-                                // 👨‍💻 Job Readiness Score & Placement Goal (with photo)
+                                // 👨‍💻 Job Readiness Score Card
                                 _buildJobReadinessCard(context),
+                                const SizedBox(height: 12),
+
+                                // 👨‍💻 Career Placement Goal Card (Full 100% Unstretched Photo)
+                                _buildPlacementGoalCard(context),
                                 const SizedBox(height: 16),
 
                                 // AI Coach Live Insight Banner
                                 _buildCoachCard(),
                                 const SizedBox(height: 16),
 
-                                // 🚀 Leaderboard & Peer Study Group (with photo)
+                                // 🚀 Leaderboard & Peer Study Group (Full 100% Unstretched Photo)
                                 _buildLeaderboardSection(context),
                                 const SizedBox(height: 16),
 
@@ -826,127 +830,130 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // 🤖 AI Mentor Featured Banner (Uses AI-mentor-guidance.jpeg)
+  // 🤖 AI Mentor Featured Banner (100% Full Unstretched Photo)
   Widget _buildAiMentorBanner(BuildContext context) {
     return GestureDetector(
       onTap: () => context.go('/mentor'),
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(22),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFF7C5CBF).withOpacity(0.2),
-              blurRadius: 12,
+              color: const Color(0xFF7C5CBF).withOpacity(0.18),
+              blurRadius: 14,
               offset: const Offset(0, 4),
             ),
           ],
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(22),
           child: Stack(
             children: [
-              SizedBox(
-                width: double.infinity,
-                height: 136,
+              AspectRatio(
+                aspectRatio: 16 / 9,
                 child: Image.asset(
                   'assets/AI-mentor-guidance.jpeg',
                   fit: BoxFit.cover,
+                  alignment: Alignment.center,
                   errorBuilder: (_, __, ___) => Image.network(
                     'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/AI-mentor-guidance.jpeg',
                     fit: BoxFit.cover,
+                    alignment: Alignment.center,
                     errorBuilder: (_, __, ___) => Container(
                       color: const Color(0xFF1B1D36),
                     ),
                   ),
                 ),
               ),
-              Container(
-                height: 136,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      const Color(0xFF111322).withOpacity(0.92),
-                      const Color(0xFF111322).withOpacity(0.35),
-                    ],
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.topCenter,
+              Positioned.fill(
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        const Color(0xFF111322).withOpacity(0.92),
+                        const Color(0xFF111322).withOpacity(0.2),
+                      ],
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                      stops: const [0.0, 0.65],
+                    ),
                   ),
-                ),
-                padding: const EdgeInsets.all(14),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 3),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFFF5722),
-                            borderRadius: BorderRadius.circular(8),
+                  padding: const EdgeInsets.all(14),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 3.5),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFFF5722),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              'AI MENTOR',
+                              style: GoogleFonts.plusJakartaSans(
+                                fontSize: 9.5,
+                                fontWeight: FontWeight.w800,
+                                color: Colors.white,
+                              ),
+                            ),
                           ),
-                          child: Text(
-                            'AI MENTOR',
+                          const SizedBox(width: 8),
+                          Text(
+                            '24/7 Personalized Career Coaching',
                             style: GoogleFonts.plusJakartaSans(
-                              fontSize: 9.5,
+                              fontSize: 11,
+                              fontWeight: FontWeight.w700,
+                              color: const Color(0xFFD6C8F5),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 6),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Ask DSA, Roadmaps & Strategy',
+                            style: GoogleFonts.plusJakartaSans(
+                              fontSize: 14.5,
                               fontWeight: FontWeight.w800,
                               color: Colors.white,
                             ),
                           ),
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          '24/7 Personalized Career Coaching',
-                          style: GoogleFonts.plusJakartaSans(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w700,
-                            color: const Color(0xFFD6C8F5),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 6),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Ask DSA, Roadmaps & Strategy',
-                          style: GoogleFonts.plusJakartaSans(
-                            fontSize: 14.5,
-                            fontWeight: FontWeight.w800,
-                            color: Colors.white,
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 6),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Row(
-                            children: [
-                              Text(
-                                'Chat Now',
-                                style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 11.5,
-                                  fontWeight: FontWeight.w800,
-                                  color: const Color(0xFF111322),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 6),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Row(
+                              children: [
+                                Text(
+                                  'Chat Now',
+                                  style: GoogleFonts.plusJakartaSans(
+                                    fontSize: 11.5,
+                                    fontWeight: FontWeight.w800,
+                                    color: const Color(0xFF111322),
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(width: 4),
-                              const Icon(
-                                Icons.arrow_forward_rounded,
-                                color: Color(0xFF111322),
-                                size: 13,
-                              ),
-                            ],
+                                const SizedBox(width: 4),
+                                const Icon(
+                                  Icons.arrow_forward_rounded,
+                                  color: Color(0xFF111322),
+                                  size: 13,
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -956,20 +963,10 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  // Agentic Tools Row (Without duplicate AI Career Mentor)
   Widget _buildAgenticToolsRow(BuildContext context, String track) {
     return Column(
       children: [
-        _ToolItemTile(
-          icon: Icons.smart_toy_rounded,
-          iconColor: const Color(0xFF7C5CBF),
-          iconBg: const Color(0xFFF3F0FA),
-          title: 'AI Career Mentor',
-          badgeText: 'Live AI',
-          badgeColor: const Color(0xFF7C5CBF),
-          subtitle: 'Instant answers for your roadmap & career',
-          onTap: () => context.go('/mentor'),
-        ),
-        const SizedBox(height: 10),
         _ToolItemTile(
           icon: Icons.auto_graph_rounded,
           iconColor: const Color(0xFF00B894),
@@ -1004,153 +1001,172 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // 👨‍💻 Job Readiness Card & Goal (Uses men-with-laptop.png)
+  // 👨‍💻 Job Readiness Score Card
   Widget _buildJobReadinessCard(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         color: const Color(0xFF1B1D36),
         borderRadius: BorderRadius.circular(20),
       ),
-      child: Column(
+      padding: const EdgeInsets.all(16),
+      child: Row(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Row(
+          Container(
+            width: 44,
+            height: 44,
+            decoration: const BoxDecoration(
+              color: Color(0xFFFF5722),
+              shape: BoxShape.circle,
+            ),
+            child: Center(
+              child: Text(
+                '0',
+                style: GoogleFonts.plusJakartaSans(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w800,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  width: 44,
-                  height: 44,
-                  decoration: const BoxDecoration(
-                    color: Color(0xFFFF5722),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Center(
-                    child: Text(
-                      '0',
-                      style: GoogleFonts.plusJakartaSans(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w800,
-                        color: Colors.white,
-                      ),
-                    ),
+                Text(
+                  'Job Readiness Score',
+                  style: GoogleFonts.plusJakartaSans(
+                    fontSize: 14.5,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.white,
                   ),
                 ),
-                const SizedBox(width: 14),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Job Readiness Score',
-                        style: GoogleFonts.plusJakartaSans(
-                          fontSize: 14.5,
-                          fontWeight: FontWeight.w800,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Text(
-                        'Getting Started · Tap to see breakdown',
-                        style: GoogleFonts.plusJakartaSans(
-                          fontSize: 11,
-                          color: const Color(0xFF9B99B5),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () => context.go('/job-readiness'),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 14, vertical: 7),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFFF5722),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Text(
-                      'View',
-                      style: GoogleFonts.plusJakartaSans(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w800,
-                        color: Colors.white,
-                      ),
-                    ),
+                Text(
+                  'Getting Started · Tap to see breakdown',
+                  style: GoogleFonts.plusJakartaSans(
+                    fontSize: 11,
+                    color: const Color(0xFF9B99B5),
                   ),
                 ),
               ],
             ),
           ),
+          GestureDetector(
+            onTap: () => context.go('/job-readiness'),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+              decoration: BoxDecoration(
+                color: const Color(0xFFFF5722),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                'View',
+                style: GoogleFonts.plusJakartaSans(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w800,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
-          // Placement Goal Graphic Bar with men-with-laptop
-          ClipRRect(
-            borderRadius:
-                const BorderRadius.vertical(bottom: Radius.circular(20)),
-            child: Stack(
-              children: [
-                SizedBox(
-                  width: double.infinity,
-                  height: 90,
-                  child: Image.asset(
-                    'assets/men-with-laptop.png',
+  // 👨‍💻 Career Placement Goal Card (100% Full Unstretched Photo of men-with-laptop)
+  Widget _buildPlacementGoalCard(BuildContext context) {
+    return GestureDetector(
+      onTap: () => context.go('/job-readiness'),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(22),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.06),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(22),
+          child: Stack(
+            children: [
+              AspectRatio(
+                aspectRatio: 16 / 10,
+                child: Image.asset(
+                  'assets/men-with-laptop.png',
+                  fit: BoxFit.cover,
+                  alignment: Alignment.center,
+                  errorBuilder: (_, __, ___) => Image.network(
+                    'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/men-with-laptop.png',
                     fit: BoxFit.cover,
-                    alignment: Alignment.topCenter,
-                    errorBuilder: (_, __, ___) => Image.network(
-                      'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/men-with-laptop.png',
-                      fit: BoxFit.cover,
-                      alignment: Alignment.topCenter,
-                      errorBuilder: (_, __, ___) =>
-                          const SizedBox.shrink(),
+                    alignment: Alignment.center,
+                    errorBuilder: (_, __, ___) => Container(
+                      color: const Color(0xFF4A2BB8),
                     ),
                   ),
                 ),
-                Container(
-                  height: 90,
+              ),
+              Positioned.fill(
+                child: Container(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        const Color(0xFF111322).withOpacity(0.88),
-                        const Color(0xFF111322).withOpacity(0.4),
+                        const Color(0xFF111322).withOpacity(0.92),
+                        const Color(0xFF111322).withOpacity(0.15),
                       ],
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                      stops: const [0.0, 0.6],
                     ),
                   ),
-                  padding: const EdgeInsets.symmetric(horizontal: 14),
-                  alignment: Alignment.centerLeft,
-                  child: Row(
+                  padding: const EdgeInsets.all(14),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 4),
+                            horizontal: 8, vertical: 3.5),
                         decoration: BoxDecoration(
                           color: const Color(0xFFFF5722),
-                          borderRadius: BorderRadius.circular(6),
+                          borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
-                          'TARGET',
+                          'CAREER GOAL',
                           style: GoogleFonts.plusJakartaSans(
-                            fontSize: 9,
+                            fontSize: 9.5,
                             fontWeight: FontWeight.w800,
                             color: Colors.white,
                           ),
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(height: 6),
                       Text(
                         'Placement Ready: ₹12–25 LPA',
                         style: GoogleFonts.plusJakartaSans(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w700,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w800,
                           color: Colors.white,
+                        ),
+                      ),
+                      Text(
+                        'Master your roadmap to crack dream campus offers',
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 11,
+                          color: const Color(0xFFD6C8F5),
                         ),
                       ),
                     ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -1223,69 +1239,73 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // 🚀 Leaderboard & Study Group Card (Uses GroupProgress.jpeg)
+  // 🚀 Leaderboard & Study Group Card (100% Full Unstretched Photo of GroupProgress)
   Widget _buildLeaderboardSection(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(22),
         border: Border.all(color: const Color(0xFFE8E9F2)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Graphic header with GroupProgress
+          // Graphic header with GroupProgress 100% visible
           ClipRRect(
             borderRadius:
-                const BorderRadius.vertical(top: Radius.circular(18)),
+                const BorderRadius.vertical(top: Radius.circular(22)),
             child: Stack(
               children: [
-                SizedBox(
-                  width: double.infinity,
-                  height: 80,
+                AspectRatio(
+                  aspectRatio: 16 / 9,
                   child: Image.asset(
                     'assets/GroupProgress.jpeg',
                     fit: BoxFit.cover,
+                    alignment: Alignment.center,
                     errorBuilder: (_, __, ___) => Image.network(
                       'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/GroupProgress.jpeg',
                       fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) =>
-                          const SizedBox.shrink(),
+                      alignment: Alignment.center,
+                      errorBuilder: (_, __, ___) => Container(
+                        color: const Color(0xFF1B1D36),
+                      ),
                     ),
                   ),
                 ),
-                Container(
-                  height: 80,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        const Color(0xFF111322).withOpacity(0.85),
-                        const Color(0xFF7C5CBF).withOpacity(0.35),
-                      ],
-                      begin: Alignment.bottomCenter,
-                      end: Alignment.topCenter,
+                Positioned.fill(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          const Color(0xFF111322).withOpacity(0.9),
+                          Colors.transparent,
+                        ],
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.topCenter,
+                        stops: const [0.0, 0.55],
+                      ),
                     ),
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 14, vertical: 10),
-                  alignment: Alignment.bottomLeft,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Peer Study Leaderboard',
-                        style: GoogleFonts.plusJakartaSans(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w800,
-                          color: Colors.white,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 14, vertical: 12),
+                    alignment: Alignment.bottomLeft,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Peer Study Leaderboard',
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 13.5,
+                            fontWeight: FontWeight.w800,
+                            color: Colors.white,
+                          ),
                         ),
-                      ),
-                      const Icon(
-                        Icons.emoji_events_rounded,
-                        color: Color(0xFFFFC107),
-                        size: 20,
-                      ),
-                    ],
+                        const Icon(
+                          Icons.emoji_events_rounded,
+                          color: Color(0xFFFFC107),
+                          size: 20,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
