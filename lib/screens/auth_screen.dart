@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../core/theme.dart';
 import '../services/auth_service.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -30,15 +29,14 @@ class _AuthScreenState extends State<AuthScreen> {
   String? errorMessage;
 
   final List<Map<String, String>> _countryCodes = [
-    {'code': '+91', 'country': 'India', 'flag': '🇮🇳'},
-    {'code': '+1', 'country': 'USA / Canada', 'flag': '🇺🇸'},
-    {'code': '+44', 'country': 'UK', 'flag': '🇬🇧'},
-    {'code': '+971', 'country': 'UAE', 'flag': '🇦🇪'},
-    {'code': '+65', 'country': 'Singapore', 'flag': '🇸🇬'},
-    {'code': '+61', 'country': 'Australia', 'flag': '🇦🇺'},
-    {'code': '+49', 'country': 'Germany', 'flag': '🇩🇪'},
-    {'code': '+33', 'country': 'France', 'flag': '🇫🇷'},
-    {'code': '+81', 'country': 'Japan', 'flag': '🇯🇵'},
+    {'code': '+91', 'label': 'India (+91)'},
+    {'code': '+1', 'label': 'USA (+1)'},
+    {'code': '+44', 'label': 'UK (+44)'},
+    {'code': '+971', 'label': 'UAE (+971)'},
+    {'code': '+65', 'label': 'Singapore (+65)'},
+    {'code': '+61', 'label': 'Australia (+61)'},
+    {'code': '+49', 'label': 'Germany (+49)'},
+    {'code': '+33', 'label': 'France (+33)'},
   ];
 
   @override
@@ -55,8 +53,8 @@ class _AuthScreenState extends State<AuthScreen> {
     setState(() => errorMessage = null);
 
     final pass = _passwordController.text.trim();
-    if (pass.isEmpty || pass.length < 6) {
-      setState(() => errorMessage = 'Password must be at least 6 characters');
+    if (pass.isEmpty) {
+      setState(() => errorMessage = isPhoneMode ? 'Please enter OTP / Password' : 'Password is required');
       return;
     }
 
@@ -80,12 +78,12 @@ class _AuthScreenState extends State<AuthScreen> {
     String authEmail;
     if (isPhoneMode) {
       final phone = _phoneController.text.trim().replaceAll(RegExp(r'\s+'), '');
-      if (phone.isEmpty || phone.length < 7) {
-        setState(() => errorMessage = 'Please enter a valid mobile number');
+      if (phone.isEmpty || phone.length < 8) {
+        setState(() => errorMessage = 'Please enter a valid 10-digit mobile number');
         return;
       }
-      final cleanPhone = '$_selectedCountryCode$phone'.replaceAll('+', '');
-      authEmail = 'phone_$cleanPhone@pathforge.app';
+      final cleanDigits = '$_selectedCountryCode$phone'.replaceAll('+', '');
+      authEmail = 'phone_$cleanDigits@pathforge.app';
     } else {
       final email = _emailController.text.trim();
       if (email.isEmpty || !email.contains('@')) {
@@ -179,53 +177,30 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FE),
+      backgroundColor: const Color(0xFF111322),
       body: SafeArea(
         top: false,
         child: SingleChildScrollView(
           child: Column(
             children: [
-              // Top Navy Header with Glowing Circular Emblem
+              // Top Navy Section
               Container(
                 width: double.infinity,
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Color(0xFF111322),
-                      Color(0xFF1B1D36),
-                    ],
-                  ),
-                ),
                 padding: EdgeInsets.fromLTRB(
                   20,
-                  MediaQuery.of(context).padding.top + 28,
+                  MediaQuery.of(context).padding.top + 24,
                   20,
-                  32,
+                  28,
                 ),
+                color: const Color(0xFF111322),
                 child: Column(
                   children: [
-                    // Clean Circular Logo Emblem (Inside the purple/coral circle)
+                    // Pure Circular Logo Emblem (Matching Reference Image 3)
                     Container(
-                      width: 90,
-                      height: 90,
-                      decoration: BoxDecoration(
+                      width: 108,
+                      height: 108,
+                      decoration: const BoxDecoration(
                         shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: const Color(0xFF7C5CBF).withOpacity(0.45),
-                            blurRadius: 24,
-                            spreadRadius: 4,
-                            offset: const Offset(0, 4),
-                          ),
-                          BoxShadow(
-                            color: const Color(0xFFFF5722).withOpacity(0.25),
-                            blurRadius: 18,
-                            spreadRadius: 1,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
                       ),
                       child: ClipOval(
                         child: Image.asset(
@@ -241,7 +216,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             child: const Icon(
                               Icons.auto_awesome_rounded,
                               color: Colors.white,
-                              size: 44,
+                              size: 48,
                             ),
                           ),
                         ),
@@ -251,18 +226,18 @@ class _AuthScreenState extends State<AuthScreen> {
                     Text(
                       'PathForge',
                       style: GoogleFonts.plusJakartaSans(
-                        fontSize: 28,
+                        fontSize: 30,
                         fontWeight: FontWeight.w800,
                         color: Colors.white,
-                        letterSpacing: -0.4,
+                        letterSpacing: -0.5,
                       ),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       'Your AI career roadmap',
                       style: GoogleFonts.plusJakartaSans(
-                        fontSize: 13.5,
-                        color: const Color(0xFFD4C9FF),
+                        fontSize: 14,
+                        color: const Color(0xFFB3B0D6),
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -270,29 +245,48 @@ class _AuthScreenState extends State<AuthScreen> {
                 ),
               ),
 
-              // Form Container
-              Padding(
-                padding: const EdgeInsets.fromLTRB(24, 24, 24, 30),
+              // Bottom White Card
+              Container(
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+                ),
+                padding: const EdgeInsets.fromLTRB(24, 22, 24, 32),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Social Proof Pill
+                    // Community Proof Badge
                     Center(
                       child: Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 14, vertical: 6),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFF1F2F9),
+                          color: const Color(0xFFF4F5FB),
                           borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: const Color(0xFFE2E4F0)),
+                          border: Border.all(color: const Color(0xFFE5E7F2)),
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
+                            Row(
+                              children: [
+                                _miniAvatar(const Color(0xFF7C5CBF), 'S'),
+                                Transform.translate(
+                                  offset: const Offset(-5, 0),
+                                  child: _miniAvatar(const Color(0xFFFF5722), 'A'),
+                                ),
+                                Transform.translate(
+                                  offset: const Offset(-10, 0),
+                                  child: _miniAvatar(const Color(0xFF00B894), 'R'),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(width: 4),
                             Text(
-                              '🚀 Join 50,000+ AI Career Builders',
+                              'Join 50,000+ AI Career Builders 🚀',
                               style: GoogleFonts.plusJakartaSans(
-                                fontSize: 11.5,
+                                fontSize: 12,
                                 fontWeight: FontWeight.w700,
                                 color: const Color(0xFF1B1D36),
                               ),
@@ -302,12 +296,12 @@ class _AuthScreenState extends State<AuthScreen> {
                       ),
                     ),
 
-                    const SizedBox(height: 18),
+                    const SizedBox(height: 20),
 
                     Text(
                       isLogin ? 'Welcome back' : 'Create account',
                       style: GoogleFonts.plusJakartaSans(
-                        fontSize: 22,
+                        fontSize: 24,
                         fontWeight: FontWeight.w800,
                         color: const Color(0xFF1A1A2E),
                       ),
@@ -337,39 +331,41 @@ class _AuthScreenState extends State<AuthScreen> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16),
                           ),
+                          elevation: 1,
+                          shadowColor: Colors.black.withOpacity(0.04),
                         ),
                         child: isGoogleLoading
-                          ? const SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator(
-                                color: Color(0xFFFF5722),
-                                strokeWidth: 2,
+                            ? const SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  color: Color(0xFFFF5722),
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CustomPaint(
+                                      painter: _GoogleLogoPainter(),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Text(
+                                    isLogin
+                                        ? 'Continue with Google'
+                                        : 'Sign up with Google',
+                                    style: GoogleFonts.plusJakartaSans(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                      color: const Color(0xFF1A1A2E),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            )
-                          : Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  width: 20,
-                                  height: 20,
-                                  child: CustomPaint(
-                                    painter: _GoogleLogoPainter(),
-                                  ),
-                                ),
-                                const SizedBox(width: 12),
-                                Text(
-                                  isLogin
-                                      ? 'Continue with Google'
-                                      : 'Sign up with Google',
-                                  style: GoogleFonts.plusJakartaSans(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w700,
-                                    color: const Color(0xFF1A1A2E),
-                                  ),
-                                ),
-                              ],
-                            ),
                       ),
                     ),
 
@@ -383,7 +379,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 12),
                           child: Text(
-                            'or continue with',
+                            'or',
                             style: GoogleFonts.plusJakartaSans(
                               fontSize: 12,
                               color: const Color(0xFF9B99B5),
@@ -398,11 +394,11 @@ class _AuthScreenState extends State<AuthScreen> {
 
                     const SizedBox(height: 16),
 
-                    // Email vs Phone Number Segmented Control
+                    // Email vs Phone Selector Tabs
                     Container(
-                      padding: const EdgeInsets.all(4),
+                      padding: const EdgeInsets.all(3),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFEBEBF5),
+                        color: const Color(0xFFF1F2F8),
                         borderRadius: BorderRadius.circular(14),
                       ),
                       child: Row(
@@ -411,45 +407,33 @@ class _AuthScreenState extends State<AuthScreen> {
                             child: GestureDetector(
                               onTap: () => setState(() => isPhoneMode = false),
                               child: Container(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 9),
+                                padding: const EdgeInsets.symmetric(vertical: 8),
                                 decoration: BoxDecoration(
                                   color: !isPhoneMode
                                       ? Colors.white
                                       : Colors.transparent,
-                                  borderRadius: BorderRadius.circular(10),
+                                  borderRadius: BorderRadius.circular(11),
                                   boxShadow: !isPhoneMode
                                       ? [
                                           BoxShadow(
                                             color: Colors.black.withOpacity(0.06),
                                             blurRadius: 4,
-                                            offset: const Offset(0, 2),
+                                            offset: const Offset(0, 1),
                                           ),
                                         ]
                                       : null,
                                 ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.email_outlined,
-                                      size: 16,
+                                child: Center(
+                                  child: Text(
+                                    '✉️ Email',
+                                    style: GoogleFonts.plusJakartaSans(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w700,
                                       color: !isPhoneMode
-                                          ? const Color(0xFFFF5722)
+                                          ? const Color(0xFF1A1A2E)
                                           : const Color(0xFF6B6890),
                                     ),
-                                    const SizedBox(width: 6),
-                                    Text(
-                                      'Email',
-                                      style: GoogleFonts.plusJakartaSans(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w700,
-                                        color: !isPhoneMode
-                                            ? const Color(0xFF1A1A2E)
-                                            : const Color(0xFF6B6890),
-                                      ),
-                                    ),
-                                  ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -458,45 +442,33 @@ class _AuthScreenState extends State<AuthScreen> {
                             child: GestureDetector(
                               onTap: () => setState(() => isPhoneMode = true),
                               child: Container(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 9),
+                                padding: const EdgeInsets.symmetric(vertical: 8),
                                 decoration: BoxDecoration(
                                   color: isPhoneMode
                                       ? Colors.white
                                       : Colors.transparent,
-                                  borderRadius: BorderRadius.circular(10),
+                                  borderRadius: BorderRadius.circular(11),
                                   boxShadow: isPhoneMode
                                       ? [
                                           BoxShadow(
                                             color: Colors.black.withOpacity(0.06),
                                             blurRadius: 4,
-                                            offset: const Offset(0, 2),
+                                            offset: const Offset(0, 1),
                                           ),
                                         ]
                                       : null,
                                 ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.phone_android_rounded,
-                                      size: 16,
+                                child: Center(
+                                  child: Text(
+                                    '📱 Mobile Phone',
+                                    style: GoogleFonts.plusJakartaSans(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w700,
                                       color: isPhoneMode
-                                          ? const Color(0xFFFF5722)
+                                          ? const Color(0xFF1A1A2E)
                                           : const Color(0xFF6B6890),
                                     ),
-                                    const SizedBox(width: 6),
-                                    Text(
-                                      'Mobile Phone',
-                                      style: GoogleFonts.plusJakartaSans(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w700,
-                                        color: isPhoneMode
-                                            ? const Color(0xFF1A1A2E)
-                                            : const Color(0xFF6B6890),
-                                      ),
-                                    ),
-                                  ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -505,9 +477,9 @@ class _AuthScreenState extends State<AuthScreen> {
                       ),
                     ),
 
-                    const SizedBox(height: 18),
+                    const SizedBox(height: 16),
 
-                    // Error Box
+                    // Error Alert
                     if (errorMessage != null) ...[
                       Container(
                         padding: const EdgeInsets.all(12),
@@ -537,7 +509,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 14),
                     ],
 
                     // Full Name (Only for Sign Up)
@@ -545,56 +517,48 @@ class _AuthScreenState extends State<AuthScreen> {
                       _Field(
                         controller: _nameController,
                         hint: 'Full name',
+                        dummyText: 'e.g. Rahul Sharma',
                         icon: Icons.person_outline_rounded,
-                        autofillHints: const [AutofillHints.name],
                       ),
                       const SizedBox(height: 12),
                     ],
 
-                    // Input Field: Email OR Mobile Phone with Country Code Dropdown
+                    // Email Field
                     if (!isPhoneMode) ...[
                       _Field(
                         controller: _emailController,
                         hint: 'Email address',
-                        icon: Icons.email_outlined,
+                        dummyText: 'e.g. alex@example.com',
+                        icon: Icons.mail_outline_rounded,
                         type: TextInputType.emailAddress,
-                        autofillHints: const [AutofillHints.email],
                       ),
                     ] else ...[
+                      // Mobile Phone Row with Country Code
                       Row(
                         children: [
-                          // Country Code Selector Dropdown
                           Container(
                             height: 52,
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: const Color(0xFFF9FAFD),
                               borderRadius: BorderRadius.circular(14),
                               border: Border.all(color: const Color(0xFFE2E4F0)),
                             ),
                             child: DropdownButtonHideUnderline(
                               child: DropdownButton<String>(
                                 value: _selectedCountryCode,
-                                icon: const Icon(Icons.keyboard_arrow_down_rounded,
-                                    size: 18, color: Color(0xFF6B6890)),
+                                icon: const Icon(Icons.arrow_drop_down_rounded,
+                                    color: Color(0xFF1A1A2E)),
                                 items: _countryCodes.map((item) {
                                   return DropdownMenuItem<String>(
                                     value: item['code'],
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Text(item['flag'] ?? '🇮🇳',
-                                            style: const TextStyle(fontSize: 16)),
-                                        const SizedBox(width: 6),
-                                        Text(
-                                          item['code'] ?? '+91',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.w700,
-                                            color: const Color(0xFF1A1A2E),
-                                          ),
-                                        ),
-                                      ],
+                                    child: Text(
+                                      item['label']!,
+                                      style: GoogleFonts.plusJakartaSans(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w700,
+                                        color: const Color(0xFF1A1A2E),
+                                      ),
                                     ),
                                   );
                                 }).toList(),
@@ -607,14 +571,13 @@ class _AuthScreenState extends State<AuthScreen> {
                             ),
                           ),
                           const SizedBox(width: 8),
-                          // Phone Number Input
                           Expanded(
                             child: _Field(
                               controller: _phoneController,
-                              hint: 'Mobile number (10 digits)',
+                              hint: 'Mobile number',
+                              dummyText: 'e.g. 98765 43210',
                               icon: Icons.phone_outlined,
                               type: TextInputType.phone,
-                              autofillHints: const [AutofillHints.telephoneNumber],
                             ),
                           ),
                         ],
@@ -623,7 +586,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
                     const SizedBox(height: 12),
 
-                    // Password Field with Visibility Toggle
+                    // Password / OTP Field
                     TextField(
                       controller: _passwordController,
                       obscureText: !_showPassword,
@@ -634,10 +597,12 @@ class _AuthScreenState extends State<AuthScreen> {
                         color: const Color(0xFF1A1A2E),
                       ),
                       decoration: InputDecoration(
-                        hintText: 'Password (min 6 characters)',
+                        hintText: isPhoneMode
+                            ? 'Enter OTP / Password (dummy: 123456)'
+                            : 'Password (min 6 characters)',
                         hintStyle: GoogleFonts.plusJakartaSans(
                           fontSize: 13,
-                          color: const Color(0xFF9B99B5),
+                          color: const Color(0xFFA5A3C0),
                         ),
                         prefixIcon: const Icon(
                           Icons.lock_outline_rounded,
@@ -656,7 +621,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           ),
                         ),
                         filled: true,
-                        fillColor: Colors.white,
+                        fillColor: const Color(0xFFF9FAFD),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(14),
                           borderSide:
@@ -677,7 +642,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       ),
                     ),
 
-                    // Confirm Password Field (Only for Sign Up)
+                    // Confirm Password (in Sign Up mode)
                     if (!isLogin) ...[
                       const SizedBox(height: 12),
                       TextField(
@@ -690,10 +655,10 @@ class _AuthScreenState extends State<AuthScreen> {
                           color: const Color(0xFF1A1A2E),
                         ),
                         decoration: InputDecoration(
-                          hintText: 'Confirm password',
+                          hintText: 'Confirm password (min 6 characters)',
                           hintStyle: GoogleFonts.plusJakartaSans(
                             fontSize: 13,
-                            color: const Color(0xFF9B99B5),
+                            color: const Color(0xFFA5A3C0),
                           ),
                           prefixIcon: const Icon(
                             Icons.lock_reset_rounded,
@@ -712,7 +677,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             ),
                           ),
                           filled: true,
-                          fillColor: Colors.white,
+                          fillColor: const Color(0xFFF9FAFD),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
                             borderSide:
@@ -734,7 +699,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       ),
                     ],
 
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 22),
 
                     // Submit Button
                     SizedBox(
@@ -748,7 +713,8 @@ class _AuthScreenState extends State<AuthScreen> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16),
                           ),
-                          elevation: 0,
+                          elevation: 2,
+                          shadowColor: const Color(0xFFFF5722).withOpacity(0.4),
                         ),
                         child: isLoading
                             ? const SizedBox(
@@ -779,7 +745,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
                     const SizedBox(height: 18),
 
-                    // Switch between Sign In and Sign Up
+                    // Toggle Login / Sign Up
                     Center(
                       child: GestureDetector(
                         onTap: () => setState(() {
@@ -815,6 +781,28 @@ class _AuthScreenState extends State<AuthScreen> {
                 ),
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _miniAvatar(Color bg, String letter) {
+    return Container(
+      width: 22,
+      height: 22,
+      decoration: BoxDecoration(
+        color: bg,
+        shape: BoxShape.circle,
+        border: Border.all(color: Colors.white, width: 1.5),
+      ),
+      child: Center(
+        child: Text(
+          letter,
+          style: GoogleFonts.plusJakartaSans(
+            fontSize: 10,
+            fontWeight: FontWeight.w800,
+            color: Colors.white,
           ),
         ),
       ),
@@ -898,18 +886,18 @@ class _GoogleLogoPainter extends CustomPainter {
 class _Field extends StatelessWidget {
   final TextEditingController controller;
   final String hint;
+  final String? dummyText;
   final IconData icon;
   final bool obscure;
   final TextInputType? type;
-  final Iterable<String> autofillHints;
 
   const _Field({
     required this.controller,
     required this.hint,
+    this.dummyText,
     required this.icon,
     this.obscure = false,
     this.type,
-    this.autofillHints = const [],
   });
 
   @override
@@ -920,20 +908,19 @@ class _Field extends StatelessWidget {
       keyboardType: type,
       autocorrect: false,
       enableSuggestions: !obscure,
-      autofillHints: autofillHints,
       style: GoogleFonts.plusJakartaSans(
         fontSize: 14,
         color: const Color(0xFF1A1A2E),
       ),
       decoration: InputDecoration(
-        hintText: hint,
+        hintText: dummyText ?? hint,
         hintStyle: GoogleFonts.plusJakartaSans(
           fontSize: 13,
-          color: const Color(0xFF9B99B5),
+          color: const Color(0xFFA5A3C0),
         ),
         prefixIcon: Icon(icon, color: const Color(0xFF9B99B5), size: 20),
         filled: true,
-        fillColor: Colors.white,
+        fillColor: const Color(0xFFF9FAFD),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
           borderSide: const BorderSide(color: Color(0xFFE2E4F0)),
