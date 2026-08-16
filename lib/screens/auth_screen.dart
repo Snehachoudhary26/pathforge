@@ -80,10 +80,13 @@ class _AuthScreenState extends State<AuthScreen> {
             '${_selectedCountryCode.replaceAll('+', '')}$phone@pathforge.app';
 
         if (isLogin) {
-          final res = await AuthService.signInWithEmail(emailPlaceholder, pass);
-          if (res['error'] != null) {
+          final error = await AuthService.signIn(
+            email: emailPlaceholder,
+            password: pass,
+          );
+          if (error != null) {
             setState(() {
-              errorMessage = res['error'];
+              errorMessage = error;
               isLoading = false;
             });
             return;
@@ -107,14 +110,14 @@ class _AuthScreenState extends State<AuthScreen> {
             return;
           }
 
-          final res = await AuthService.signUpWithEmail(
+          final error = await AuthService.signUp(
             name: name,
             email: emailPlaceholder,
             password: pass,
           );
-          if (res['error'] != null) {
+          if (error != null) {
             setState(() {
-              errorMessage = res['error'];
+              errorMessage = error;
               isLoading = false;
             });
             return;
@@ -142,10 +145,13 @@ class _AuthScreenState extends State<AuthScreen> {
         }
 
         if (isLogin) {
-          final res = await AuthService.signInWithEmail(email, pass);
-          if (res['error'] != null) {
+          final error = await AuthService.signIn(
+            email: email,
+            password: pass,
+          );
+          if (error != null) {
             setState(() {
-              errorMessage = res['error'];
+              errorMessage = error;
               isLoading = false;
             });
             return;
@@ -169,14 +175,14 @@ class _AuthScreenState extends State<AuthScreen> {
             return;
           }
 
-          final res = await AuthService.signUpWithEmail(
+          final error = await AuthService.signUp(
             name: name,
             email: email,
             password: pass,
           );
-          if (res['error'] != null) {
+          if (error != null) {
             setState(() {
-              errorMessage = res['error'];
+              errorMessage = error;
               isLoading = false;
             });
             return;
