@@ -21,12 +21,8 @@ class _ResourcesScreenState extends State<ResourcesScreen>
       'channelInitial': 'F',
       'channelColor': const Color(0xFF00599C),
       'level': 'Beginner',
-      'image': 'assets/Resources/Languages/Python.png',
-      'onlineThumb': 'https://img.youtube.com/vi/eWRfhZUzrAc/hqdefault.jpg',
-      'rawGitThumb':
-          'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/Resources/Languages/Python.png',
+      'image': 'https://img.youtube.com/vi/eWRfhZUzrAc/hqdefault.jpg',
       'url': 'https://youtu.be/eWRfhZUzrAc',
-      'desc': 'Variables, loops, OOP, data structures & real projects',
     },
     {
       'title': 'Java Full Course',
@@ -34,12 +30,8 @@ class _ResourcesScreenState extends State<ResourcesScreen>
       'channelInitial': 'A',
       'channelColor': const Color(0xFFFF5722),
       'level': 'Beginner',
-      'image': 'assets/Resources/Languages/Java.png',
-      'onlineThumb': 'https://img.youtube.com/vi/yRpLlJmRo2w/hqdefault.jpg',
-      'rawGitThumb':
-          'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/Resources/Languages/Java.png',
+      'image': 'https://img.youtube.com/vi/yRpLlJmRo2w/hqdefault.jpg',
       'url': 'https://youtu.be/yRpLlJmRo2w',
-      'desc': 'Core Java, OOPs concepts, collections framework & DSA basics',
     },
     {
       'title': 'JavaScript Mastery',
@@ -47,12 +39,8 @@ class _ResourcesScreenState extends State<ResourcesScreen>
       'channelInitial': 'C',
       'channelColor': const Color(0xFFF7DF1E),
       'level': 'Beginner',
-      'image': 'assets/Resources/Languages/Javascript.png',
-      'onlineThumb': 'https://img.youtube.com/vi/sscX432bMZo/hqdefault.jpg',
-      'rawGitThumb':
-          'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/Resources/Languages/Javascript.png',
+      'image': 'https://img.youtube.com/vi/sscX432bMZo/hqdefault.jpg',
       'url': 'https://youtu.be/sscX432bMZo',
-      'desc': 'ES6+, DOM, Async/Await, closures & modern JS practices',
     },
     {
       'title': 'C++ Full Course',
@@ -60,12 +48,8 @@ class _ResourcesScreenState extends State<ResourcesScreen>
       'channelInitial': 'C',
       'channelColor': const Color(0xFF00599C),
       'level': 'Beginner',
-      'image': 'assets/Resources/Languages/C++.png',
-      'onlineThumb': 'https://img.youtube.com/vi/j8nAHeVKL08/hqdefault.jpg',
-      'rawGitThumb':
-          'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/Resources/Languages/C%2B%2B.png',
+      'image': 'https://img.youtube.com/vi/j8nAHeVKL08/hqdefault.jpg',
       'url': 'https://youtu.be/j8nAHeVKL08',
-      'desc': 'Pointers, memory management, STL & OOP principles',
     },
   ];
 
@@ -76,12 +60,8 @@ class _ResourcesScreenState extends State<ResourcesScreen>
       'channelInitial': 'T',
       'channelColor': const Color(0xFFFF5722),
       'level': 'All Levels',
-      'image': 'assets/Resources/DSA/Striver-dsa.png',
-      'onlineThumb': 'https://img.youtube.com/vi/EAR7De6Godd/hqdefault.jpg',
-      'rawGitThumb':
-          'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/Resources/DSA/Striver-dsa.png',
-      'url': 'https://youtu.be/EAR7De6Godd',
-      'desc': 'Arrays, Trees, Graphs, DP & top interview problem patterns',
+      'image': 'https://img.youtube.com/vi/0bHoB35fCkg/hqdefault.jpg',
+      'url': 'https://youtu.be/0bHoB35fCkg',
     },
     {
       'title': 'Love Babbar DSA Sheet',
@@ -89,12 +69,8 @@ class _ResourcesScreenState extends State<ResourcesScreen>
       'channelInitial': 'L',
       'channelColor': const Color(0xFF7C5CBF),
       'level': 'Beginner to Advanced',
-      'image': 'assets/Resources/DSA/Love-babbar-dsa.png',
-      'onlineThumb': 'https://img.youtube.com/vi/WQoB2z67hvY/hqdefault.jpg',
-      'rawGitThumb':
-          'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/Resources/DSA/Love-babbar-dsa.png',
+      'image': 'https://img.youtube.com/vi/WQoB2z67hvY/hqdefault.jpg',
       'url': 'https://youtu.be/WQoB2z67hvY',
-      'desc': '450+ curated DSA coding interview problems & step-by-step solutions',
     },
     {
       'title': 'Abdul Bari Algorithms',
@@ -102,12 +78,8 @@ class _ResourcesScreenState extends State<ResourcesScreen>
       'channelInitial': 'A',
       'channelColor': const Color(0xFF00B894),
       'level': 'Intermediate',
-      'image': 'assets/Resources/DSA/Abdul-bari-dsa.png',
-      'onlineThumb': 'https://img.youtube.com/vi/0IAPZzGSbME/hqdefault.jpg',
-      'rawGitThumb':
-          'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/Resources/DSA/Abdul-bari-dsa.png',
+      'image': 'https://img.youtube.com/vi/0IAPZzGSbME/hqdefault.jpg',
       'url': 'https://youtu.be/0IAPZzGSbME',
-      'desc': 'Time complexity, divide & conquer, greedy, DP & graph algorithms',
     },
     {
       'title': 'Kunal Kushwaha DSA Playlist',
@@ -115,12 +87,8 @@ class _ResourcesScreenState extends State<ResourcesScreen>
       'channelInitial': 'K',
       'channelColor': const Color(0xFF00599C),
       'level': 'Beginner',
-      'image': 'assets/Resources/DSA/Kunal-kushwaha.png',
-      'onlineThumb': 'https://img.youtube.com/vi/rZ41y93P2Qo/hqdefault.jpg',
-      'rawGitThumb':
-          'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/Resources/DSA/Kunal-kushwaha.png',
+      'image': 'https://img.youtube.com/vi/rZ41y93P2Qo/hqdefault.jpg',
       'url': 'https://youtu.be/rZ41y93P2Qo',
-      'desc': 'Java + DSA with Git, open source & live hands-on practice',
     },
   ];
 
@@ -131,12 +99,8 @@ class _ResourcesScreenState extends State<ResourcesScreen>
       'channelInitial': 'C',
       'channelColor': const Color(0xFF61DAFB),
       'level': 'Beginner',
-      'image': 'assets/Resources/DEV & AI/React-js.png',
-      'onlineThumb': 'https://img.youtube.com/vi/vz1RlUyrc3w/hqdefault.jpg',
-      'rawGitThumb':
-          'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/Resources/DEV%20%26%20AI/React-js.png',
+      'image': 'https://img.youtube.com/vi/vz1RlUyrc3w/hqdefault.jpg',
       'url': 'https://youtube.com/playlist?list=PLu71SKxNbfoDqgPchmvIsL4hTnJIrtige&si=jbMEtRLKDdNATui-',
-      'desc': 'Hooks, state management, router, Tailwind & full-stack projects',
     },
     {
       'title': 'Backend Development (Node.js)',
@@ -144,12 +108,8 @@ class _ResourcesScreenState extends State<ResourcesScreen>
       'channelInitial': 'P',
       'channelColor': const Color(0xFF68A063),
       'level': 'Intermediate',
-      'image': 'assets/Resources/DEV & AI/Backend.png',
-      'onlineThumb': 'https://img.youtube.com/vi/ohIAiuHMKMI/hqdefault.jpg',
-      'rawGitThumb':
-          'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/Resources/DEV%20%26%20AI/Backend.png',
+      'image': 'https://img.youtube.com/vi/ohIAiuHMKMI/hqdefault.jpg',
       'url': 'https://youtu.be/ohIAiuHMKMI',
-      'desc': 'Express, MongoDB, REST APIs, authentication & architecture',
     },
     {
       'title': 'Flutter 3 Complete Course',
@@ -157,25 +117,17 @@ class _ResourcesScreenState extends State<ResourcesScreen>
       'channelInitial': 'R',
       'channelColor': const Color(0xFF02569B),
       'level': 'All Levels',
-      'image': 'assets/Resources/DEV & AI/Flutter.png',
-      'onlineThumb': 'https://img.youtube.com/vi/VPvVD8t02U8/hqdefault.jpg',
-      'rawGitThumb':
-          'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/Resources/DEV%20%26%20AI/Flutter.png',
+      'image': 'https://img.youtube.com/vi/VPvVD8t02U8/hqdefault.jpg',
       'url': 'https://youtu.be/VPvVD8t02U8',
-      'desc': 'Cross-platform iOS & Android, Firebase, Riverpod & real apps',
     },
     {
       'title': 'Machine Learning Specialization',
-      'channel': 'Andrew Ng',
-      'channelInitial': 'A',
+      'channel': 'DeepLearning.AI',
+      'channelInitial': 'D',
       'channelColor': const Color(0xFFFF5722),
       'level': 'Intermediate',
-      'image': 'assets/Resources/DEV & AI/Machine-learning.png',
-      'onlineThumb': 'https://img.youtube.com/vi/jGwO_b/hqdefault.jpg',
-      'rawGitThumb':
-          'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/Resources/DEV%20%26%20AI/Machine-learning.png',
+      'image': 'https://img.youtube.com/vi/jGwO_bWUtGE/hqdefault.jpg',
       'url': 'https://youtu.be/jGwO_bWUtGE',
-      'desc': 'Supervised learning, neural networks, LLMs & AI foundations',
     },
   ];
 
@@ -186,12 +138,8 @@ class _ResourcesScreenState extends State<ResourcesScreen>
       'channelInitial': 'K',
       'channelColor': const Color(0xFFF05032),
       'level': 'Beginner',
-      'image': 'assets/Resources/TOOLS/Git&Github.png',
-      'onlineThumb': 'https://img.youtube.com/vi/apGV9Kg7ics/hqdefault.jpg',
-      'rawGitThumb':
-          'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/Resources/TOOLS/Git%26Github.png',
+      'image': 'https://img.youtube.com/vi/apGV9Kg7ics/hqdefault.jpg',
       'url': 'https://youtu.be/apGV9Kg7ics',
-      'desc': 'Version control, branching & open source workflow',
     },
     {
       'title': 'Docker for Beginners',
@@ -199,12 +147,8 @@ class _ResourcesScreenState extends State<ResourcesScreen>
       'channelInitial': 'F',
       'channelColor': const Color(0xFF2496ED),
       'level': 'Intermediate',
-      'image': 'assets/Resources/TOOLS/Docker-for-beginner.png',
-      'onlineThumb': 'https://img.youtube.com/vi/fqMOX6JJhGo/hqdefault.jpg',
-      'rawGitThumb':
-          'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/Resources/TOOLS/Docker-for-beginner.png',
+      'image': 'https://img.youtube.com/vi/fqMOX6JJhGo/hqdefault.jpg',
       'url': 'https://youtu.be/fqMOX6JJhGo',
-      'desc': 'Containers, images, volumes & docker-compose',
     },
   ];
 
@@ -260,9 +204,9 @@ class _ResourcesScreenState extends State<ResourcesScreen>
             Container(
               color: const Color(0xFF111322),
               padding: EdgeInsets.fromLTRB(
-                16,
+                14,
                 topPadding > 0 ? topPadding + 10 : 24,
-                16,
+                14,
                 0,
               ),
               child: Column(
@@ -273,27 +217,27 @@ class _ResourcesScreenState extends State<ResourcesScreen>
                       GestureDetector(
                         onTap: () => context.go('/home'),
                         child: Container(
-                          width: 34,
-                          height: 34,
+                          width: 32,
+                          height: 32,
                           decoration: BoxDecoration(
                             color: Colors.white12,
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(8),
                           ),
                           child: const Icon(
                             Icons.arrow_back_ios_new_rounded,
                             color: Colors.white,
-                            size: 15,
+                            size: 14,
                           ),
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: 10),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             'Learning Resources',
                             style: GoogleFonts.plusJakartaSans(
-                              fontSize: 17,
+                              fontSize: 16,
                               fontWeight: FontWeight.w800,
                               color: Colors.white,
                             ),
@@ -301,7 +245,7 @@ class _ResourcesScreenState extends State<ResourcesScreen>
                           Text(
                             'Top YouTube courses — Indian & Global',
                             style: GoogleFonts.plusJakartaSans(
-                              fontSize: 11,
+                              fontSize: 10.5,
                               color: const Color(0xFFB3B0D6),
                             ),
                           ),
@@ -309,23 +253,24 @@ class _ResourcesScreenState extends State<ResourcesScreen>
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 10),
 
-                  // 4 Tabs Strip (100% Overflow-Free)
+                  // 4 Tabs Strip (Fit full text on small screens)
                   TabBar(
                     controller: _tabController,
                     isScrollable: false,
+                    labelPadding: const EdgeInsets.symmetric(horizontal: 2),
                     labelColor: const Color(0xFFFF5722),
                     unselectedLabelColor: const Color(0xFF8C8AA8),
                     indicatorColor: const Color(0xFFFF5722),
                     indicatorWeight: 3,
                     labelStyle: GoogleFonts.plusJakartaSans(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w700,
+                      fontSize: 11,
+                      fontWeight: FontWeight.w800,
                     ),
                     unselectedLabelStyle: GoogleFonts.plusJakartaSans(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
                     ),
                     onTap: (_) => setState(() {}),
                     tabs: const [
@@ -342,7 +287,7 @@ class _ResourcesScreenState extends State<ResourcesScreen>
             // Resources List
             Expanded(
               child: ListView.builder(
-                padding: const EdgeInsets.fromLTRB(14, 12, 14, 16),
+                padding: const EdgeInsets.fromLTRB(12, 10, 12, 16),
                 itemCount: _list.length,
                 itemBuilder: (context, i) {
                   final r = _list[i];
@@ -389,124 +334,63 @@ class _ResourceCard extends StatelessWidget {
   final VoidCallback onTap;
   const _ResourceCard({required this.resource, required this.onTap});
 
-  Widget _buildThumbnail() {
-    final imagePath = resource['image'] as String?;
-    final onlineThumb = resource['onlineThumb'] as String?;
-    final rawGitThumb = resource['rawGitThumb'] as String?;
-    final initial = resource['channelInitial'] as String? ?? 'R';
-    final initialColor =
-        resource['channelColor'] as Color? ?? const Color(0xFF7C5CBF);
-
-    Widget fallbackAvatar = Container(
-      color: const Color(0xFFF3F2F9),
-      child: Center(
-        child: Container(
-          width: 36,
-          height: 36,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.white,
-            border: Border.all(color: initialColor, width: 2),
-          ),
-          child: Center(
-            child: Text(
-              initial,
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 16,
-                fontWeight: FontWeight.w800,
-                color: initialColor,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-
-    if (imagePath != null && imagePath.isNotEmpty) {
-      return Image.asset(
-        imagePath,
-        fit: BoxFit.cover,
-        errorBuilder: (_, __, ___) {
-          if (onlineThumb != null && onlineThumb.isNotEmpty) {
-            return Image.network(
-              onlineThumb,
-              fit: BoxFit.cover,
-              errorBuilder: (_, __, ___) {
-                if (rawGitThumb != null && rawGitThumb.isNotEmpty) {
-                  return Image.network(
-                    rawGitThumb,
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => fallbackAvatar,
-                  );
-                }
-                return fallbackAvatar;
-              },
-            );
-          }
-          return fallbackAvatar;
-        },
-      );
-    }
-
-    if (onlineThumb != null && onlineThumb.isNotEmpty) {
-      return Image.network(
-        onlineThumb,
-        fit: BoxFit.cover,
-        errorBuilder: (_, __, ___) {
-          if (rawGitThumb != null && rawGitThumb.isNotEmpty) {
-            return Image.network(
-              rawGitThumb,
-              fit: BoxFit.cover,
-              errorBuilder: (_, __, ___) => fallbackAvatar,
-            );
-          }
-          return fallbackAvatar;
-        },
-      );
-    }
-    return fallbackAvatar;
-  }
-
   @override
   Widget build(BuildContext context) {
     final initial = resource['channelInitial'] as String? ?? 'R';
     final initialColor =
         resource['channelColor'] as Color? ?? const Color(0xFF7C5CBF);
+    final imageUrl = resource['image'] as String? ?? '';
 
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
+        margin: const EdgeInsets.only(bottom: 10),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(14),
           border: Border.all(color: const Color(0xFFEAEAF2)),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.02),
-              blurRadius: 6,
+              blurRadius: 4,
               offset: const Offset(0, 2),
             ),
           ],
         ),
         child: Padding(
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.all(8),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               // 16:9 YouTube Thumbnail
               ClipRRect(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(8),
                 child: SizedBox(
-                  width: 96,
-                  height: 60,
+                  width: 88,
+                  height: 54,
                   child: Stack(
                     fit: StackFit.expand,
                     children: [
-                      _buildThumbnail(),
+                      Image.network(
+                        imageUrl,
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) => Container(
+                          color: const Color(0xFFF0EDF8),
+                          child: Center(
+                            child: Text(
+                              initial,
+                              style: GoogleFonts.plusJakartaSans(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w800,
+                                color: initialColor,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                       Positioned(
-                        right: 4,
-                        bottom: 4,
+                        right: 3,
+                        bottom: 3,
                         child: Container(
                           padding: const EdgeInsets.all(2),
                           decoration: BoxDecoration(
@@ -516,7 +400,7 @@ class _ResourceCard extends StatelessWidget {
                           child: const Icon(
                             Icons.play_arrow_rounded,
                             color: Colors.white,
-                            size: 12,
+                            size: 11,
                           ),
                         ),
                       ),
@@ -524,31 +408,35 @@ class _ResourceCard extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(width: 10),
+              const SizedBox(width: 8),
 
-              // Video Details (Title, Channel, Level)
+              // Video Details (Title, Channel, Level - with Wrap so it NEVER overflows)
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
                       resource['title'] ?? '',
                       style: GoogleFonts.plusJakartaSans(
-                        fontSize: 12.5,
+                        fontSize: 11.5,
                         fontWeight: FontWeight.w800,
                         color: const Color(0xFF1A1A2E),
-                        height: 1.25,
+                        height: 1.2,
                       ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 4),
-                    Row(
+                    const SizedBox(height: 3),
+                    Wrap(
+                      spacing: 4,
+                      runSpacing: 2,
+                      crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
                         // Channel initial badge
                         Container(
-                          width: 16,
-                          height: 16,
+                          width: 14,
+                          height: 14,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: initialColor.withOpacity(0.15),
@@ -559,39 +447,34 @@ class _ResourceCard extends StatelessWidget {
                             child: Text(
                               initial,
                               style: GoogleFonts.plusJakartaSans(
-                                fontSize: 8.5,
+                                fontSize: 8,
                                 fontWeight: FontWeight.w800,
                                 color: initialColor,
                               ),
                             ),
                           ),
                         ),
-                        const SizedBox(width: 4),
-                        Flexible(
-                          child: Text(
-                            resource['channel'] ?? '',
-                            style: GoogleFonts.plusJakartaSans(
-                              fontSize: 10.5,
-                              fontWeight: FontWeight.w600,
-                              color: const Color(0xFF6B6890),
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
+                        Text(
+                          resource['channel'] ?? '',
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 9.5,
+                            fontWeight: FontWeight.w600,
+                            color: const Color(0xFF6B6890),
                           ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        const SizedBox(width: 5),
-                        // Level Tag
                         Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 5, vertical: 1),
+                              horizontal: 4, vertical: 1),
                           decoration: BoxDecoration(
                             color: const Color(0xFFF3F0FA),
-                            borderRadius: BorderRadius.circular(5),
+                            borderRadius: BorderRadius.circular(4),
                           ),
                           child: Text(
                             resource['level'] ?? 'Beginner',
                             style: GoogleFonts.plusJakartaSans(
-                              fontSize: 8.5,
+                              fontSize: 8,
                               fontWeight: FontWeight.w700,
                               color: const Color(0xFF7C5CBF),
                             ),
@@ -602,15 +485,15 @@ class _ResourceCard extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 6),
 
               // Compact Watch Button
               Container(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 9, vertical: 6),
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
                 decoration: BoxDecoration(
                   color: const Color(0xFFFF5722),
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(8),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -618,13 +501,13 @@ class _ResourceCard extends StatelessWidget {
                     const Icon(
                       Icons.play_arrow_rounded,
                       color: Colors.white,
-                      size: 14,
+                      size: 13,
                     ),
-                    const SizedBox(width: 2),
+                    const SizedBox(width: 1),
                     Text(
                       'Watch',
                       style: GoogleFonts.plusJakartaSans(
-                        fontSize: 11,
+                        fontSize: 10,
                         fontWeight: FontWeight.w800,
                         color: Colors.white,
                       ),

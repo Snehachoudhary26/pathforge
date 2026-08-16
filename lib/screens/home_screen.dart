@@ -183,7 +183,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: ListView(
                         padding: EdgeInsets.zero,
                         children: [
-                          // ── 1. Top Header ───────────────────────
+                          // ── 1. Top Header (Zero Overflow Lines) ───
                           Container(
                             color: const Color(0xFF111322),
                             padding: EdgeInsets.fromLTRB(
@@ -196,8 +196,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               children: [
                                 // User Avatar
                                 Container(
-                                  width: 38,
-                                  height: 38,
+                                  width: 36,
+                                  height: 36,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     color: const Color(0xFF1A1A2E),
@@ -217,7 +217,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               ? userName[0].toUpperCase()
                                               : 'N',
                                           style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 15,
+                                            fontSize: 14,
                                             fontWeight: FontWeight.w800,
                                             color: Colors.white,
                                           ),
@@ -226,7 +226,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ),
                                 ),
-                                const SizedBox(width: 10),
+                                const SizedBox(width: 8),
                                 // Name & Level Title
                                 Expanded(
                                   child: Column(
@@ -238,7 +238,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         style: GoogleFonts.plusJakartaSans(
-                                          fontSize: 15,
+                                          fontSize: 14,
                                           fontWeight: FontWeight.w800,
                                           color: Colors.white,
                                         ),
@@ -248,7 +248,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         style: GoogleFonts.plusJakartaSans(
-                                          fontSize: 10.5,
+                                          fontSize: 10,
                                           color: const Color(0xFF9B99B5),
                                           fontWeight: FontWeight.w500,
                                         ),
@@ -256,7 +256,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ],
                                   ),
                                 ),
-                                const SizedBox(width: 6),
+                                const SizedBox(width: 4),
                                 // Streak & XP Pills
                                 Row(
                                   mainAxisSize: MainAxisSize.min,
@@ -266,7 +266,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       iconColor: const Color(0xFFFF5722),
                                       value: '$streak',
                                     ),
-                                    const SizedBox(width: 5),
+                                    const SizedBox(width: 4),
                                     _StatPill(
                                       icon: Icons.bolt_rounded,
                                       iconColor: const Color(0xFFE08D00),
@@ -347,7 +347,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: ConstrainedBox(
                         constraints: const BoxConstraints(
                           maxWidth: 380,
-                          maxHeight: 380,
+                          maxHeight: 360,
                         ),
                         child: Container(
                           decoration: BoxDecoration(
@@ -380,8 +380,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: Row(
                                   children: [
                                     Container(
-                                      width: 26,
-                                      height: 26,
+                                      width: 24,
+                                      height: 24,
                                       decoration: const BoxDecoration(
                                         color: Colors.white12,
                                         shape: BoxShape.circle,
@@ -394,7 +394,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               const Icon(
                                             Icons.smart_toy_rounded,
                                             color: Colors.white,
-                                            size: 14,
+                                            size: 13,
                                           ),
                                         ),
                                       ),
@@ -410,7 +410,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               'FORGE AI',
                                               style: GoogleFonts
                                                   .plusJakartaSans(
-                                                fontSize: 12.5,
+                                                fontSize: 12,
                                                 fontWeight: FontWeight.w800,
                                                 color: Colors.white,
                                               ),
@@ -429,7 +429,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         Text(
                                           'PathForge Assistant · Online',
                                           style: GoogleFonts.plusJakartaSans(
-                                            fontSize: 9.5,
+                                            fontSize: 9,
                                             color: const Color(0xFFB3B0D6),
                                           ),
                                         ),
@@ -449,7 +449,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         child: const Icon(
                                           Icons.close_rounded,
                                           color: Colors.white,
-                                          size: 15,
+                                          size: 14,
                                         ),
                                       ),
                                     ),
@@ -457,7 +457,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
 
-                              // Chat messages list & suggestions
+                              // Chat messages list & compact suggestions
                               Flexible(
                                 child: SingleChildScrollView(
                                   padding: const EdgeInsets.all(10),
@@ -504,12 +504,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                             padding: const EdgeInsets
                                                 .symmetric(
                                               horizontal: 8,
-                                              vertical: 4.5,
+                                              vertical: 4,
                                             ),
                                             decoration: BoxDecoration(
                                               color: const Color(0xFFF6F4FB),
                                               borderRadius:
-                                                  BorderRadius.circular(12),
+                                                  BorderRadius.circular(10),
                                               border: Border.all(
                                                 color: const Color(0xFFE2DCF2),
                                                 width: 1.0,
@@ -519,7 +519,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               prompt,
                                               style: GoogleFonts
                                                   .plusJakartaSans(
-                                                fontSize: 10,
+                                                fontSize: 9.5,
                                                 fontWeight: FontWeight.w700,
                                                 color: const Color(0xFF1B1D36),
                                               ),
@@ -605,7 +605,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             controller: _quickChatInput,
                                             style: GoogleFonts
                                                 .plusJakartaSans(
-                                              fontSize: 11.5,
+                                              fontSize: 11,
                                               color: const Color(0xFF1A1A2E),
                                             ),
                                             decoration: InputDecoration(
@@ -613,7 +613,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   'Ask FORGE anything...',
                                               hintStyle: GoogleFonts
                                                   .plusJakartaSans(
-                                                fontSize: 10.5,
+                                                fontSize: 10,
                                                 color: const Color(
                                                     0xFF9B99B5),
                                               ),
@@ -623,13 +623,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   const Color(0xFFF5F6FA),
                                               border: OutlineInputBorder(
                                                 borderRadius:
-                                                    BorderRadius.circular(14),
+                                                    BorderRadius.circular(12),
                                                 borderSide: BorderSide.none,
                                               ),
                                               contentPadding:
                                                   const EdgeInsets.symmetric(
                                                 horizontal: 10,
-                                                vertical: 6,
+                                                vertical: 5,
                                               ),
                                             ),
                                             onSubmitted: (val) =>
@@ -644,8 +644,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                               track,
                                               doneCount),
                                           child: Container(
-                                            width: 28,
-                                            height: 28,
+                                            width: 26,
+                                            height: 26,
                                             decoration: const BoxDecoration(
                                               color: Color(0xFFFF5722),
                                               shape: BoxShape.circle,
@@ -653,13 +653,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                             child: const Icon(
                                               Icons.arrow_upward_rounded,
                                               color: Colors.white,
-                                              size: 14,
+                                              size: 13,
                                             ),
                                           ),
                                         ),
                                       ],
                                     ),
-                                    const SizedBox(height: 3),
+                                    const SizedBox(height: 2),
                                     GestureDetector(
                                       onTap: () {
                                         setState(() => isChatOpen = false);
@@ -668,7 +668,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       child: Text(
                                         'Open Full AI Mentor Screen →',
                                         style: GoogleFonts.plusJakartaSans(
-                                          fontSize: 9.5,
+                                          fontSize: 9,
                                           fontWeight: FontWeight.w700,
                                           color: const Color(0xFFFF5722),
                                         ),
@@ -843,23 +843,23 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // 🤖 AI Mentor Featured Banner (100% Overflow-Free & Crisp White Text)
+  // 🤖 AI Mentor Featured Banner (Bright Pure White Text & Zero Cut-Off)
   Widget _buildAiMentorBanner(BuildContext context) {
     return GestureDetector(
       onTap: () => context.go('/mentor'),
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFF7C5CBF).withOpacity(0.18),
-              blurRadius: 10,
-              offset: const Offset(0, 3),
+              color: const Color(0xFF7C5CBF).withOpacity(0.15),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
             ),
           ],
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.circular(16),
           child: Stack(
             children: [
               AspectRatio(
@@ -883,55 +883,56 @@ class _HomeScreenState extends State<HomeScreen> {
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        const Color(0xFF111322).withOpacity(0.92),
-                        const Color(0xFF111322).withOpacity(0.15),
+                        const Color(0xFF111322).withOpacity(0.94),
+                        const Color(0xFF111322).withOpacity(0.2),
                       ],
                       begin: Alignment.bottomCenter,
                       end: Alignment.topCenter,
-                      stops: const [0.0, 0.65],
+                      stops: const [0.0, 0.7],
                     ),
                   ),
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
+                      // Top Row: Tag & 24/7 Personalized Coaching in Pure White
                       Row(
                         children: [
                           Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 6, vertical: 2),
+                                horizontal: 5, vertical: 1.5),
                             decoration: BoxDecoration(
                               color: const Color(0xFFFF5722),
-                              borderRadius: BorderRadius.circular(5),
+                              borderRadius: BorderRadius.circular(4),
                             ),
                             child: Text(
                               'AI MENTOR',
                               style: GoogleFonts.plusJakartaSans(
-                                fontSize: 8.5,
+                                fontSize: 8,
                                 fontWeight: FontWeight.w800,
                                 color: Colors.white,
                               ),
                             ),
                           ),
-                          const SizedBox(width: 6),
+                          const SizedBox(width: 5),
                           Expanded(
                             child: Text(
                               '24/7 Personalized Career Coaching',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.plusJakartaSans(
-                                fontSize: 10,
+                                fontSize: 9.5,
                                 fontWeight: FontWeight.w700,
-                                color: Colors.white,
+                                color: Colors.white, // PURE WHITE
                               ),
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 3),
+                      const SizedBox(height: 2),
+                      // Bottom Row: Title + Chat Now Button
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Expanded(
                             child: Text(
@@ -939,7 +940,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.plusJakartaSans(
-                                fontSize: 12,
+                                fontSize: 11.5,
                                 fontWeight: FontWeight.w800,
                                 color: Colors.white,
                               ),
@@ -948,7 +949,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           const SizedBox(width: 6),
                           Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 4),
+                                horizontal: 7, vertical: 3.5),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(6),
@@ -959,7 +960,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Text(
                                   'Chat Now',
                                   style: GoogleFonts.plusJakartaSans(
-                                    fontSize: 9.5,
+                                    fontSize: 9,
                                     fontWeight: FontWeight.w800,
                                     color: const Color(0xFF111322),
                                   ),
@@ -968,7 +969,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 const Icon(
                                   Icons.arrow_forward_rounded,
                                   color: Color(0xFF111322),
-                                  size: 10,
+                                  size: 9,
                                 ),
                               ],
                             ),
@@ -1539,21 +1540,21 @@ class _StatPill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2.5),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.08),
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(8),
         border: Border.all(color: Colors.white.withOpacity(0.1)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, color: iconColor, size: 13),
-          const SizedBox(width: 3),
+          Icon(icon, color: iconColor, size: 12),
+          const SizedBox(width: 2),
           Text(
             value,
             style: GoogleFonts.plusJakartaSans(
-              fontSize: 10.5,
+              fontSize: 10,
               fontWeight: FontWeight.w800,
               color: Colors.white,
             ),
