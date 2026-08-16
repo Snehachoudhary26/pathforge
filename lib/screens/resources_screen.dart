@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class ResourcesScreen extends StatefulWidget {
   const ResourcesScreen({super.key});
+
   @override
   State<ResourcesScreen> createState() => _ResourcesScreenState();
 }
@@ -16,90 +17,110 @@ class _ResourcesScreenState extends State<ResourcesScreen>
   final List<Map<String, dynamic>> languages = [
     {
       'title': 'Python Full Course',
-      'channel': 'CodeWithHarry',
-      'channelInitial': 'C',
-      'channelColor': const Color(0xFF3776AB),
+      'channel': 'freeCodeCamp',
+      'channelInitial': 'F',
+      'channelColor': const Color(0xFF00599C),
       'level': 'Beginner',
       'image': 'assets/Resources/Languages/Python.png',
-      'onlineThumb': 'https://img.youtube.com/vi/UrsmFxEIp5k/hqdefault.jpg',
-      'rawGitThumb': 'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/Resources/Languages/Python.png',
-      'url': 'https://youtu.be/UrsmFxEIp5k?si=4eQoajookdA2CTJC',
-      'desc': 'Best beginner Python course in Hindi with projects',
+      'onlineThumb': 'https://img.youtube.com/vi/eWRfhZUzrAc/hqdefault.jpg',
+      'rawGitThumb':
+          'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/Resources/Languages/Python.png',
+      'url': 'https://youtu.be/eWRfhZUzrAc',
+      'desc': 'Variables, loops, OOP, data structures & real projects',
     },
     {
-      'title': 'Complete Java Course',
-      'channel': 'CodeWithHarry',
-      'channelInitial': 'C',
-      'channelColor': const Color(0xFFE76F00),
+      'title': 'Java Full Course',
+      'channel': 'Apna College',
+      'channelInitial': 'A',
+      'channelColor': const Color(0xFFFF5722),
       'level': 'Beginner',
-      'image': 'assets/Resources/Languages/java.png',
-      'onlineThumb': 'https://img.youtube.com/vi/UmnCZ7-9yDY/hqdefault.jpg',
-      'rawGitThumb': 'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/Resources/Languages/java.png',
-      'url': 'https://youtu.be/UmnCZ7-9yDY',
-      'desc': 'Complete Java from basics to advanced OOP',
+      'image': 'assets/Resources/Languages/Java.png',
+      'onlineThumb': 'https://img.youtube.com/vi/yRpLlJmRo2w/hqdefault.jpg',
+      'rawGitThumb':
+          'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/Resources/Languages/Java.png',
+      'url': 'https://youtu.be/yRpLlJmRo2w',
+      'desc': 'Core Java, OOPs concepts, collections framework & DSA basics',
     },
     {
-      'title': 'JavaScript Full Playlist',
+      'title': 'JavaScript Mastery',
       'channel': 'Chai aur Code',
       'channelInitial': 'C',
-      'channelColor': const Color(0xFFE08D00),
+      'channelColor': const Color(0xFFF7DF1E),
       'level': 'Beginner',
       'image': 'assets/Resources/Languages/Javascript.png',
       'onlineThumb': 'https://img.youtube.com/vi/sscX432bMZo/hqdefault.jpg',
-      'rawGitThumb': 'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/Resources/Languages/Javascript.png',
-      'url': 'https://youtube.com/playlist?list=PLu71SKxNbfoBuX3f4EOACle2y-tRC5Q37&si=cLgg8-eMdbhlIeJ3',
-      'desc': 'Full JavaScript playlist with DOM & Async JS',
+      'rawGitThumb':
+          'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/Resources/Languages/Javascript.png',
+      'url': 'https://youtu.be/sscX432bMZo',
+      'desc': 'ES6+, DOM, Async/Await, closures & modern JS practices',
     },
     {
-      'title': 'Complete C++ Course',
-      'channel': 'Apna College',
-      'channelInitial': 'A',
+      'title': 'C++ Full Course',
+      'channel': 'CodeWithHarry',
+      'channelInitial': 'C',
       'channelColor': const Color(0xFF00599C),
       'level': 'Beginner',
-      'image': 'assets/Resources/Languages/c++.png',
-      'onlineThumb': 'https://img.youtube.com/vi/z9bZufPHFLU/hqdefault.jpg',
-      'rawGitThumb': 'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/Resources/Languages/c%2B%2B.png',
-      'url': 'https://youtube.com/playlist?list=PLfqMhTWNBTe0b2nM6JHVCnAkhQRGiZMSJ&si=Y9mCSjU4C99IKJxp',
-      'desc': 'Complete C++ programming course for beginners',
+      'image': 'assets/Resources/Languages/C++.png',
+      'onlineThumb': 'https://img.youtube.com/vi/j8nAHeVKL08/hqdefault.jpg',
+      'rawGitThumb':
+          'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/Resources/Languages/C%2B%2B.png',
+      'url': 'https://youtu.be/j8nAHeVKL08',
+      'desc': 'Pointers, memory management, STL & OOP principles',
     },
   ];
 
   final List<Map<String, dynamic>> dsa = [
     {
-      'title': 'Complete C++ DSA Course',
-      'channel': 'Love Babbar',
-      'channelInitial': 'L',
-      'channelColor': const Color(0xFFFF5722),
-      'level': 'Intermediate',
-      'image': 'assets/Resources/DSA/loveBabbar.png',
-      'onlineThumb': 'https://img.youtube.com/vi/WQoB2z67hvY/hqdefault.jpg',
-      'rawGitThumb': 'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/Resources/DSA/loveBabbar.png',
-      'url': 'https://youtube.com/playlist?list=PLDzeHZWIZsTryvtXdMr6rPh4IDexB5NIA&si=JgQVPrVCNH5yNS2O',
-      'desc': 'Supreme DSA series covering Arrays, Trees & DP',
-    },
-    {
-      'title': 'Strivers A2Z DSA Course',
+      'title': 'Striver A2Z DSA Course',
       'channel': 'take U forward',
       'channelInitial': 'T',
-      'channelColor': const Color(0xFF7C5CBF),
-      'level': 'Interview',
-      'image': 'assets/Resources/DSA/StriversA2Z-DSA.png',
-      'onlineThumb': 'https://img.youtube.com/vi/0bHp_prxW1U/hqdefault.jpg',
-      'rawGitThumb': 'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/Resources/DSA/StriversA2Z-DSA.png',
-      'url': 'https://youtube.com/playlist?list=PLgUwDviBIf0oF6QL8m22w1hIDC1vJ_BHz&si=dSCKufLJ0xuwBT7z',
-      'desc': 'A to Z complete DSA preparation for MAANG',
+      'channelColor': const Color(0xFFFF5722),
+      'level': 'All Levels',
+      'image': 'assets/Resources/DSA/Striver-dsa.png',
+      'onlineThumb': 'https://img.youtube.com/vi/EAR7De6Godd/hqdefault.jpg',
+      'rawGitThumb':
+          'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/Resources/DSA/Striver-dsa.png',
+      'url': 'https://youtu.be/EAR7De6Godd',
+      'desc': 'Arrays, Trees, Graphs, DP & top interview problem patterns',
     },
     {
-      'title': 'NeetCode 150 DSA',
-      'channel': 'NeetCode',
-      'channelInitial': 'N',
+      'title': 'Love Babbar DSA Sheet',
+      'channel': 'CodeHelp',
+      'channelInitial': 'L',
+      'channelColor': const Color(0xFF7C5CBF),
+      'level': 'Beginner to Advanced',
+      'image': 'assets/Resources/DSA/Love-babbar-dsa.png',
+      'onlineThumb': 'https://img.youtube.com/vi/WQoB2z67hvY/hqdefault.jpg',
+      'rawGitThumb':
+          'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/Resources/DSA/Love-babbar-dsa.png',
+      'url': 'https://youtu.be/WQoB2z67hvY',
+      'desc': '450+ curated DSA coding interview problems & step-by-step solutions',
+    },
+    {
+      'title': 'Abdul Bari Algorithms',
+      'channel': 'Abdul Bari',
+      'channelInitial': 'A',
       'channelColor': const Color(0xFF00B894),
-      'level': 'Advanced',
-      'image': 'assets/Resources/DSA/neetCode150.png',
-      'onlineThumb': 'https://img.youtube.com/vi/KLlXCFG5TnA/hqdefault.jpg',
-      'rawGitThumb': 'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/Resources/DSA/neetCode150.png',
-      'url': 'https://youtube.com/playlist?list=PLot-Xpze53ldVwtstag2TL4HQhAnC8ATf',
-      'desc': 'Blind 75 & NeetCode 150 LeetCode video solutions',
+      'level': 'Intermediate',
+      'image': 'assets/Resources/DSA/Abdul-bari-dsa.png',
+      'onlineThumb': 'https://img.youtube.com/vi/0IAPZzGSbME/hqdefault.jpg',
+      'rawGitThumb':
+          'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/Resources/DSA/Abdul-bari-dsa.png',
+      'url': 'https://youtu.be/0IAPZzGSbME',
+      'desc': 'Time complexity, divide & conquer, greedy, DP & graph algorithms',
+    },
+    {
+      'title': 'Kunal Kushwaha DSA Playlist',
+      'channel': 'Kunal Kushwaha',
+      'channelInitial': 'K',
+      'channelColor': const Color(0xFF00599C),
+      'level': 'Beginner',
+      'image': 'assets/Resources/DSA/Kunal-kushwaha.png',
+      'onlineThumb': 'https://img.youtube.com/vi/rZ41y93P2Qo/hqdefault.jpg',
+      'rawGitThumb':
+          'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/Resources/DSA/Kunal-kushwaha.png',
+      'url': 'https://youtu.be/rZ41y93P2Qo',
+      'desc': 'Java + DSA with Git, open source & live hands-on practice',
     },
   ];
 
@@ -109,49 +130,66 @@ class _ResourcesScreenState extends State<ResourcesScreen>
       'channel': 'Chai aur Code',
       'channelInitial': 'C',
       'channelColor': const Color(0xFF61DAFB),
-      'level': 'Intermediate',
-      'image': 'assets/Resources/DEV & AI/React-JS-complete-course.png',
-      'onlineThumb': 'https://img.youtube.com/vi/vz1RlUy5594/hqdefault.jpg',
-      'rawGitThumb': 'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/Resources/DEV%20%26%20AI/React-JS-complete-course.png',
+      'level': 'Beginner',
+      'image': 'assets/Resources/DEV & AI/React-js.png',
+      'onlineThumb': 'https://img.youtube.com/vi/vz1RlUyrc3w/hqdefault.jpg',
+      'rawGitThumb':
+          'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/Resources/DEV%20%26%20AI/React-js.png',
       'url': 'https://youtube.com/playlist?list=PLu71SKxNbfoDqgPchmvIsL4hTnJIrtige&si=jbMEtRLKDdNATui-',
-      'desc': 'Complete React with modern hooks and projects',
+      'desc': 'Hooks, state management, router, Tailwind & full-stack projects',
     },
     {
-      'title': 'Backend Development (Node + Express)',
+      'title': 'Backend Development (Node.js)',
       'channel': 'Piyush Garg',
       'channelInitial': 'P',
       'channelColor': const Color(0xFF68A063),
       'level': 'Intermediate',
-      'image': 'assets/Resources/DEV & AI/Backend-development.png',
-      'onlineThumb': 'https://img.youtube.com/vi/TGam-55oB2k/hqdefault.jpg',
-      'rawGitThumb': 'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/Resources/DEV%20%26%20AI/Backend-development.png',
-      'url': 'https://youtube.com/playlist?list=PLinedj3B30sDby4Al-i13hQJGQoRQDfPo',
-      'desc': 'Production ready backend engineering in Hindi',
+      'image': 'assets/Resources/DEV & AI/Backend.png',
+      'onlineThumb': 'https://img.youtube.com/vi/ohIAiuHMKMI/hqdefault.jpg',
+      'rawGitThumb':
+          'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/Resources/DEV%20%26%20AI/Backend.png',
+      'url': 'https://youtu.be/ohIAiuHMKMI',
+      'desc': 'Express, MongoDB, REST APIs, authentication & architecture',
     },
     {
-      'title': 'Flutter 3.0 Complete Guide',
+      'title': 'Flutter 3 Complete Course',
       'channel': 'Rivaan Ranawat',
       'channelInitial': 'R',
-      'channelColor': const Color(0xFF7C5CBF),
+      'channelColor': const Color(0xFF02569B),
       'level': 'All Levels',
       'image': 'assets/Resources/DEV & AI/Flutter.png',
       'onlineThumb': 'https://img.youtube.com/vi/VPvVD8t02U8/hqdefault.jpg',
-      'rawGitThumb': 'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/Resources/DEV%20%26%20AI/Flutter.png',
-      'url': 'https://youtube.com/@rivaanranawat?si=cic9rqgnsefyXwRO',
-      'desc': 'Build cross-platform mobile apps',
+      'rawGitThumb':
+          'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/Resources/DEV%20%26%20AI/Flutter.png',
+      'url': 'https://youtu.be/VPvVD8t02U8',
+      'desc': 'Cross-platform iOS & Android, Firebase, Riverpod & real apps',
+    },
+    {
+      'title': 'Machine Learning Specialization',
+      'channel': 'Andrew Ng',
+      'channelInitial': 'A',
+      'channelColor': const Color(0xFFFF5722),
+      'level': 'Intermediate',
+      'image': 'assets/Resources/DEV & AI/Machine-learning.png',
+      'onlineThumb': 'https://img.youtube.com/vi/jGwO_b/hqdefault.jpg',
+      'rawGitThumb':
+          'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/Resources/DEV%20%26%20AI/Machine-learning.png',
+      'url': 'https://youtu.be/jGwO_bWUtGE',
+      'desc': 'Supervised learning, neural networks, LLMs & AI foundations',
     },
   ];
 
   final List<Map<String, dynamic>> tools = [
     {
-      'title': 'Git & GitHub Masterclass',
+      'title': 'Git & GitHub Bootcamp',
       'channel': 'Kunal Kushwaha',
       'channelInitial': 'K',
       'channelColor': const Color(0xFFF05032),
       'level': 'Beginner',
       'image': 'assets/Resources/TOOLS/Git&Github.png',
       'onlineThumb': 'https://img.youtube.com/vi/apGV9Kg7ics/hqdefault.jpg',
-      'rawGitThumb': 'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/Resources/TOOLS/Git%26Github.png',
+      'rawGitThumb':
+          'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/Resources/TOOLS/Git%26Github.png',
       'url': 'https://youtu.be/apGV9Kg7ics',
       'desc': 'Version control, branching & open source workflow',
     },
@@ -163,7 +201,8 @@ class _ResourcesScreenState extends State<ResourcesScreen>
       'level': 'Intermediate',
       'image': 'assets/Resources/TOOLS/Docker-for-beginner.png',
       'onlineThumb': 'https://img.youtube.com/vi/fqMOX6JJhGo/hqdefault.jpg',
-      'rawGitThumb': 'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/Resources/TOOLS/Docker-for-beginner.png',
+      'rawGitThumb':
+          'https://raw.githubusercontent.com/Snehachoudhary26/pathforge/main/assets/Resources/TOOLS/Docker-for-beginner.png',
       'url': 'https://youtu.be/fqMOX6JJhGo',
       'desc': 'Containers, images, volumes & docker-compose',
     },
@@ -209,19 +248,21 @@ class _ResourcesScreenState extends State<ResourcesScreen>
 
   @override
   Widget build(BuildContext context) {
+    final topPadding = MediaQuery.of(context).padding.top;
+
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FE),
       body: SafeArea(
         top: false,
         child: Column(
           children: [
-            // Top Navy Header (Matching App Theme)
+            // Top Navy Header
             Container(
               color: const Color(0xFF111322),
               padding: EdgeInsets.fromLTRB(
-                20,
-                MediaQuery.of(context).padding.top + 14,
-                20,
+                16,
+                topPadding > 0 ? topPadding + 10 : 24,
+                16,
                 0,
               ),
               child: Column(
@@ -232,8 +273,8 @@ class _ResourcesScreenState extends State<ResourcesScreen>
                       GestureDetector(
                         onTap: () => context.go('/home'),
                         child: Container(
-                          width: 36,
-                          height: 36,
+                          width: 34,
+                          height: 34,
                           decoration: BoxDecoration(
                             color: Colors.white12,
                             borderRadius: BorderRadius.circular(10),
@@ -241,18 +282,18 @@ class _ResourcesScreenState extends State<ResourcesScreen>
                           child: const Icon(
                             Icons.arrow_back_ios_new_rounded,
                             color: Colors.white,
-                            size: 16,
+                            size: 15,
                           ),
                         ),
                       ),
-                      const SizedBox(width: 14),
+                      const SizedBox(width: 12),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             'Learning Resources',
                             style: GoogleFonts.plusJakartaSans(
-                              fontSize: 18,
+                              fontSize: 17,
                               fontWeight: FontWeight.w800,
                               color: Colors.white,
                             ),
@@ -261,31 +302,30 @@ class _ResourcesScreenState extends State<ResourcesScreen>
                             'Top YouTube courses — Indian & Global',
                             style: GoogleFonts.plusJakartaSans(
                               fontSize: 11,
-                              color: const Color(0xFF9B99B5),
+                              color: const Color(0xFFB3B0D6),
                             ),
                           ),
                         ],
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 12),
 
-                  // 4 Category Tabs (Languages, DSA, Dev & AI, Tools)
+                  // 4 Tabs Strip (100% Overflow-Free)
                   TabBar(
                     controller: _tabController,
                     isScrollable: false,
                     labelColor: const Color(0xFFFF5722),
-                    unselectedLabelColor: const Color(0xFF9B99B5),
+                    unselectedLabelColor: const Color(0xFF8C8AA8),
                     indicatorColor: const Color(0xFFFF5722),
                     indicatorWeight: 3,
-                    labelPadding: const EdgeInsets.symmetric(horizontal: 4),
                     labelStyle: GoogleFonts.plusJakartaSans(
-                      fontSize: 12.5,
-                      fontWeight: FontWeight.w800,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
                     ),
                     unselectedLabelStyle: GoogleFonts.plusJakartaSans(
                       fontSize: 12,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w500,
                     ),
                     onTap: (_) => setState(() {}),
                     tabs: const [
@@ -299,10 +339,10 @@ class _ResourcesScreenState extends State<ResourcesScreen>
               ),
             ),
 
-            // Resources List (Mobile Friendly Cards)
+            // Resources List
             Expanded(
               child: ListView.builder(
-                padding: const EdgeInsets.fromLTRB(16, 14, 16, 20),
+                padding: const EdgeInsets.fromLTRB(14, 12, 14, 16),
                 itemCount: _list.length,
                 itemBuilder: (context, i) {
                   final r = _list[i];
@@ -316,7 +356,7 @@ class _ResourcesScreenState extends State<ResourcesScreen>
 
             // Bottom Nav Bar
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 8),
+              padding: const EdgeInsets.symmetric(vertical: 6),
               decoration: const BoxDecoration(
                 color: Colors.white,
                 border: Border(
@@ -361,8 +401,8 @@ class _ResourceCard extends StatelessWidget {
       color: const Color(0xFFF3F2F9),
       child: Center(
         child: Container(
-          width: 44,
-          height: 44,
+          width: 36,
+          height: 36,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: Colors.white,
@@ -372,7 +412,7 @@ class _ResourceCard extends StatelessWidget {
             child: Text(
               initial,
               style: GoogleFonts.plusJakartaSans(
-                fontSize: 18,
+                fontSize: 16,
                 fontWeight: FontWeight.w800,
                 color: initialColor,
               ),
@@ -382,29 +422,49 @@ class _ResourceCard extends StatelessWidget {
       ),
     );
 
-    return Image.asset(
-      imagePath ?? '',
-      fit: BoxFit.cover,
-      errorBuilder: (context, error, stackTrace) {
-        if (onlineThumb != null && onlineThumb.isNotEmpty) {
-          return Image.network(
-            onlineThumb,
-            fit: BoxFit.cover,
-            errorBuilder: (_, __, ___) {
-              if (rawGitThumb != null && rawGitThumb.isNotEmpty) {
-                return Image.network(
-                  rawGitThumb,
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) => fallbackAvatar,
-                );
-              }
-              return fallbackAvatar;
-            },
-          );
-        }
-        return fallbackAvatar;
-      },
-    );
+    if (imagePath != null && imagePath.isNotEmpty) {
+      return Image.asset(
+        imagePath,
+        fit: BoxFit.cover,
+        errorBuilder: (_, __, ___) {
+          if (onlineThumb != null && onlineThumb.isNotEmpty) {
+            return Image.network(
+              onlineThumb,
+              fit: BoxFit.cover,
+              errorBuilder: (_, __, ___) {
+                if (rawGitThumb != null && rawGitThumb.isNotEmpty) {
+                  return Image.network(
+                    rawGitThumb,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => fallbackAvatar,
+                  );
+                }
+                return fallbackAvatar;
+              },
+            );
+          }
+          return fallbackAvatar;
+        },
+      );
+    }
+
+    if (onlineThumb != null && onlineThumb.isNotEmpty) {
+      return Image.network(
+        onlineThumb,
+        fit: BoxFit.cover,
+        errorBuilder: (_, __, ___) {
+          if (rawGitThumb != null && rawGitThumb.isNotEmpty) {
+            return Image.network(
+              rawGitThumb,
+              fit: BoxFit.cover,
+              errorBuilder: (_, __, ___) => fallbackAvatar,
+            );
+          }
+          return fallbackAvatar;
+        },
+      );
+    }
+    return fallbackAvatar;
   }
 
   @override
@@ -413,171 +473,156 @@ class _ResourceCard extends StatelessWidget {
     final initialColor =
         resource['channelColor'] as Color? ?? const Color(0xFF7C5CBF);
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 14),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: const Color(0xFFEAEAF2)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.03),
-            blurRadius: 8,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // 16:9 YouTube Thumbnail Banner
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: SizedBox(
-                width: 120,
-                height: 72,
-                child: Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    _buildThumbnail(),
-                    Positioned(
-                      right: 6,
-                      bottom: 6,
-                      child: Container(
-                        padding: const EdgeInsets.all(3),
-                        decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.7),
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(
-                          Icons.play_arrow_rounded,
-                          color: Colors.white,
-                          size: 14,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: const Color(0xFFEAEAF2)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.02),
+              blurRadius: 6,
+              offset: const Offset(0, 2),
             ),
-            const SizedBox(width: 14),
-
-            // Video Details
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    resource['title'] ?? '',
-                    style: GoogleFonts.plusJakartaSans(
-                      fontSize: 13.5,
-                      fontWeight: FontWeight.w800,
-                      color: const Color(0xFF1A1A2E),
-                      height: 1.25,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 6),
-                  Row(
+          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // 16:9 YouTube Thumbnail
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: SizedBox(
+                  width: 96,
+                  height: 60,
+                  child: Stack(
+                    fit: StackFit.expand,
                     children: [
-                      Container(
-                        width: 18,
-                        height: 18,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: initialColor.withOpacity(0.15),
-                          border: Border.all(color: initialColor, width: 1.2),
-                        ),
-                        child: Center(
-                          child: Text(
-                            initial,
-                            style: GoogleFonts.plusJakartaSans(
-                              fontSize: 9.5,
-                              fontWeight: FontWeight.w800,
-                              color: initialColor,
-                            ),
+                      _buildThumbnail(),
+                      Positioned(
+                        right: 4,
+                        bottom: 4,
+                        child: Container(
+                          padding: const EdgeInsets.all(2),
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.7),
+                            shape: BoxShape.circle,
                           ),
-                        ),
-                      ),
-                      const SizedBox(width: 5),
-                      Flexible(
-                        child: Text(
-                          resource['channel'] ?? '',
-                          style: GoogleFonts.plusJakartaSans(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w600,
-                            color: const Color(0xFF6B6890),
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      const SizedBox(width: 6),
-
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 6, vertical: 1.5),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFF3F0FA),
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        child: Text(
-                          resource['level'] ?? 'Beginner',
-                          style: GoogleFonts.plusJakartaSans(
-                            fontSize: 9,
-                            fontWeight: FontWeight.w700,
-                            color: const Color(0xFF7C5CBF),
+                          child: const Icon(
+                            Icons.play_arrow_rounded,
+                            color: Colors.white,
+                            size: 12,
                           ),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 5),
-                  Text(
-                    resource['desc'] ?? '',
-                    style: GoogleFonts.plusJakartaSans(
-                      fontSize: 11,
-                      color: const Color(0xFF9B99B5),
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
+                ),
               ),
-            ),
-            const SizedBox(width: 8),
+              const SizedBox(width: 10),
 
-            // Orange 'Watch Now' Button
-            GestureDetector(
-              onTap: onTap,
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFFF5722),
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xFFFF5722).withOpacity(0.35),
-                      blurRadius: 6,
-                      offset: const Offset(0, 2),
+              // Video Details (Title, Channel, Level)
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      resource['title'] ?? '',
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 12.5,
+                        fontWeight: FontWeight.w800,
+                        color: const Color(0xFF1A1A2E),
+                        height: 1.25,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 4),
+                    Row(
+                      children: [
+                        // Channel initial badge
+                        Container(
+                          width: 16,
+                          height: 16,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: initialColor.withOpacity(0.15),
+                            border:
+                                Border.all(color: initialColor, width: 1.0),
+                          ),
+                          child: Center(
+                            child: Text(
+                              initial,
+                              style: GoogleFonts.plusJakartaSans(
+                                fontSize: 8.5,
+                                fontWeight: FontWeight.w800,
+                                color: initialColor,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 4),
+                        Flexible(
+                          child: Text(
+                            resource['channel'] ?? '',
+                            style: GoogleFonts.plusJakartaSans(
+                              fontSize: 10.5,
+                              fontWeight: FontWeight.w600,
+                              color: const Color(0xFF6B6890),
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        const SizedBox(width: 5),
+                        // Level Tag
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 5, vertical: 1),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF3F0FA),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Text(
+                            resource['level'] ?? 'Beginner',
+                            style: GoogleFonts.plusJakartaSans(
+                              fontSize: 8.5,
+                              fontWeight: FontWeight.w700,
+                              color: const Color(0xFF7C5CBF),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
+                ),
+              ),
+              const SizedBox(width: 8),
+
+              // Compact Watch Button
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 9, vertical: 6),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFF5722),
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const Icon(
-                      Icons.play_circle_fill_rounded,
+                      Icons.play_arrow_rounded,
                       color: Colors.white,
                       size: 14,
                     ),
-                    const SizedBox(width: 4),
+                    const SizedBox(width: 2),
                     Text(
-                      'Watch Now',
+                      'Watch',
                       style: GoogleFonts.plusJakartaSans(
                         fontSize: 11,
                         fontWeight: FontWeight.w800,
@@ -587,8 +632,8 @@ class _ResourceCard extends StatelessWidget {
                   ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -600,10 +645,10 @@ Widget _NavItem(IconData icon, IconData activeIcon, String label,
   return GestureDetector(
     onTap: onTap,
     child: Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
       decoration: BoxDecoration(
         color: active ? const Color(0xFFFFEFEA) : Colors.transparent,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -611,13 +656,13 @@ Widget _NavItem(IconData icon, IconData activeIcon, String label,
           Icon(
             active ? activeIcon : icon,
             color: active ? const Color(0xFFFF5722) : const Color(0xFF9B99B5),
-            size: 22,
+            size: 20,
           ),
           const SizedBox(height: 2),
           Text(
             label,
             style: GoogleFonts.plusJakartaSans(
-              fontSize: 10,
+              fontSize: 9.5,
               color:
                   active ? const Color(0xFFFF5722) : const Color(0xFF9B99B5),
               fontWeight: active ? FontWeight.w700 : FontWeight.w500,
