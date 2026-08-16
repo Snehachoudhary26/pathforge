@@ -21,8 +21,9 @@ class _ResourcesScreenState extends State<ResourcesScreen>
       'channelInitial': 'F',
       'channelColor': const Color(0xFF00599C),
       'level': 'Beginner',
-      'image': 'https://img.youtube.com/vi/eWRfhZUzrAc/hqdefault.jpg',
-      'url': 'https://youtu.be/eWRfhZUzrAc',
+      'asset': 'assets/Resources/Languages/Python.png',
+      'fallbackUrl': 'https://img.youtube.com/vi/UrsmFxEIp5k/hqdefault.jpg',
+      'url': 'https://youtu.be/UrsmFxEIp5k?si=4eQoajookdA2CTJC',
     },
     {
       'title': 'Java Full Course',
@@ -30,7 +31,8 @@ class _ResourcesScreenState extends State<ResourcesScreen>
       'channelInitial': 'A',
       'channelColor': const Color(0xFFFF5722),
       'level': 'Beginner',
-      'image': 'https://img.youtube.com/vi/yRpLlJmRo2w/hqdefault.jpg',
+      'asset': 'assets/Resources/Languages/java.png',
+      'fallbackUrl': 'https://img.youtube.com/vi/yRpLlJmRo2w/hqdefault.jpg',
       'url': 'https://youtu.be/yRpLlJmRo2w',
     },
     {
@@ -39,56 +41,52 @@ class _ResourcesScreenState extends State<ResourcesScreen>
       'channelInitial': 'C',
       'channelColor': const Color(0xFFF7DF1E),
       'level': 'Beginner',
-      'image': 'https://img.youtube.com/vi/sscX432bMZo/hqdefault.jpg',
-      'url': 'https://youtu.be/sscX432bMZo',
+      'asset': 'assets/Resources/Languages/Javascript.png',
+      'fallbackUrl': 'https://img.youtube.com/vi/sscX432bMZo/hqdefault.jpg',
+      'url': 'https://youtube.com/playlist?list=PLu71SKxNbfoBuX3f4EOACle2y-tRC5Q37&si=cLgg8-eMdbhlIeJ3',
     },
     {
-      'title': 'C++ Full Course',
-      'channel': 'CodeWithHarry',
-      'channelInitial': 'C',
-      'channelColor': const Color(0xFF00599C),
+      'title': 'Complete C++ Placement Course',
+      'channel': 'Apna College',
+      'channelInitial': 'A',
+      'channelColor': const Color(0xFFFF5722),
       'level': 'Beginner',
-      'image': 'https://img.youtube.com/vi/j8nAHeVKL08/hqdefault.jpg',
-      'url': 'https://youtu.be/j8nAHeVKL08',
+      'asset': 'assets/Resources/Languages/c++.png',
+      'fallbackUrl': 'https://img.youtube.com/vi/z9bZufPHFLU/hqdefault.jpg',
+      'url': 'https://youtube.com/playlist?list=PLfqMhTWNBTe0b2nM6JHVCnAkhQRGiZMSJ&si=Y9mCSjU4C99IKJxp',
     },
   ];
 
   final List<Map<String, dynamic>> dsa = [
     {
-      'title': 'Striver A2Z DSA Course',
+      'title': 'Love Babbar DSA Sheet',
+      'channel': 'CodeHelp - by Babbar',
+      'channelInitial': 'L',
+      'channelColor': const Color(0xFF7C5CBF),
+      'level': 'Beginner to Advanced',
+      'asset': 'assets/Resources/DSA/loveBabbar.png',
+      'fallbackUrl': 'https://img.youtube.com/vi/WQoB2z67hvY/hqdefault.jpg',
+      'url': 'https://youtube.com/playlist?list=PLDzeHZWIZsTryvtXdMr6rPh4IDexB5NIA&si=JgQVPrVCNH5yNS2O',
+    },
+    {
+      'title': 'Strivers A2Z DSA Course',
       'channel': 'take U forward',
       'channelInitial': 'T',
       'channelColor': const Color(0xFFFF5722),
       'level': 'All Levels',
-      'image': 'https://img.youtube.com/vi/0bHoB35fCkg/hqdefault.jpg',
-      'url': 'https://youtu.be/0bHoB35fCkg',
+      'asset': 'assets/Resources/DSA/StriversA2Z-DSA.png',
+      'fallbackUrl': 'https://img.youtube.com/vi/0bHoB35fCkg/hqdefault.jpg',
+      'url': 'https://youtube.com/playlist?list=PLgUwDviBIf0oF6QL8m22w1hIDC1vJ_BHz&si=dSCKufLJ0xuwBT7z',
     },
     {
-      'title': 'Love Babbar DSA Sheet',
-      'channel': 'CodeHelp',
-      'channelInitial': 'L',
-      'channelColor': const Color(0xFF7C5CBF),
-      'level': 'Beginner to Advanced',
-      'image': 'https://img.youtube.com/vi/WQoB2z67hvY/hqdefault.jpg',
-      'url': 'https://youtu.be/WQoB2z67hvY',
-    },
-    {
-      'title': 'Abdul Bari Algorithms',
-      'channel': 'Abdul Bari',
-      'channelInitial': 'A',
+      'title': 'NeetCode 150 DSA Sheet',
+      'channel': 'NeetCode',
+      'channelInitial': 'N',
       'channelColor': const Color(0xFF00B894),
-      'level': 'Intermediate',
-      'image': 'https://img.youtube.com/vi/0IAPZzGSbME/hqdefault.jpg',
-      'url': 'https://youtu.be/0IAPZzGSbME',
-    },
-    {
-      'title': 'Kunal Kushwaha DSA Playlist',
-      'channel': 'Kunal Kushwaha',
-      'channelInitial': 'K',
-      'channelColor': const Color(0xFF00599C),
-      'level': 'Beginner',
-      'image': 'https://img.youtube.com/vi/rZ41y93P2Qo/hqdefault.jpg',
-      'url': 'https://youtu.be/rZ41y93P2Qo',
+      'level': 'All Levels',
+      'asset': 'assets/Resources/DSA/neetCode150.png',
+      'fallbackUrl': 'https://img.youtube.com/vi/KLlXCFG5TnA/hqdefault.jpg',
+      'url': 'https://youtube.com/playlist?list=PLot-Xpze53ldVwtstag2TL4HQhAnC8ATf',
     },
   ];
 
@@ -99,7 +97,8 @@ class _ResourcesScreenState extends State<ResourcesScreen>
       'channelInitial': 'C',
       'channelColor': const Color(0xFF61DAFB),
       'level': 'Beginner',
-      'image': 'https://img.youtube.com/vi/vz1RlUyrc3w/hqdefault.jpg',
+      'asset': 'assets/Resources/DEV & AI/React-JS-complete-course.png',
+      'fallbackUrl': 'https://img.youtube.com/vi/vz1RlUyrc3w/hqdefault.jpg',
       'url': 'https://youtube.com/playlist?list=PLu71SKxNbfoDqgPchmvIsL4hTnJIrtige&si=jbMEtRLKDdNATui-',
     },
     {
@@ -108,26 +107,19 @@ class _ResourcesScreenState extends State<ResourcesScreen>
       'channelInitial': 'P',
       'channelColor': const Color(0xFF68A063),
       'level': 'Intermediate',
-      'image': 'https://img.youtube.com/vi/ohIAiuHMKMI/hqdefault.jpg',
+      'asset': 'assets/Resources/DEV & AI/Backend-development.png',
+      'fallbackUrl': 'https://img.youtube.com/vi/ohIAiuHMKMI/hqdefault.jpg',
       'url': 'https://youtu.be/ohIAiuHMKMI',
     },
     {
-      'title': 'Flutter 3 Complete Course',
+      'title': 'Flutter Complete Course',
       'channel': 'Rivaan Ranawat',
       'channelInitial': 'R',
       'channelColor': const Color(0xFF02569B),
       'level': 'All Levels',
-      'image': 'https://img.youtube.com/vi/VPvVD8t02U8/hqdefault.jpg',
-      'url': 'https://youtu.be/VPvVD8t02U8',
-    },
-    {
-      'title': 'Machine Learning Specialization',
-      'channel': 'DeepLearning.AI',
-      'channelInitial': 'D',
-      'channelColor': const Color(0xFFFF5722),
-      'level': 'Intermediate',
-      'image': 'https://img.youtube.com/vi/jGwO_bWUtGE/hqdefault.jpg',
-      'url': 'https://youtu.be/jGwO_bWUtGE',
+      'asset': 'assets/Resources/DEV & AI/Flutter.png',
+      'fallbackUrl': 'https://img.youtube.com/vi/VPvVD8t02U8/hqdefault.jpg',
+      'url': 'https://youtube.com/@rivaanranawat?si=cic9rqgnsefyXwRO',
     },
   ];
 
@@ -138,7 +130,8 @@ class _ResourcesScreenState extends State<ResourcesScreen>
       'channelInitial': 'K',
       'channelColor': const Color(0xFFF05032),
       'level': 'Beginner',
-      'image': 'https://img.youtube.com/vi/apGV9Kg7ics/hqdefault.jpg',
+      'asset': 'assets/Resources/TOOLS/Git&Github.png',
+      'fallbackUrl': 'https://img.youtube.com/vi/apGV9Kg7ics/hqdefault.jpg',
       'url': 'https://youtu.be/apGV9Kg7ics',
     },
     {
@@ -147,7 +140,8 @@ class _ResourcesScreenState extends State<ResourcesScreen>
       'channelInitial': 'F',
       'channelColor': const Color(0xFF2496ED),
       'level': 'Intermediate',
-      'image': 'https://img.youtube.com/vi/fqMOX6JJhGo/hqdefault.jpg',
+      'asset': 'assets/Resources/TOOLS/Docker-for-beginner.png',
+      'fallbackUrl': 'https://img.youtube.com/vi/fqMOX6JJhGo/hqdefault.jpg',
       'url': 'https://youtu.be/fqMOX6JJhGo',
     },
   ];
@@ -284,7 +278,7 @@ class _ResourcesScreenState extends State<ResourcesScreen>
               ),
             ),
 
-            // Resources List
+            // Resources List (Zero Overflows Guaranteed)
             Expanded(
               child: ListView.builder(
                 padding: const EdgeInsets.fromLTRB(12, 10, 12, 16),
@@ -339,7 +333,8 @@ class _ResourceCard extends StatelessWidget {
     final initial = resource['channelInitial'] as String? ?? 'R';
     final initialColor =
         resource['channelColor'] as Color? ?? const Color(0xFF7C5CBF);
-    final imageUrl = resource['image'] as String? ?? '';
+    final assetPath = resource['asset'] as String? ?? '';
+    final fallbackUrl = resource['fallbackUrl'] as String? ?? '';
 
     return GestureDetector(
       onTap: onTap,
@@ -362,32 +357,55 @@ class _ResourceCard extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // 16:9 YouTube Thumbnail
+              // 16:9 Original YouTube Thumbnail
               ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: SizedBox(
-                  width: 88,
-                  height: 54,
+                  width: 86,
+                  height: 52,
                   child: Stack(
                     fit: StackFit.expand,
                     children: [
-                      Image.network(
-                        imageUrl,
-                        fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) => Container(
-                          color: const Color(0xFFF0EDF8),
-                          child: Center(
-                            child: Text(
-                              initial,
-                              style: GoogleFonts.plusJakartaSans(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w800,
-                                color: initialColor,
+                      if (assetPath.isNotEmpty)
+                        Image.asset(
+                          assetPath,
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, __, ___) => Image.network(
+                            fallbackUrl,
+                            fit: BoxFit.cover,
+                            errorBuilder: (_, __, ___) => Container(
+                              color: const Color(0xFFF0EDF8),
+                              child: Center(
+                                child: Text(
+                                  initial,
+                                  style: GoogleFonts.plusJakartaSans(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w800,
+                                    color: initialColor,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      else
+                        Image.network(
+                          fallbackUrl,
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, __, ___) => Container(
+                            color: const Color(0xFFF0EDF8),
+                            child: Center(
+                              child: Text(
+                                initial,
+                                style: GoogleFonts.plusJakartaSans(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w800,
+                                  color: initialColor,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
                       Positioned(
                         right: 3,
                         bottom: 3,
@@ -487,7 +505,7 @@ class _ResourceCard extends StatelessWidget {
               ),
               const SizedBox(width: 6),
 
-              // Compact Watch Button
+              // Compact Watch Button (100% Overflow Free)
               Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
