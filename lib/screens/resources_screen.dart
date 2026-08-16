@@ -21,6 +21,7 @@ class _ResourcesScreenState extends State<ResourcesScreen>
       'channelColor': const Color(0xFF3776AB),
       'level': 'Beginner',
       'image': 'assets/Resources/Languages/Python.png',
+      'altImage': 'assets/Resources/Languages /Python.png',
       'url': 'https://youtu.be/UrsmFxEIp5k?si=4eQoajookdA2CTJC',
       'desc': 'Best beginner Python course in Hindi with projects',
     },
@@ -31,6 +32,7 @@ class _ResourcesScreenState extends State<ResourcesScreen>
       'channelColor': const Color(0xFFE76F00),
       'level': 'Beginner',
       'image': 'assets/Resources/Languages/java.png',
+      'altImage': 'assets/Resources/Languages /java.png',
       'url': 'https://youtu.be/UmnCZ7-9yDY',
       'desc': 'Complete Java from basics to advanced OOP',
     },
@@ -41,6 +43,7 @@ class _ResourcesScreenState extends State<ResourcesScreen>
       'channelColor': const Color(0xFFE08D00),
       'level': 'Beginner',
       'image': 'assets/Resources/Languages/Javascript.png',
+      'altImage': 'assets/Resources/Languages /Javascript.png',
       'url': 'https://youtube.com/playlist?list=PLu71SKxNbfoBuX3f4EOACle2y-tRC5Q37&si=cLgg8-eMdbhlIeJ3',
       'desc': 'Full JavaScript playlist with DOM & Async JS',
     },
@@ -51,6 +54,7 @@ class _ResourcesScreenState extends State<ResourcesScreen>
       'channelColor': const Color(0xFF00599C),
       'level': 'Beginner',
       'image': 'assets/Resources/Languages/c++.png',
+      'altImage': 'assets/Resources/Languages /c++.png',
       'url': 'https://youtube.com/playlist?list=PLfqMhTWNBTe0b2nM6JHVCnAkhQRGiZMSJ&si=Y9mCSjU4C99IKJxp',
       'desc': 'Complete C++ programming course for beginners',
     },
@@ -191,7 +195,7 @@ class _ResourcesScreenState extends State<ResourcesScreen>
         top: false,
         child: Column(
           children: [
-            // Top Navy Header
+            // Top Navy Header (Matching App Theme)
             Container(
               color: const Color(0xFF111322),
               padding: EdgeInsets.fromLTRB(
@@ -301,6 +305,7 @@ class _ResourceCard extends StatelessWidget {
 
   Widget _buildThumbnail() {
     final imagePath = resource['image'] as String?;
+    final altImagePath = resource['altImage'] as String?;
     final initial = resource['channelInitial'] as String? ?? 'R';
     final initialColor = resource['channelColor'] as Color? ?? const Color(0xFF7C5CBF);
 
@@ -308,8 +313,8 @@ class _ResourceCard extends StatelessWidget {
       color: const Color(0xFFF3F2F9),
       child: Center(
         child: Container(
-          width: 48,
-          height: 48,
+          width: 46,
+          height: 46,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: Colors.white,
@@ -335,14 +340,14 @@ class _ResourceCard extends StatelessWidget {
       imagePath,
       fit: BoxFit.cover,
       errorBuilder: (context, error, stackTrace) {
-        final altPath = imagePath.contains('Languages /')
-            ? imagePath.replaceAll('Languages /', 'Languages/')
-            : imagePath.replaceAll('Languages/', 'Languages /');
-        return Image.asset(
-          altPath,
-          fit: BoxFit.cover,
-          errorBuilder: (_, __, ___) => fallbackAvatar,
-        );
+        if (altImagePath != null) {
+          return Image.asset(
+            altImagePath,
+            fit: BoxFit.cover,
+            errorBuilder: (_, __, ___) => fallbackAvatar,
+          );
+        }
+        return fallbackAvatar;
       },
     );
   }
@@ -371,11 +376,11 @@ class _ResourceCard extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // 16:9 YouTube Thumbnail Banner
+            // 16:9 YouTube Thumbnail Banner (Matches Reference Image)
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: SizedBox(
-                width: 124,
+                width: 120,
                 height: 72,
                 child: _buildThumbnail(),
               ),
@@ -386,6 +391,7 @@ class _ResourceCard extends StatelessWidget {
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
                     resource['title'] ?? '',
@@ -400,7 +406,7 @@ class _ResourceCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Row(
                     children: [
-                      // Mini Channel Initial Badge
+                      // Mini Channel Initial Badge (Matches Reference Image)
                       Container(
                         width: 18,
                         height: 18,
@@ -468,7 +474,7 @@ class _ResourceCard extends StatelessWidget {
             ),
             const SizedBox(width: 8),
 
-            // Vibrant Watch Now CTA Button
+            // Vibrant Watch Now CTA Button (Matches Reference Image)
             GestureDetector(
               onTap: onTap,
               child: Container(

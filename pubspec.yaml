@@ -9,7 +9,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
   go_router: ^13.0.0
   flutter_riverpod: ^2.5.1
   riverpod_annotation: ^2.3.4
@@ -45,6 +44,10 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/
     - assets/images/
     - assets/data/
+    - assets/Resources/Languages/
+    - assets/Resources/Languages /
+    - assets/Resources/DSA/
+    - assets/Resources/DEV & AI/
+    - assets/Resources/TOOLS/
