@@ -69,8 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
       final lb = await FirestoreService.getLeaderboard(currentUid: uid);
       if (mounted) {
         setState(() {
-          userName =
-              uData['name'] ?? user.email?.split('@')[0] ?? 'Student';
+          userName = uData['name'] ?? user.email?.split('@')[0] ?? 'Student';
           userData = uData;
           roadmapData = rData;
           xp = (uData['xp'] ?? 0) as int;
@@ -137,10 +136,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
     String reply;
     final lower = q.toLowerCase();
-    if (lower.contains('priority') || lower.contains('next') || lower.contains('first')) {
+    if (lower.contains('priority') ||
+        lower.contains('next') ||
+        lower.contains('first')) {
       reply =
           '🎯 Your #1 focus right now is Week ${doneCount + 1} of $track. Complete this week\'s coding exercises to earn +80 XP and unlock your next milestone!';
-    } else if (lower.contains('job') || lower.contains('readiness') || lower.contains('score')) {
+    } else if (lower.contains('job') ||
+        lower.contains('readiness') ||
+        lower.contains('score')) {
       reply =
           '⚡ To reach 85%+ Job Readiness: 1) Finish 3 weekly milestones, 2) Run your resume through the Resume Scanner, and 3) Complete a Practice Interview!';
     } else if (lower.contains('project') || lower.contains('portfolio')) {
@@ -149,7 +152,9 @@ class _HomeScreenState extends State<HomeScreen> {
     } else if (lower.contains('challenge') || lower.contains('5-minute')) {
       reply =
           '🔥 5-Min Challenge: Implement binary search on a sorted integer array and return index or -1 in O(log n) time!';
-    } else if (lower.contains('salary') || lower.contains('lpa') || lower.contains('package')) {
+    } else if (lower.contains('salary') ||
+        lower.contains('lpa') ||
+        lower.contains('package')) {
       reply =
           '💼 $track entry-level packages in India range from ₹7.5 LPA to ₹18 LPA, with top product MNCs offering ₹24–32 LPA.';
     } else {
@@ -284,8 +289,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   0.18),
                                                           borderRadius:
                                                               BorderRadius
-                                                                  .circular(
-                                                                      12),
+                                                                  .circular(12),
                                                           border: Border.all(
                                                             color: const Color(
                                                                     0xFFFF5722)
@@ -302,6 +306,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                 FontWeight.w700,
                                                             color: const Color(
                                                                 0xFFFF8A65),
+                                                          ),
                                                         ),
                                                       ),
                                                       const SizedBox(width: 8),
@@ -309,10 +314,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         width: 40,
                                                         height: 40,
                                                         decoration:
-                                                            BoxDecoration(
-                                                          shape: BoxShape.circle,
+                                                            const BoxDecoration(
+                                                          shape:
+                                                              BoxShape.circle,
                                                           gradient:
-                                                              const LinearGradient(
+                                                              LinearGradient(
                                                             colors: [
                                                               Color(0xFFFF5722),
                                                               Color(0xFF7C5CBF),
@@ -343,7 +349,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                               ],
                                             ),
                                             const SizedBox(height: 14),
-
                                             Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
@@ -355,8 +360,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       .plusJakartaSans(
                                                     fontSize: 12,
                                                     fontWeight: FontWeight.w600,
-                                                    color: const Color(
-                                                        0xFFD4C9FF),
+                                                    color:
+                                                        const Color(0xFFD4C9FF),
                                                   ),
                                                 ),
                                                 Text(
@@ -365,8 +370,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       .plusJakartaSans(
                                                     fontSize: 11.5,
                                                     fontWeight: FontWeight.w600,
-                                                    color: const Color(
-                                                        0xFFB3B0D6),
+                                                    color:
+                                                        const Color(0xFFB3B0D6),
                                                   ),
                                                 ),
                                               ],
@@ -377,8 +382,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   BorderRadius.circular(6),
                                               child: LinearProgressIndicator(
                                                 value: _xpProgress,
-                                                backgroundColor:
-                                                    Colors.white12,
+                                                backgroundColor: Colors.white12,
                                                 valueColor:
                                                     const AlwaysStoppedAnimation(
                                                   Color(0xFFFF5722),
@@ -387,7 +391,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                               ),
                                             ),
                                             const SizedBox(height: 16),
-
                                             Row(
                                               children: [
                                                 Expanded(
@@ -471,8 +474,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                           children: [
                                             Text(
                                               'Active quest',
-                                              style: GoogleFonts
-                                                  .plusJakartaSans(
+                                              style:
+                                                  GoogleFonts.plusJakartaSans(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w700,
                                                 color: const Color(0xFF1A1A2E),
@@ -480,8 +483,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ),
                                             const SizedBox(height: 8),
                                             Container(
-                                              padding:
-                                                  const EdgeInsets.all(16),
+                                              padding: const EdgeInsets.all(16),
                                               decoration: BoxDecoration(
                                                 color: const Color(0xFF1B1D36),
                                                 borderRadius:
@@ -532,9 +534,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             ),
                                                             Text(
                                                               'Week $doneCount of $totalWeeks · In progress',
-                                                              style:
-                                                                  GoogleFonts
-                                                                      .plusJakartaSans(
+                                                              style: GoogleFonts
+                                                                  .plusJakartaSans(
                                                                 fontSize: 12,
                                                                 color: const Color(
                                                                     0xFFB3B0D6),
@@ -824,7 +825,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                             ),
-
                             _BottomNav(
                               currentIndex: 0,
                               onHome: () => context.go('/home'),
@@ -836,7 +836,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ],
                         ),
 
-                        // Floating FORGE AI Compact Card (Reference Image 4)
+                        // Floating FORGE AI Compact Card
                         if (isChatOpen)
                           Positioned(
                             right: 16,
@@ -970,7 +970,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              // Initial Welcome Bubble
                                               Container(
                                                 padding:
                                                     const EdgeInsets.all(12),
@@ -979,8 +978,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   borderRadius:
                                                       BorderRadius.circular(16),
                                                   border: Border.all(
-                                                    color: const Color(
-                                                        0xFFE2E4F0),
+                                                    color:
+                                                        const Color(0xFFE2E4F0),
                                                   ),
                                                 ),
                                                 child: Text(
@@ -988,15 +987,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   style: GoogleFonts
                                                       .plusJakartaSans(
                                                     fontSize: 13,
-                                                    color: const Color(
-                                                        0xFF1A1A2E),
+                                                    color:
+                                                        const Color(0xFF1A1A2E),
                                                     height: 1.4,
                                                   ),
                                                 ),
                                               ),
                                               const SizedBox(height: 10),
-
-                                              // Predefined Question Pills (Reference Style)
                                               ...[
                                                 '🎯 What is my #1 priority this week?',
                                                 '⚡ How do I boost my Job Readiness Score?',
@@ -1006,18 +1003,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                               ].map((prompt) {
                                                 return GestureDetector(
                                                   onTap: () =>
-                                                      _sendForgeMessage(
-                                                          prompt,
-                                                          track,
-                                                          doneCount),
+                                                      _sendForgeMessage(prompt,
+                                                          track, doneCount),
                                                   child: Container(
                                                     width: double.infinity,
                                                     margin:
                                                         const EdgeInsets.only(
                                                             bottom: 6),
-                                                    padding:
-                                                        const EdgeInsets
-                                                            .symmetric(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
                                                       horizontal: 12,
                                                       vertical: 7.5,
                                                     ),
@@ -1046,15 +1040,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   ),
                                                 );
                                               }),
-
-                                              // Conversation History
                                               ..._quickChatMessages.map((m) {
                                                 final isUser =
                                                     m['role'] == 'user';
                                                 return Container(
-                                                  margin:
-                                                      const EdgeInsets.only(
-                                                          top: 8),
+                                                  margin: const EdgeInsets.only(
+                                                      top: 8),
                                                   alignment: isUser
                                                       ? Alignment.centerRight
                                                       : Alignment.centerLeft,
@@ -1074,9 +1065,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       border: isUser
                                                           ? null
                                                           : Border.all(
-                                                              color:
-                                                                  const Color(
-                                                                      0xFFB7E8CE)),
+                                                              color: const Color(
+                                                                  0xFFB7E8CE)),
                                                     ),
                                                     child: Text(
                                                       m['text'] ?? '',
@@ -1093,7 +1083,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   ),
                                                 );
                                               }),
-
                                               if (_isForgeTyping) ...[
                                                 const SizedBox(height: 8),
                                                 const SizedBox(
@@ -1130,16 +1119,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                               children: [
                                                 Expanded(
                                                   child: TextField(
-                                                    controller:
-                                                        _quickChatInput,
+                                                    controller: _quickChatInput,
                                                     style: GoogleFonts
                                                         .plusJakartaSans(
                                                       fontSize: 13,
                                                       color: const Color(
                                                           0xFF1A1A2E),
                                                     ),
-                                                    decoration:
-                                                        InputDecoration(
+                                                    decoration: InputDecoration(
                                                       hintText:
                                                           'Ask FORGE anything...',
                                                       hintStyle: GoogleFonts
@@ -1168,10 +1155,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       ),
                                                     ),
                                                     onSubmitted: (val) =>
-                                                        _sendForgeMessage(
-                                                            val,
-                                                            track,
-                                                            doneCount),
+                                                        _sendForgeMessage(val,
+                                                            track, doneCount),
                                                   ),
                                                 ),
                                                 const SizedBox(width: 8),
@@ -1186,12 +1171,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     height: 36,
                                                     decoration:
                                                         const BoxDecoration(
-                                                      color:
-                                                          Color(0xFF00B894),
+                                                      color: Color(0xFF00B894),
                                                       shape: BoxShape.circle,
                                                     ),
                                                     child: const Icon(
-                                                      Icons.arrow_upward_rounded,
+                                                      Icons
+                                                          .arrow_upward_rounded,
                                                       color: Colors.white,
                                                       size: 18,
                                                     ),
@@ -1202,14 +1187,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                             const SizedBox(height: 6),
                                             GestureDetector(
                                               onTap: () {
-                                                setState(() =>
-                                                    isChatOpen = false);
+                                                setState(
+                                                    () => isChatOpen = false);
                                                 context.go('/mentor');
                                               },
                                               child: Text(
                                                 'Open Full AI Mentor Screen →',
-                                                style: GoogleFonts
-                                                    .plusJakartaSans(
+                                                style:
+                                                    GoogleFonts.plusJakartaSans(
                                                   fontSize: 11,
                                                   fontWeight: FontWeight.w700,
                                                   color:
@@ -1227,7 +1212,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
 
-                        // Floating Robot Trigger Button (Toggles between Robot and Close 'X')
+                        // Floating Robot Trigger Button
                         Positioned(
                           right: 18,
                           bottom: 66,
@@ -1462,7 +1447,8 @@ class _FeatureCard extends StatelessWidget {
                         style: GoogleFonts.plusJakartaSans(
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
-                          color: isDark ? Colors.white : const Color(0xFF1A1A2E),
+                          color:
+                              isDark ? Colors.white : const Color(0xFF1A1A2E),
                         ),
                       ),
                       const SizedBox(width: 8),
@@ -1567,8 +1553,7 @@ class _JobReadinessCard extends StatelessWidget {
               ),
             ),
             Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
               decoration: BoxDecoration(
                 color: const Color(0xFFFF5722),
                 borderRadius: BorderRadius.circular(10),
