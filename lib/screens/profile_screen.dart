@@ -372,13 +372,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     const SizedBox(height: 8),
 
-                    // Level & Track Badges
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    // Level & Track Badges (Zero Overflows)
+                    Wrap(
+                      alignment: WrapAlignment.center,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      spacing: 6,
+                      runSpacing: 4,
                       children: [
                         Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 4),
+                              horizontal: 8, vertical: 3.5),
                           decoration: BoxDecoration(
                             color: const Color(0xFFFF5722).withOpacity(0.18),
                             borderRadius: BorderRadius.circular(16),
@@ -392,13 +395,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               const Icon(
                                 Icons.star_rounded,
                                 color: Color(0xFFFF5722),
-                                size: 13,
+                                size: 12,
                               ),
-                              const SizedBox(width: 4),
+                              const SizedBox(width: 3),
                               Text(
                                 'Level $level: $levelName',
                                 style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 11,
+                                  fontSize: 10,
                                   fontWeight: FontWeight.w700,
                                   color: const Color(0xFFFF8A65),
                                 ),
@@ -406,10 +409,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ],
                           ),
                         ),
-                        const SizedBox(width: 8),
                         Container(
+                          constraints: BoxConstraints(
+                            maxWidth: MediaQuery.of(context).size.width * 0.42,
+                          ),
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 4),
+                              horizontal: 8, vertical: 3.5),
                           decoration: BoxDecoration(
                             color: const Color(0xFF7C5CBF).withOpacity(0.18),
                             borderRadius: BorderRadius.circular(16),
@@ -419,8 +424,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           child: Text(
                             track,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                             style: GoogleFonts.plusJakartaSans(
-                              fontSize: 11,
+                              fontSize: 10,
                               fontWeight: FontWeight.w700,
                               color: const Color(0xFFD6C8F5),
                             ),
