@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../screens/splash_screen.dart';
 import '../screens/auth_screen.dart';
 import '../screens/home_screen.dart';
@@ -75,8 +76,13 @@ final appRouter = GoRouter(
       path: '/onboarding',
       pageBuilder: (c, s) => _slidePage(const OnboardingScreen(), s),
     ),
+    // Track Select (Primary & Alias)
     GoRoute(
       path: '/track',
+      pageBuilder: (c, s) => _slidePage(const TrackSelectScreen(), s),
+    ),
+    GoRoute(
+      path: '/track-select',
       pageBuilder: (c, s) => _slidePage(const TrackSelectScreen(), s),
     ),
     GoRoute(
@@ -110,6 +116,7 @@ final appRouter = GoRouter(
             InterviewScreen(track: track, weekTitle: week), s);
       },
     ),
+    // Resume Scanner (Primary & Alias)
     GoRoute(
       path: '/resume',
       pageBuilder: (c, s) => _slidePage(const ResumeScannerScreen(), s),
@@ -118,6 +125,7 @@ final appRouter = GoRouter(
       path: '/resume-scanner',
       pageBuilder: (c, s) => _slidePage(const ResumeScannerScreen(), s),
     ),
+    // Resume Rewriter (Primary & Alias)
     GoRoute(
       path: '/rewriter',
       pageBuilder: (c, s) => _slidePage(const ResumeRewriterScreen(), s),
@@ -126,6 +134,7 @@ final appRouter = GoRouter(
       path: '/resume-rewriter',
       pageBuilder: (c, s) => _slidePage(const ResumeRewriterScreen(), s),
     ),
+    // Job Readiness (Primary & Alias)
     GoRoute(
       path: '/readiness',
       pageBuilder: (c, s) => _slidePage(const JobReadinessScreen(), s),
@@ -138,10 +147,7 @@ final appRouter = GoRouter(
       path: '/share',
       pageBuilder: (c, s) => _slidePage(const ShareProgressScreen(), s),
     ),
-    GoRoute(
-      path: '/share-progress',
-      pageBuilder: (c, s) => _slidePage(const ShareProgressScreen(), s),
-    ),
+    // Job Market (Primary & Alias)
     GoRoute(
       path: '/market',
       pageBuilder: (c, s) => _slidePage(const JobMarketScreen(), s),
@@ -152,10 +158,6 @@ final appRouter = GoRouter(
     ),
     GoRoute(
       path: '/mentor',
-      pageBuilder: (c, s) => _slidePage(const AiMentorScreen(), s),
-    ),
-    GoRoute(
-      path: '/ai-mentor',
       pageBuilder: (c, s) => _slidePage(const AiMentorScreen(), s),
     ),
     GoRoute(
