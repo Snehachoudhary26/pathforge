@@ -684,7 +684,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
 
-                // ── 4. Floating Robot Trigger ──────────────
+                // ── 4. Floating Robot Trigger (Circular, Zero Square Box) ──────────────
                 Positioned(
                   right: 16,
                   bottom: 60,
@@ -692,13 +692,20 @@ class _HomeScreenState extends State<HomeScreen> {
                     onTap: () =>
                         setState(() => isChatOpen = !isChatOpen),
                     child: SizedBox(
-                      width: 44,
-                      height: 44,
+                      width: 46,
+                      height: 46,
                       child: isChatOpen
                           ? Container(
-                              decoration: const BoxDecoration(
-                                color: Color(0xFF1B1D36),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF1B1D36),
                                 shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.2),
+                                    blurRadius: 8,
+                                    offset: const Offset(0, 3),
+                                  ),
+                                ],
                               ),
                               child: const Icon(
                                 Icons.close_rounded,
@@ -706,13 +713,33 @@ class _HomeScreenState extends State<HomeScreen> {
                                 size: 22,
                               ),
                             )
-                          : Image.asset(
-                              'assets/images/robot-for-chatbot.png',
-                              fit: BoxFit.contain,
-                              errorBuilder: (_, __, ___) => const Icon(
-                                Icons.smart_toy_rounded,
-                                color: Color(0xFF7C5CBF),
-                                size: 30,
+                          : Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: const Color(0xFF7C5CBF).withOpacity(0.35),
+                                    blurRadius: 10,
+                                    offset: const Offset(0, 4),
+                                  ),
+                                ],
+                              ),
+                              child: ClipOval(
+                                child: Image.asset(
+                                  'assets/images/robot-for-chatbot.png',
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (_, __, ___) => Container(
+                                    decoration: const BoxDecoration(
+                                      color: Color(0xFF7C5CBF),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: const Icon(
+                                      Icons.smart_toy_rounded,
+                                      color: Colors.white,
+                                      size: 26,
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                     ),
